@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">comida</string>
+    <string name="emailerror">Enter Valid Email</string>
+    <string name="passworderror">Enter 8-16 char pass</string>
+    <string name="passwordconfirm">Password doesnot match</string>
+    <string name="contact1">Cannot be null</string>
+
+    <string-array name="business_type">
+        <item>Business Type</item>
+        <item>Restaurant</item>
+        <item>Hotel</item>
+        <item>Cafe</item>
+        <item>Supermarket</item>
+        <item>Canteen</item>
+        <item>Kitchen</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="ngo_type">
+        <item>NGO Type</item>
+        <item>Food</item>
+        <item>Child</item>
+        <item>Health</item>
+        <item>Womens</item>
+        <item>Others</item>
+    </string-array>
 </resources>
