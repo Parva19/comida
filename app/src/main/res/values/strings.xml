@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">comida</string>
+    <string name="app_name">Comida</string>
     <string name="emailerror">Enter Valid Email</string>
     <string name="passworderror">Enter 8-16 char pass</string>
     <string name="passwordconfirm">Password doesnot match</string>
@@ -23,4 +23,10 @@
         <item>Womens</item>
         <item>Others</item>
     </string-array>
+    <string name="title_activity_donor__navigation_main">Donor_NavigationMainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
