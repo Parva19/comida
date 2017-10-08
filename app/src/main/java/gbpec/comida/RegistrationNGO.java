@@ -1,8 +1,20 @@
 package gbpec.comida;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,13 +33,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistrationNGO extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class RegistrationNGO extends AppCompatActivity implements AdapterView.OnItemSelectedListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-    String ngonumber,ngoname,type,password,confirm_password,email,head_name,ngonumber2,address,additional;
+    String ngonumber,ngoname,type,password,confirm_password,email,head_name,ngonumber2,address,additional,ngolattitude,ngolongitude;
     private EditText ngo_name,ngo_email,ngo_head,ngo_additional;
     private EditText ngo_num,ngo_num2;
     private Spinner spinner;
@@ -41,6 +58,17 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     private AwesomeValidation awesomeValidation;
     //String password=null;
     private static final String REGISTER_URL="http://vipul.hol.es/nregister.php";
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
+    private LocationRequest mLocationRequest;
+
+    private com.google.android.gms.location.LocationListener listener;
+    private long UPDATE_INTERVAL = 60 * 1000;  /* 60 secs */
+    private long FASTEST_INTERVAL = 10000; /* 10 sec */
+
+    private LocationManager locationManager,mLocationManager;
+    TextView testing;
 
 
     @Override
@@ -58,6 +86,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         ngopassword=(EditText)findViewById(R.id.ngo_password);
         cngo=(EditText)findViewById(R.id. ngo_confirm);
         ngo_additional=(EditText)findViewById(R.id. ngo_additional);
+        testing=(TextView)findViewById(R.id.testing);
 
         register=(Button)findViewById(R.id.register);
 
@@ -80,6 +109,43 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         spinner.setAdapter(adapter);
         //SPINNER CODE END
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        checkLocation();
+
+    }
+
+    private boolean checkLocation() {
+        if(!isLocationEnabled())
+            showAlert();
+        return isLocationEnabled();
+    }
+
+    private void showAlert() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    }
+                });
+        dialog.show();
     }
 
     public void registerNgo(View v){
@@ -105,6 +171,9 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
             }
             //awesomeValidation.validate();
 
+        }
+        if(ngolattitude.isEmpty()||ngolongitude.isEmpty()){
+            startLocationUpdates();
         }
     }
 
@@ -156,6 +225,8 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
                 params.put("nEmail",email);
                 params.put("nAddress",address);// convert into latitude and longitude
                 params.put("nEstPeople",additional);
+                params.put("nLattitude",ngolattitude);
+                params.put("nLongitude",ngolongitude);
                 return params;
             }
 
@@ -184,4 +255,91 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     }
 
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startLocationUpdates();
+
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if(mLocation == null){
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+
+            ngolattitude=String.valueOf(mLocation.getLatitude());
+            ngolongitude=String.valueOf(mLocation.getLongitude());
+            String location=ngolattitude+ngolongitude;
+            testing.setText(location);
+        } else {
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("LOCATION:", "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    public boolean isLocationEnabled() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&//make it or later
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
 }
