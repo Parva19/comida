@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+    <RelativeLayout
+        android:layout_width="175dp"
+        android:layout_height="150dp"
+        android:id="@+id/donate_food"
+        android:background="#1EA133">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:src="@drawable/food_icon"
+            android:id="@+id/donate_food_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/donate_food_icon"
+            android:textColor="#ffff"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:text="Donate Food"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="175dp"
+        android:layout_height="150dp"
+        android:padding="5dp"
+        android:layout_toRightOf="@+id/donate_food"
+        android:id="@+id/total_food"
+        android:background="#08981f">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            android:textSize="80dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/amount_food"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="K.G."
+
+
+            android:layout_toRightOf="@+id/amount_food"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="#ffff"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/amount_food"
+            android:textColor="#ffff"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:text="Amount of food donated till now."/>
+
+
+
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/imageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/donate_food"
+        android:background="@drawable/default_product"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/imageSlider"
+        android:background="#1EA133">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25"
+            android:textSize="80dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/NGO_no"
+            android:textColor="#ffffff"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NGO's in your city"
+            android:textSize="15dp"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:id="@+id/ngo_no_head"
+            android:layout_below="@+id/NGO_no"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
