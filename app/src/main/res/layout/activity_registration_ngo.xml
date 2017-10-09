@@ -22,6 +22,10 @@
             android:layout_marginBottom="50dp"
             android:focusableInTouchMode="true"
             >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/testing"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
