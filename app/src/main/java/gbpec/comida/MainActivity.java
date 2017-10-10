@@ -12,17 +12,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      //  Button b1=(Button)findViewById(R.id.busi);
-        //Button b2=(Button)findViewById(R.id.ng);
+       Button b1=(Button)findViewById(R.id.busi);
+        Button b2=(Button)findViewById(R.id.ng);
     }
 
-  /*  public void business(View v){
+    public void business(View v){
         //password = bpassword.getText().toString();
         // String confirm=cbusiness.getText().toString();
         //awesomeValidation.validate();
         // Start NewActivity.class
         Intent myIntent = new Intent(MainActivity.this,
-                RegistrationBusiness.class);
+                LoginActivity.class);
         startActivity(myIntent);
     }
 
@@ -34,6 +34,6 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(MainActivity.this,
                 FoodItems.class);
         startActivity(myIntent);
-    }*/
+    }
 }
 //fff

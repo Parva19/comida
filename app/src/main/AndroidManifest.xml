@@ -20,11 +20,13 @@
         <activity android:name=".RegistrationBusiness"></activity>
         
         <activity android:name=".FoodItems"></activity>
-        <activity android:name=".LoginActivity"><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         
         <activity android:name=".Registration_options"></activity>
         <activity android:name=".donor_module.Donor_NavigationMainActivity"></activity>
