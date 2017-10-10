@@ -76,7 +76,7 @@
         android:layout_height="150dp"
         android:fitsSystemWindows="true"
         android:layout_below="@+id/donate_food"
-        android:background="@drawable/quote"/>
+        />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"

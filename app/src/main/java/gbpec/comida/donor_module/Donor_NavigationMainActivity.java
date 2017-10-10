@@ -3,6 +3,7 @@ package gbpec.comida.donor_module;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,7 +26,7 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         setContentView(R.layout.activity_donor__navigation_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-       /* fragmentClass = Donor_Home_Activity.class;
+     fragmentClass = Donor_Home_Activity.class;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
@@ -33,7 +34,7 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit(); */
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
