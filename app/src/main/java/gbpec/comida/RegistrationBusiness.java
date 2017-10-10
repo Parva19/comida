@@ -166,6 +166,7 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
                 params.put("bPassword",password);
                 // params.put("confirm_password",confirm_password);
                 params.put("bAdditionalInfo",additional);
+                params.put("btype","business");
                 return params;
             }
 

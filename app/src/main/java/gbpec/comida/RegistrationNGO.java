@@ -227,6 +227,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
                 params.put("nEstPeople",additional);
                 params.put("nLattitude",ngolattitude);
                 params.put("nLongitude",ngolongitude);
+                params.put("ntype","ngo");
                 return params;
             }
 
