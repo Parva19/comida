@@ -48,7 +48,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     private EditText ngo_num,ngo_num2;
     private Spinner spinner;
     private EditText ngopassword,cngo;
-    private EditText ngoaddress;
+    private EditText ngoaddress,others_type;
     private Button register;
 
     RequestQueue requestQueue;
@@ -81,6 +81,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         ngo_num2=(EditText) findViewById(R.id.ngo_num2);
         ngoaddress=(EditText) findViewById(R.id.ngo_address);
         spinner= (Spinner) findViewById(R.id.ngo_type);
+        others_type=(EditText)findViewById(R.id.other_type);
         ngo_email= (EditText) findViewById(R.id.ngo_email);
         ngo_head= (EditText) findViewById(R.id.ngo_head);
         ngopassword=(EditText)findViewById(R.id.ngo_password);
@@ -98,7 +99,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
 
         //adding validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-        awesomeValidation.addValidation(this, R.id.ngo_num1, "^.{10,}$", R.string.contact1);
+        awesomeValidation.addValidation(this, R.id.ngo_num1, "^.{10,13}$", R.string.contact1);
         awesomeValidation.addValidation(this, R.id.ngo_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
         awesomeValidation.addValidation(this, R.id.ngo_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
         // awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
@@ -158,22 +159,52 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         head_name=ngo_head.getText().toString();
         address=ngoaddress.getText().toString();
         additional=ngo_additional.getText().toString();
-        if(!password.equals(confirm_password)){
-            cngo.setError("Password doesn't match");
-         //   Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
-            awesomeValidation.validate();
-
+        if(type.equals("Others")){
+            type=others_type.getText().toString();
         }
-        else{
-            if ( awesomeValidation.validate()){
-           //     Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
-                UserRegistration();
+        startLocationUpdates();
+        int emv=emailValid(email);
+
+       // else {
+            if (!password.equals(confirm_password)) {
+                cngo.setError("Password doesn't match");
+                //   Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
+                awesomeValidation.validate();
+
+            } else {
+                if (awesomeValidation.validate()) {
+                    if(emv==0){
+                        ngo_email.setError("invalid email");
+                    }
+                    //     Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
+                    else {
+                        UserRegistration();
+                    }
+                }
+                //awesomeValidation.validate();
+
             }
-            //awesomeValidation.validate();
-
-        }
+      //  }
         if(ngolattitude.isEmpty()||ngolongitude.isEmpty()){
             startLocationUpdates();
+        }
+    }
+
+    private int emailValid(String email) {
+        String mail=email;
+        int le=email.length();
+        if(le==0){
+            return 0;
+        }
+        else{
+            String sub1 = mail.substring(email.length() - 3);
+            Toast.makeText(getApplicationContext(), sub1, Toast.LENGTH_LONG).show();
+
+             String sub2=mail.substring(email.length()-2);
+            if(sub1.equals("com") || sub2.equals("in")) {
+                return 1;
+            }
+            return 0;
         }
     }
 
@@ -245,6 +276,9 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = adapterView.getItemAtPosition(i).toString();
         type=item;
+        if(type.equals("Others")){
+            others_type.setVisibility(View.VISIBLE);
+        }
         // Showing selected spinner item
     //    Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 

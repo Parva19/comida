@@ -26,12 +26,12 @@ import java.util.Map;
 
 public class RegistrationBusiness extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional;
+    String bnumber,bname,type,password,confirm_password,email=null,head_name,bnumber2,address,additional,sub1=null,sub2=null;
     private EditText business_name,business_email,business_head,business_additional;
     private EditText business_num,business_num2;
     private Spinner spinner;
     private EditText bpassword,cbusiness;
-    private EditText baddress;
+    private EditText baddress,other_type;
 
     private Button register,validate;
     RequestQueue requestQueue;
@@ -55,6 +55,7 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         business_num2=(EditText) findViewById(R.id.business_num2);
         baddress=(EditText) findViewById(R.id.business_address);
         spinner= (Spinner) findViewById(R.id.business_type);
+        other_type=(EditText)findViewById(R.id.other_type);
         business_email= (EditText) findViewById(R.id.business_email);
         business_head= (EditText) findViewById(R.id.business_head);
         bpassword=(EditText)findViewById(R.id.business_password);
@@ -72,9 +73,9 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
 
         //adding validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-        awesomeValidation.addValidation(this, R.id.business_num1, "^.{10,}$", R.string.contact1);
+        awesomeValidation.addValidation(this, R.id.business_num1, "^.{10,13}$", R.string.contact1);
         awesomeValidation.addValidation(this, R.id.business_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
-        awesomeValidation.addValidation(this, R.id.business_password, "^.{8,}$", R.string.passworderror);
+        awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
         // awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
 
 
@@ -99,22 +100,60 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         head_name=business_head.getText().toString();
         address=baddress.getText().toString();
         additional=business_additional.getText().toString();
-        if(!password.equals(confirm_password)){
-            cbusiness.setError("Password doesn't match");
-          //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
-            awesomeValidation.validate();
+        if(type.equals("Others")){
+            type=other_type.getText().toString();
+        }
 
+        /*int length=email.length();
+       sub1=email.substring(email.length()-3);
+
+       sub2=email.substring(email.length()-2);
+        if(sub1.equals(".com") || sub2.equals(".in")) {*/
+
+         int emv=emailValid(email);
+        if(emv==0){
+            business_email.setError("invalid email");
+        }
+        else {
+            if (!password.equals(confirm_password)) {
+                cbusiness.setError("Password doesn't match");
+                //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
+                awesomeValidation.validate();
+
+            } else {
+                if (awesomeValidation.validate()) {
+                    //Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
+                    UserRegistration();
+                }
+                //awesomeValidation.validate();
+
+            }
+        }
+      //  }
+        /*else{
+            business_email.setError("invalid email");
+        }*/
+
+
+    }
+
+    private int emailValid(String email) {
+       // EditText usiness_email= (EditText) findViewById(R.id.business_email);
+        String mail=email;
+        int le=email.length();
+        if(le==0){
+            return 0;
         }
         else{
-            if ( awesomeValidation.validate()){
-                //Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
-                UserRegistration();
-            }
-            //awesomeValidation.validate();
+        sub1=mail.substring(email.length()-3);
+            Toast.makeText(getApplicationContext(), sub1, Toast.LENGTH_LONG).show();
 
+            sub2=mail.substring(email.length()-2);
+        if(sub1.equals("com") || sub2.equals("in")) {
+            return 1;
         }
-
-
+        return 0;
+     }
     }
 
     public void UserRegistration(){
@@ -186,6 +225,9 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = adapterView.getItemAtPosition(i).toString();
         type=item;
+        if(type.equals("Others")){
+            other_type.setVisibility(View.VISIBLE);
+        }
         // Showing selected spinner item
         //Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
