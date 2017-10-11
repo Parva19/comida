@@ -8,7 +8,7 @@
       android:layout_width="200dp"
       android:layout_height="100dp"
       android:background="@drawable/background"
-      android:id="@+id/reciver_btn"
+      android:id="@+id/donor_btn"
       android:layout_marginBottom="20dp">
       <ImageView
           android:layout_width="60dp"
@@ -16,7 +16,7 @@
           android:src="@drawable/donor_icon"
           android:layout_centerHorizontal="true"
           android:layout_marginTop="10dp"
-          android:id="@+id/reciver_icon"
+          android:id="@+id/donor_icon"
           android:layout_marginBottom="10dp"/>
       <TextView
           android:layout_width="wrap_content"
@@ -26,13 +26,13 @@
           android:textColor="#000"
           android:layout_centerHorizontal="true"
           android:textStyle="bold"
-          android:layout_below="@+id/reciver_icon"/>
+          android:layout_below="@+id/donor_icon"/>
   </RelativeLayout>
     <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/reciver_btn"
-        android:id="@+id/donor_btn"
+        android:layout_below="@+id/donor_btn"
+        android:id="@+id/reciver_btn"
         android:background="@drawable/background">
         <ImageView
             android:layout_width="50dp"
@@ -40,7 +40,7 @@
             android:src="@drawable/reciever_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:id="@+id/donor_btn_icon"
+            android:id="@+id/reciever_btn_icon"
             android:layout_marginBottom="10dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:textColor="#000"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            android:layout_below="@+id/donor_btn_icon"/>
+            android:layout_below="@+id/reciever_btn_icon"/>
     </RelativeLayout>
 
 </RelativeLayout>

@@ -7,7 +7,8 @@
         android:layout_width="175dp"
         android:layout_height="150dp"
         android:id="@+id/donate_food"
-        android:background="#1EA133">
+        android:background="#1EA133"
+        >
         <ImageView
             android:layout_width="100dp"
             android:layout_height="70dp"

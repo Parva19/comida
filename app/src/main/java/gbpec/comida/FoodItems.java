@@ -1,5 +1,6 @@
 package gbpec.comida;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class FoodItems extends AppCompatActivity {
 private LinearLayout layout,layout2;
     private EditText item,quantity,newaddress;
@@ -20,14 +31,22 @@ private LinearLayout layout,layout2;
     public static TextView serial[]=new TextView[100];
     private int k=0,text=2;
 DatePicker simpleDatePicker;
-    private int pickt1_h,pickt1_m,pickt2_h,pickt2_m,validt_h,validt_m;
-    private String address;
+    private int pickt1_h,pickt1_m,pickt2_h,pickt2_m,validt_h,validt_m,address_check;
+    private String address,user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_items);
         //layout=(LinearLayout)findViewById(R.id.itemview);
-       layout2=(LinearLayout)findViewById(R.id.view2);
+
+        Intent i=new Intent();
+        i=getIntent();
+        user=i.getStringExtra("user");
+        Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
+
+
+
+        layout2=(LinearLayout)findViewById(R.id.view2);
         layout2.setOrientation(LinearLayout.VERTICAL);
         item=(EditText)findViewById(R.id.itemname);
         quantity=(EditText)findViewById(R.id.quantity);
@@ -82,12 +101,14 @@ DatePicker simpleDatePicker;
                     // Pirates are the best
                     newaddress.setVisibility(View.GONE);
                 address="Business Address";
+                address_check=0;
                     break;
             case R.id.new_address:
                 if (checked) {
                     // Ninjas rule
                     address = "New address";
                     newaddress.setVisibility(View.VISIBLE);
+                    address_check=1;
                     break;
                 }
         }
@@ -131,17 +152,97 @@ DatePicker simpleDatePicker;
         k++;
     }
     public void submit(View v){
+//converting food items in single string
 
+        final StringBuilder sb=new StringBuilder(1000);
+        sb.append("1) ");
+        sb.append(item.getText().toString()+"-");
+        sb.append(quantity.getText().toString()+"&");
+        for(int i=0;i<k;i++){
+            sb.append(i+2+") ");
+            sb.append(items[i].getText().toString()+"-");
+            sb.append(quantities[i].getText().toString()+"&");
+        }
+
+        //end string builder
         //valid dya and vaid_month will be the upto  date for collection of food
-        int valid_day=simpleDatePicker.getDayOfMonth();
+        final int valid_day=simpleDatePicker.getDayOfMonth();
         int valid_mo=simpleDatePicker.getMonth();
         String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        String valid_month=MONTHS[valid_mo];
+        final String valid_month=MONTHS[valid_mo];
         //valid day end
 
+        //checking wether it is new address or not
+        if(address_check==1){
+            address=newaddress.getText().toString();
+        }
+        //
+
+        String REGISTER_URL="http://vipul.hol.es/fooditems.php";
+
+        // Creating string request with post method.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+
+                        // Hiding the progress dialog after all task complete.
+                       // progressDialog.dismiss();
+
+                        // Showing Echo Response Message Coming From Server.
+                        Toast.makeText(FoodItems.this, ServerResponse, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                        // Hiding the progress dialog after all task complete.
+                      //  progressDialog.dismiss();
+
+                        // Showing error message if something goes wrong.
+                        Toast.makeText(FoodItems.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                // The firs argument should be same sa your MySQL database table columns.
+                //params.put("mnumber",bnumber);
+                params.put("fuser",user);
+                params.put("fDetails", String.valueOf(sb));
+                params.put("fRequestDate", valid_month+"/"+valid_day);//valid date
+                params.put("fRequestTime",validt_h+":"+validt_m);//valid time
+                params.put("fPickupTime",pickt1_h+":"+pickt1_m+"\nto\n"+pickt2_h+":"+pickt2_m);
+                params.put("fPickupAddress",address);
+                params.put("address_check",Integer.toString(address_check));
+               /* params.put("bAddress",address);
+                params.put("bHead",head_name);
+                params.put("bPassword",password);
+                // params.put("confirm_password",confirm_password);
+                params.put("bAdditionalInfo",additional);
+                params.put("btype","business");*/
+                return params;
+            }
+
+        };
+
+        // Creating RequestQueue.
+        RequestQueue requestQueue = Volley.newRequestQueue(FoodItems.this);
+
+        // Adding the StringRequest object into requestQueue.
+        requestQueue.add(stringRequest);
+       // Toast.makeText(getApplicationContext(), "Address::"+address+Integer.toString(address_check), Toast.LENGTH_LONG).show();
+
+
+  /*      Toast.makeText(getApplicationContext(), sb, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), "Pick up time::"+pickt1_h+":"+pickt1_m+"\nto\n"+pickt2_h+":"+pickt2_m, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), "Valid upto::"+valid_month+"/"+valid_day+"--"+validt_h+":"+validt_m, Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(), "Address::"+address, Toast.LENGTH_LONG).show();
 
+*/
     }
 }

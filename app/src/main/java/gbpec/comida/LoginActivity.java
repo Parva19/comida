@@ -18,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import gbpec.comida.donor_module.Donor_NavigationMainActivity;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -69,9 +71,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray("success");
+            JSONObject collegedata=result.getJSONObject(0);
+            String username=collegedata.getString("User_mobile");
+            String type=collegedata.getString("User_type");
             if(result.length()!=0)
             {
-                Toast.makeText(LoginActivity.this,"password and id matched",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"password and id matched"+username+type,Toast.LENGTH_LONG).show();
+            }
+            if(type.equals("business")){
+                Intent myIntent = new Intent(LoginActivity.this,
+                        Donor_NavigationMainActivity.class);
+                myIntent.putExtra("user",username);
+                startActivity(myIntent);
             }
 
         } catch (JSONException e) {
@@ -87,8 +98,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(i);
         }
         else if (v.getId() == R.id.btn_login) {
-            String user_name = username.toString();
-            String pass_word = password.toString();
+            String user_name = username.getText().toString();
+            String pass_word = password.getText().toString();
             checkLogin(user_name, pass_word);
 
 

@@ -100,7 +100,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this, R.id.ngo_num1, "^.{10,}$", R.string.contact1);
         awesomeValidation.addValidation(this, R.id.ngo_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
-        awesomeValidation.addValidation(this, R.id.ngo_password, "^.{8,}$", R.string.passworderror);
+        awesomeValidation.addValidation(this, R.id.ngo_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
         // awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
         //SPINNER CODE
         spinner.setOnItemSelectedListener(this);

@@ -1,5 +1,6 @@
 package gbpec.comida.donor_module;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,24 +12,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
+import gbpec.comida.FoodItems;
 import gbpec.comida.R;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     Class fragmentClass = null;
     Fragment fragment = null;
+    String user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor__navigation_main);
+        Intent i=new Intent();
+        i=getIntent();
+        user=i.getStringExtra("user");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Bundle bundle = new Bundle();
+        bundle.putString("username", user);
      fragmentClass = Donor_Home_Activity.class;
+
+//      fragment.setArguments(bundle);
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            fragment.setArguments(bundle);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,5 +104,10 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 }
