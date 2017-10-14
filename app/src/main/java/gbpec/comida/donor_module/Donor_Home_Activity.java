@@ -22,6 +22,7 @@ RelativeLayout donate;
     String username;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.donor_homeactivity, container, false);
+
         username = getArguments().getString("username");
         donate=(RelativeLayout)v.findViewById(R.id.donate_food);
         Toast.makeText(getActivity().getApplicationContext(),username,Toast.LENGTH_LONG).show();

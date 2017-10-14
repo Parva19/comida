@@ -162,7 +162,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         if(type.equals("Others")){
             type=others_type.getText().toString();
         }
-        startLocationUpdates();
+        //startLocationUpdates();
         int emv=emailValid(email);
 
        // else {
