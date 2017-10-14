@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,12 +28,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button signUp,login;
     EditText username,password;
-
+    SessionManager session;
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.linearLayout_focus);
+        session = new SessionManager(getApplicationContext());
         username=(EditText)findViewById(R.id.username);
         password=(EditText)findViewById(R.id.password);
         signUp= (Button)findViewById(R.id.signup_bttn);
@@ -77,13 +80,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if(result.length()!=0)
             {
                 Toast.makeText(LoginActivity.this,"password and id matched"+username+type,Toast.LENGTH_LONG).show();
+                session.createLoginSession(username, type);
             }
-            if(type.equals("business")){
-                Intent myIntent = new Intent(LoginActivity.this,
-                        Donor_NavigationMainActivity.class);
-                myIntent.putExtra("user",username);
-                startActivity(myIntent);
-            }
+           if(type.equals("business")) {
+               Intent myIntent = new Intent(LoginActivity.this,
+                       Donor_NavigationMainActivity.class);
+               overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+               myIntent.putExtra("user", username);
+               startActivity(myIntent);
+           }
 
         } catch (JSONException e) {
             e.printStackTrace();
