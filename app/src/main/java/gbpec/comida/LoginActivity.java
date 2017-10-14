@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -27,16 +28,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Button signUp,login;
     EditText username,password;
+    TextView errorText;
 
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username=(EditText)findViewById(R.id.username);
+        username=(EditText)findViewById(R.id.username2);
         password=(EditText)findViewById(R.id.password);
         signUp= (Button)findViewById(R.id.signup_bttn);
         login= (Button)findViewById(R.id.btn_login);
+        errorText=(TextView)findViewById(R.id.error_text);
+        errorText.setVisibility(View.GONE);
         signUp.setOnClickListener(this);
         login.setOnClickListener(this);
 
@@ -71,18 +75,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray("success");
-            JSONObject collegedata=result.getJSONObject(0);
-            String username=collegedata.getString("User_mobile");
-            String type=collegedata.getString("User_type");
+            if(result.length()==0){
+                errorText.setText("Invalid Login Credentials !");
+                errorText.setVisibility(View.VISIBLE);
+            }
+            else {
+                JSONObject collegedata = result.getJSONObject(0);
+                String username = collegedata.getString("User_mobile");
+                String type = collegedata.getString("User_type");
             if(result.length()!=0)
             {
                 Toast.makeText(LoginActivity.this,"password and id matched"+username+type,Toast.LENGTH_LONG).show();
             }
-            if(type.equals("business")){
-                Intent myIntent = new Intent(LoginActivity.this,
-                        Donor_NavigationMainActivity.class);
-                myIntent.putExtra("user",username);
-                startActivity(myIntent);
+//                if (type.equals("business")) {
+//                    Intent myIntent = new Intent(LoginActivity.this,
+//                            Donor_NavigationMainActivity.class);
+//                    myIntent.putExtra("user", username);
+//                    startActivity(myIntent);
+//                }
             }
 
         } catch (JSONException e) {
@@ -100,7 +110,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else if (v.getId() == R.id.btn_login) {
             String user_name = username.getText().toString();
             String pass_word = password.getText().toString();
-            checkLogin(user_name, pass_word);
+            errorText.setVisibility(View.GONE);
+            if(user_name.isEmpty()||pass_word.isEmpty()){
+                errorText.setText("Please Enter User Id and Password !");
+                errorText.setVisibility(View.VISIBLE);
+            }
+            else{
+                checkLogin(user_name, pass_word);
+            }
+
+
+
 
 
         }

@@ -10,10 +10,12 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -47,9 +49,10 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     private EditText ngo_name,ngo_email,ngo_head,ngo_additional;
     private EditText ngo_num,ngo_num2;
     private Spinner spinner;
-    private EditText ngopassword,cngo;
+    private EditText ngopassword,cngo,others;
     private EditText ngoaddress;
     private Button register;
+    private TextInputLayout other;
 
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
@@ -68,13 +71,16 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     private long FASTEST_INTERVAL = 10000; /* 10 sec */
 
     private LocationManager locationManager,mLocationManager;
-    TextView testing;
+//    TextView testing;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_ngo);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_register_ngo);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_grey));
 
         ngo_name=(EditText) findViewById(R.id.ngo_name);
         ngo_num=(EditText) findViewById(R.id.ngo_num1);
@@ -86,9 +92,11 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         ngopassword=(EditText)findViewById(R.id.ngo_password);
         cngo=(EditText)findViewById(R.id. ngo_confirm);
         ngo_additional=(EditText)findViewById(R.id. ngo_additional);
-        testing=(TextView)findViewById(R.id.testing);
+//        testing=(TextView)findViewById(R.id.testing);
 
         register=(Button)findViewById(R.id.register);
+        others=(EditText)findViewById(R.id.ngo_others);
+        other=(TextInputLayout) findViewById(R.id.ngo_other) ;
 
         // Creating Volley newRequestQueue .
         requestQueue = Volley.newRequestQueue(RegistrationNGO.this);
@@ -244,7 +252,14 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = adapterView.getItemAtPosition(i).toString();
-        type=item;
+        if(item.equals("Others")){
+            other.setVisibility(View.VISIBLE);
+            type=others.getText().toString();
+        }
+        else{
+            other.setVisibility(View.GONE);
+            type=item;
+        }
         // Showing selected spinner item
     //    Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
@@ -279,8 +294,8 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
 
             ngolattitude=String.valueOf(mLocation.getLatitude());
             ngolongitude=String.valueOf(mLocation.getLongitude());
-            String location=ngolattitude+ngolongitude;
-            testing.setText(location);
+//            String location=ngolattitude+ngolongitude;
+//            testing.setText(location);
         } else {
             Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
         }
@@ -325,7 +340,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
 
     public boolean isLocationEnabled() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&//make it or later
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||//make it or later
                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
     @Override

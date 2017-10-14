@@ -1,21 +1,26 @@
 package gbpec.comida;
 
 import android.app.ProgressDialog;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Authenticator;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -27,7 +32,8 @@ import java.util.Map;
 public class RegistrationBusiness extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional;
-    private EditText business_name,business_email,business_head,business_additional;
+    private EditText business_name,business_email,business_head,business_additional,others;
+    private TextInputLayout other;
     private EditText business_num,business_num2;
     private Spinner spinner;
     private EditText bpassword,cbusiness;
@@ -49,19 +55,27 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_business);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_register_business);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_grey));
+
+//        toolbar.setTitle("Create an account");
 
         business_name=(EditText) findViewById(R.id.business_name);
         business_num=(EditText) findViewById(R.id.business_num1);
         business_num2=(EditText) findViewById(R.id.business_num2);
-        baddress=(EditText) findViewById(R.id.business_address);
+        baddress=(EditText) findViewById(R.id.business_address1);
         spinner= (Spinner) findViewById(R.id.business_type);
         business_email= (EditText) findViewById(R.id.business_email);
         business_head= (EditText) findViewById(R.id.business_head);
         bpassword=(EditText)findViewById(R.id.business_password);
         cbusiness=(EditText)findViewById(R.id. business_confirm);
         business_additional=(EditText)findViewById(R.id. business_additional);
+        others=(EditText)findViewById(R.id.business_others);
+        other=(TextInputLayout) findViewById(R.id.business_other) ;
 
         register=(Button)findViewById(R.id.register);
+        other.setVisibility(View.GONE);
 
         // Creating Volley newRequestQueue .
         requestQueue = Volley.newRequestQueue(RegistrationBusiness.this);
@@ -185,7 +199,16 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item = adapterView.getItemAtPosition(i).toString();
-        type=item;
+        if(item.equals("Others")){
+            other.setVisibility(View.VISIBLE);
+            type=others.getText().toString();
+        }
+        else{
+            other.setVisibility(View.GONE);
+            type=item;
+        }
+
+
         // Showing selected spinner item
         //Toast.makeText(adapterView.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 

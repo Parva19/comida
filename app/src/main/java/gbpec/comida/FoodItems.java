@@ -1,8 +1,11 @@
 package gbpec.comida;
 
-import android.content.Intent;
+import android.app.DatePickerDialog;
+//import android.content.Intent;
+import android.app.TimePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -20,7 +23,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class FoodItems extends AppCompatActivity {
@@ -30,7 +36,8 @@ private LinearLayout layout,layout2;
     public static EditText quantities[] = new EditText[100];
     public static TextView serial[]=new TextView[100];
     private int k=0,text=2;
-DatePicker simpleDatePicker;
+//DatePicker simpleDatePicker;
+    EditText simpleDatePicker_et,timepicker_from,timepicker_to,timepicker_upto;
     private int pickt1_h,pickt1_m,pickt2_h,pickt2_m,validt_h,validt_m,address_check;
     private String address,user;
     @Override
@@ -39,10 +46,13 @@ DatePicker simpleDatePicker;
         setContentView(R.layout.activity_food_items);
         //layout=(LinearLayout)findViewById(R.id.itemview);
 
-        Intent i=new Intent();
-        i=getIntent();
-        user=i.getStringExtra("user");
-        Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_share_food);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_grey));
+
+//        Intent i=getIntent();
+//        user=i.getStringExtra("user");
+//        Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
 
 
 
@@ -50,68 +60,198 @@ DatePicker simpleDatePicker;
         layout2.setOrientation(LinearLayout.VERTICAL);
         item=(EditText)findViewById(R.id.itemname);
         quantity=(EditText)findViewById(R.id.quantity);
+        simpleDatePicker_et=(EditText)findViewById(R.id.simpleDatePicker_et);
+        timepicker_from=(EditText)findViewById(R.id.timepicker_from);
+        timepicker_to=(EditText)findViewById(R.id.timepicker_to);
+        timepicker_upto=(EditText)findViewById(R.id.timepicker_upto);
+
+        timepicker_from.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(FoodItems.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String am_pm;
+                        int hour;
+                        if(selectedHour>12){
+                           am_pm="PM";
+                           hour=selectedHour-12;
+                        }
+                        else{
+                            am_pm="AM";
+                            hour=selectedHour;
+                        }
+                        timepicker_from.setText( hour + ":" + selectedMinute+" - "+am_pm);
+                    }
+                }, hour, minute, false);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+        timepicker_to.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(FoodItems.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String am_pm;
+                        int hour;
+                        if(selectedHour>12){
+                            am_pm="PM";
+                            hour=selectedHour-12;
+                        }
+                        else{
+                            am_pm="AM";
+                            hour=selectedHour;
+                        }
+                        timepicker_to.setText( hour + ":" + selectedMinute+" - "+am_pm);
+                    }
+                }, hour, minute, false);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+        timepicker_upto.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(FoodItems.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        String am_pm;
+                        int hour;
+                        if(selectedHour>12){
+                            am_pm="PM";
+                            hour=selectedHour-12;
+                        }
+                        else{
+                            am_pm="AM";
+                            hour=selectedHour;
+                        }
+                        timepicker_upto.setText( hour + ":" + selectedMinute+" - "+am_pm);
+                    }
+                }, hour, minute, false);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+            }
+        });
+
+       final Calendar myCalendar = Calendar.getInstance();
+       final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+           private void updateLabel() {
+               String myFormat = "MM/dd/yy"; //In which you need put here
+               SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+               simpleDatePicker_et.setText(sdf.format(myCalendar.getTime()));
+           }
+
+
+       };
+
+        simpleDatePicker_et.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(FoodItems.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 //pick up time values
-        TimePicker simpleTimePicker1=(TimePicker) findViewById(R.id.simpleTimePicker1);
-        simpleTimePicker1.setIs24HourView(true);
-
-        TimePicker simpleTimePicker2=(TimePicker) findViewById(R.id.simpleTimePicker2);
-        simpleTimePicker2.setIs24HourView(true);
-
-        simpleTimePicker1.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                pickt1_h=hourOfDay;
-                pickt1_m=minute;
-            }
-        });
-
-        simpleTimePicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                 pickt2_h=hourOfDay;
-                pickt2_m=minute;
-            }
-        });
+//        TimePicker simpleTimePicker1=(TimePicker) findViewById(R.id.simpleTimePicker1);
+////        simpleTimePicker1.setIs24HourView(true);
+//
+//        TimePicker simpleTimePicker2=(TimePicker) findViewById(R.id.simpleTimePicker2);
+////        simpleTimePicker2.setIs24HourView(true);
+//
+//        simpleTimePicker1.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            @Override
+//            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//                pickt1_h=hourOfDay;
+//                pickt1_m=minute;
+//            }
+//        });
+//
+//        simpleTimePicker2.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            @Override
+//            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//                 pickt2_h=hourOfDay;
+//                pickt2_m=minute;
+//            }
+//        });
 //pick up time end
 
         //Valid upto details
-         simpleDatePicker=(DatePicker)findViewById(R.id.simpleDatePicker);
-        TimePicker simpleTimePicker3=(TimePicker) findViewById(R.id.simpleTimePicker3);
-        simpleTimePicker3.setIs24HourView(true);
-        simpleTimePicker3.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                validt_h=hourOfDay;
-                validt_m=minute;
-            }
-        });
+//         simpleDatePicker=(DatePicker)findViewById(R.id.simpleDatePicker);
+//        TimePicker simpleTimePicker3=(TimePicker) findViewById(R.id.simpleTimePicker3);
+////        simpleTimePicker3.setIs24HourView(true);
+//        simpleTimePicker3.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+//            @Override
+//            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+//                validt_h=hourOfDay;
+//                validt_m=minute;
+//            }
+//        });
 //Valid upto details time limit end
 
-        newaddress = (EditText) findViewById(R.id.address_new);
+//        newaddress = (EditText) findViewById(R.id.address_new);
     }
 //Radio button for address
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.business_address:
-                if (checked)
-                    // Pirates are the best
-                    newaddress.setVisibility(View.GONE);
-                address="Business Address";
-                address_check=0;
-                    break;
-            case R.id.new_address:
-                if (checked) {
-                    // Ninjas rule
-                    address = "New address";
-                    newaddress.setVisibility(View.VISIBLE);
-                    address_check=1;
-                    break;
-                }
-        }
+//        // Check which radio button was clicked
+//        switch(view.getId()) {
+//            case R.id.business_address:
+//                if (checked)
+//                    // Pirates are the best
+//                    newaddress.setVisibility(View.GONE);
+//                address="Business Address";
+//                address_check=0;
+//                    break;
+//            case R.id.new_address:
+//                if (checked) {
+//                    // Ninjas rule
+//                    address = "New address";
+//                    newaddress.setVisibility(View.VISIBLE);
+//                    address_check=1;
+//                    break;
+//                }
+//        }
     }
     //Radio button end
     public void addmore(View v){
@@ -138,7 +278,7 @@ DatePicker simpleDatePicker;
        t.setTextSize(20);
        t.setText(a+") ");
        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,       LinearLayout.LayoutParams.WRAP_CONTENT);
-       params2.setMargins(10,0,10,0);
+//       params2.setMargins(10,0,10,0);
        t.setLayoutParams(params2);
 
         text=Integer.parseInt(a);
@@ -166,10 +306,10 @@ DatePicker simpleDatePicker;
 
         //end string builder
         //valid dya and vaid_month will be the upto  date for collection of food
-        final int valid_day=simpleDatePicker.getDayOfMonth();
-        int valid_mo=simpleDatePicker.getMonth();
-        String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        final String valid_month=MONTHS[valid_mo];
+//        final int valid_day=simpleDatePicker.getDayOfMonth();
+//        int valid_mo=simpleDatePicker.getMonth();
+//        String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+//        final String valid_month=MONTHS[valid_mo];
         //valid day end
 
         //checking wether it is new address or not
@@ -215,7 +355,7 @@ DatePicker simpleDatePicker;
                 //params.put("mnumber",bnumber);
                 params.put("fuser",user);
                 params.put("fDetails", String.valueOf(sb));
-                params.put("fRequestDate", valid_month+"/"+valid_day);//valid date
+//                params.put("fRequestDate", valid_month+"/"+valid_day);//valid date
                 params.put("fRequestTime",validt_h+":"+validt_m);//valid time
                 params.put("fPickupTime",pickt1_h+":"+pickt1_m+"\nto\n"+pickt2_h+":"+pickt2_m);
                 params.put("fPickupAddress",address);
