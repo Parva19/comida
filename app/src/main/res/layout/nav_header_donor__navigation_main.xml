@@ -13,9 +13,10 @@
        android:layout_height="match_parent"
        android:background="@drawable/logo"/>
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mc Donald,Noida"
+        android:text="Business Name"
         android:textSize="20dp"
         android:textStyle="bold"
         android:layout_alignParentBottom="true"

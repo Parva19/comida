@@ -50,6 +50,14 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 ></Spinner>
+            <EditText
+                android:id="@+id/other_type"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:hint="Type"
+                android:visibility="gone"
+                />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"

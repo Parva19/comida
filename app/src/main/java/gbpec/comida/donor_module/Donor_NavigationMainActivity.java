@@ -1,6 +1,7 @@
 package gbpec.comida.donor_module;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,16 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import gbpec.comida.FoodItems;
 import gbpec.comida.R;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Donor_Profile.OnFragmentInteractionListener {
     Class fragmentClass = null;
     Fragment fragment = null;
     String user;
-
+Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,13 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         i=getIntent();
         user=i.getStringExtra("user");
 
+        //TextView t=(TextView)findViewById(R.id.name);
+        //t.setText(user);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Bundle bundle = new Bundle();
+         bundle = new Bundle();
         bundle.putString("username", user);
-     fragmentClass = Donor_Home_Activity.class;
+        fragmentClass = Donor_Home_Activity.class;
 
 //      fragment.setArguments(bundle);
         try {
@@ -97,8 +102,28 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+         switch (item.getItemId()){
+             //PROFILE
+             case R.id.nav_donor_profile:
+                 //Toast.makeText(getApplicationContext(), "Profile.", Toast.LENGTH_SHORT).show();
+                 fragmentClass = Donor_Profile.class;
 
 
+                 try {
+                     fragment = (Fragment) fragmentClass.newInstance();
+                     fragment.setArguments(bundle);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+                 // fragment.setArguments(bundle);
+                 FragmentManager fragmentManager = getSupportFragmentManager();
+                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                 break;
+
+         }
+          //if(item.equals("Profile")){
+              Toast.makeText(getApplicationContext(), "Your toast message.", Toast.LENGTH_SHORT).show();
+          //}
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,6 +133,11 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }
