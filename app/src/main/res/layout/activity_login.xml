@@ -66,7 +66,7 @@
                 >
 
                 <AutoCompleteTextView
-                    android:id="@+id/username"
+                    android:id="@+id/username2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Username"
@@ -79,7 +79,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/t_password"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_below="@+id/t_username"
                 android:layout_width="match_parent"
                 app:passwordToggleEnabled="true"
@@ -98,6 +98,16 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/error_text"
+                android:layout_below="@+id/t_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:textSize="12sp"
+                android:textColor="#f40404"
+                android:layout_marginLeft="2dp"/>
 
             <Button
                 android:id="@+id/btn_login"
