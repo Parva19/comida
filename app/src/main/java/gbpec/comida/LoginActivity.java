@@ -29,12 +29,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button signUp,login;
     EditText username,password;
     TextView errorText;
+    SessionManager session;
 
 
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        session = new SessionManager(getApplicationContext());
         username=(EditText)findViewById(R.id.username2);
         password=(EditText)findViewById(R.id.password);
         signUp= (Button)findViewById(R.id.signup_bttn);
@@ -85,14 +87,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String type = collegedata.getString("User_type");
             if(result.length()!=0)
             {
-                Toast.makeText(LoginActivity.this,"password and id matched"+username+type,Toast.LENGTH_LONG).show();
+
+                session.createLoginSession(username,type);
             }
-//                if (type.equals("business")) {
-//                    Intent myIntent = new Intent(LoginActivity.this,
-//                            Donor_NavigationMainActivity.class);
-//                    myIntent.putExtra("user", username);
-//                    startActivity(myIntent);
-//                }
+              if (type.equals("business")) {
+                    Intent myIntent = new Intent(LoginActivity.this,
+                            Donor_NavigationMainActivity.class);
+                    myIntent.putExtra("user", username);
+                    startActivity(myIntent);
+                  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                }
             }
 
         } catch (JSONException e) {
@@ -106,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (v.getId() == R.id.signup_bttn) {
             Intent i = new Intent(LoginActivity.this, Registration_options.class);
             startActivity(i);
+            overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
         }
         else if (v.getId() == R.id.btn_login) {
             String user_name = username.getText().toString();

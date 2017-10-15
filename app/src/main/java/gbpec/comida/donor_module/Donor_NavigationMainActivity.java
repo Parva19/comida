@@ -1,7 +1,6 @@
 package gbpec.comida.donor_module;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,44 +12,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import gbpec.comida.FoodItems;
 import gbpec.comida.R;
+import gbpec.comida.SessionManager;
+import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Donor_Profile.OnFragmentInteractionListener {
-    Class fragmentClass = null;
+        implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
     Fragment fragment = null;
+    Class fragmentClass = null;
+    SessionManager sessionManager;
     String user;
-Bundle bundle;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donor__navigation_main);
-        Intent i=new Intent();
-        i=getIntent();
-        user=i.getStringExtra("user");
+        sessionManager = new SessionManager(getApplicationContext());
+
 
         //TextView t=(TextView)findViewById(R.id.name);
         //t.setText(user);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         bundle = new Bundle();
-        bundle.putString("username", user);
-        fragmentClass = Donor_Home_Activity.class;
-
-//      fragment.setArguments(bundle);
-        try {
+      //   bundle = new Bundle();
+      //  bundle.putString("username", user);
+      ;
+       fragmentClass = Donor_Home_Activity.class;
+        try
+        {
             fragment = (Fragment) fragmentClass.newInstance();
-            fragment.setArguments(bundle);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
@@ -119,10 +117,15 @@ Bundle bundle;
                  FragmentManager fragmentManager = getSupportFragmentManager();
                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
                  break;
+             case R.id.nav_logout: sessionManager.logoutUser();
+                 Intent logout= new Intent(this, SplashScreen.class);
+                 startActivity(logout);
+                 Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
+                 break;
 
          }
           //if(item.equals("Profile")){
-              Toast.makeText(getApplicationContext(), "Your toast message.", Toast.LENGTH_SHORT).show();
+
           //}
 
 
@@ -131,13 +134,10 @@ Bundle bundle;
         return true;
     }
 
-    @Override
-    public void onClick(View view) {
 
-    }
 
-    @Override
+  /*  @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    } */
 }

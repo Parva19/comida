@@ -48,7 +48,7 @@ private LinearLayout layout,layout2;
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_share_food);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_grey));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
 
 //        Intent i=getIntent();
 //        user=i.getStringExtra("user");
