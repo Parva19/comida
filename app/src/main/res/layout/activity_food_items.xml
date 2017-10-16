@@ -18,7 +18,6 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/tab_share_food"
-            app:navigationIcon="@drawable/back_icon"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="#ffffff"
@@ -110,7 +109,6 @@
                 <Button
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:background="@drawable/edit_grey_icon"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     />

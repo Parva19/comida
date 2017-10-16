@@ -36,15 +36,16 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                if(session.isLoggedIn()) {
+            if(session.isLoggedIn()) {
                     HashMap<String, String> user = session.getUserDetails();
                     String type = user.get(SessionManager.KEY_NAME);
 
                     String Id = user.get(SessionManager.KEY_ID);
-                    if (type.equals("business")) {
+                    if (Id.equals("business")) {
                         Intent myIntent = new Intent(SplashScreen.this, Donor_NavigationMainActivity.class);
                         myIntent.putExtra("user", Id);
                         startActivity(myIntent);
+                       overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
 
                     }
@@ -52,8 +53,9 @@ public class SplashScreen extends Activity {
                 else {
                     Intent i = new Intent(SplashScreen.this, LoginActivity.class);
                     startActivity(i);
-                    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-                }
+                overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+
+              }
 
                 // close this activity
                 finish();

@@ -1,26 +1,23 @@
 package gbpec.comida;
 
 import android.app.ProgressDialog;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Authenticator;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -57,7 +54,7 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         setContentView(R.layout.activity_registration_business);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_register_business);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.text_color_grey));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
 
 //        toolbar.setTitle("Create an account");
 
