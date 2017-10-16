@@ -3,6 +3,7 @@ package gbpec.comida;
 import android.app.DatePickerDialog;
 //import android.content.Intent;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,23 +24,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static java.security.AccessController.getContext;
+
 public class FoodItems extends AppCompatActivity {
 private LinearLayout layout,layout2;
-    private EditText item,quantity,newaddress;
+    private EditText item,quantity,newaddress,pickup_address_et;
     public static EditText items[] = new EditText[100];
     public static EditText quantities[] = new EditText[100];
-    public static TextView serial[]=new TextView[100];
-    private int k=0,text=2;
+    public static TextView serial[]=new TextView[100],pickup_address_tv;
+    private int k=0,text=2,addressPick=1,timePick=1;
+    SessionManager session;
 //DatePicker simpleDatePicker;
     EditText simpleDatePicker_et,timepicker_from,timepicker_to,timepicker_upto;
     private int pickt1_h,pickt1_m,pickt2_h,pickt2_m,validt_h,validt_m,address_check;
-    private String address,user;
+    private String address,user,Address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +57,15 @@ private LinearLayout layout,layout2;
         final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_share_food);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        toolbar.setTitle("Share Surplus Food");
+        session = new SessionManager(getApplicationContext());
+        HashMap<String, String> user1 = session.getUserDetails();
+        user = user1.get(SessionManager.KEY_NAME);
+        Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
 
-//        Intent i=getIntent();
-//        user=i.getStringExtra("user");
-//        Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
-
-
+        // Intent i=getIntent();
+       //  user=i.getStringExtra("user");
+      //  Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
 
         layout2=(LinearLayout)findViewById(R.id.view2);
         layout2.setOrientation(LinearLayout.VERTICAL);
@@ -64,6 +75,52 @@ private LinearLayout layout,layout2;
         timepicker_from=(EditText)findViewById(R.id.timepicker_from);
         timepicker_to=(EditText)findViewById(R.id.timepicker_to);
         timepicker_upto=(EditText)findViewById(R.id.timepicker_upto);
+        pickup_address_tv=(TextView)findViewById(R.id.pickup_address_tv);
+        pickup_address_et=(EditText)findViewById(R.id.pickup_address_et);
+
+        String URL="http://vipul.hol.es/getProfile.php?contactno="+user;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //   loading.dismiss();
+                // Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+                //WORKING CORRECTLY NAD GETTING DATA
+                try {
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    // Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
+                    JSONArray result = jsonObject1.getJSONArray("result");
+                    //  Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
+                    JSONObject businessData = result.getJSONObject(0);
+
+                     Address = businessData.getString("address");
+                    //setting values
+                    pickup_address_tv.setText(Address);
+                    //
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                //   Toast.makeText(getContext(),"data-",Toast.LENGTH_LONG).show();
+                // showJSON(response);
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+        //  Toast.makeText(getContext(),"execute",Toast.LENGTH_LONG).show();
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
+        requestQueue.add(stringRequest);
+
+
+
+
 
         timepicker_from.setOnClickListener(new View.OnClickListener() {
 
@@ -229,56 +286,77 @@ private LinearLayout layout,layout2;
 
 //        newaddress = (EditText) findViewById(R.id.address_new);
     }
+
+    public void editAddress(View v){
+        pickup_address_tv.setVisibility(View.GONE);
+        pickup_address_et.setVisibility(View.VISIBLE);
+        pickup_address_et.setText(pickup_address_tv.getText().toString());
+        addressPick=2;
+    }
+
 //Radio button for address
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
-//        // Check which radio button was clicked
-//        switch(view.getId()) {
-//            case R.id.business_address:
-//                if (checked)
-//                    // Pirates are the best
-//                    newaddress.setVisibility(View.GONE);
-//                address="Business Address";
-//                address_check=0;
-//                    break;
-//            case R.id.new_address:
-//                if (checked) {
-//                    // Ninjas rule
-//                    address = "New address";
-//                    newaddress.setVisibility(View.VISIBLE);
-//                    address_check=1;
-//                    break;
-//                }
-//        }
+       // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.business_time:
+                if (checked){
+                    LinearLayout layotpick=(LinearLayout)findViewById(R.id.picktime);
+                    layotpick.setVisibility(View.GONE);
+                    timePick=1;
+                }
+                    // Pirates are the best
+                //    newaddress.setVisibility(View.GONE);
+                //address="Business Address";
+                //address_check=0;
+                    break;
+            case R.id.new_time:
+                if (checked) {
+                    timePick=2;
+                    LinearLayout layotpick=(LinearLayout)findViewById(R.id.picktime);
+                    layotpick.setVisibility(View.VISIBLE);
+                    // Ninjas rule
+                //    address = "New address";
+                //    newaddress.setVisibility(View.VISIBLE);
+                 //   address_check=1;
+                    break;
+                }
+        }
     }
     //Radio button end
     public void addmore(View v){
         layout=new LinearLayout(this);
         layout.setOrientation(LinearLayout.HORIZONTAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,       ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(10,0,10,0);
+        params.setMargins(0,0,0,0);
         layout.setLayoutParams(params);
 
+
         items[k] = new EditText(FoodItems.this);
-        items[k].setHint("Food item");
-        items[k].setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f));
+        items[k].setHint("Item");
+        LinearLayout.LayoutParams params1=new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
+        params1.setMargins(10,0,0,0);
+        items[k].setLayoutParams(params1);
        // items[k].setLayoutParams(params);
 
         quantities[k] = new EditText(FoodItems.this);
         quantities[k].setHint("Quantity");
-        quantities[k].setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f));
+        LinearLayout.LayoutParams params3=new LinearLayout.LayoutParams( 80, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
+        params3.setMargins(15,0,10,0);
+       // quantities[k].setWidth(100);
+        quantities[k].setLayoutParams(params3);
        // quantities[k].setLayoutParams(params);
 
         String a=Integer.toString(text);
         TextView t=new TextView(FoodItems.this);
        // serial[k].setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f));
        t.setId(k);
-       t.setTextSize(20);
+       t.setTextSize(18);
        t.setText(a+") ");
        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,       LinearLayout.LayoutParams.WRAP_CONTENT);
-//       params2.setMargins(10,0,10,0);
+       params2.setMargins(0,0,0,0);
        t.setLayoutParams(params2);
 
         text=Integer.parseInt(a);
@@ -313,10 +391,25 @@ private LinearLayout layout,layout2;
         //valid day end
 
         //checking wether it is new address or not
-        if(address_check==1){
-            address=newaddress.getText().toString();
+        if(addressPick==1){
+            address=Address;
+        }
+        else{
+            address=pickup_address_et.getText().toString();
         }
         //
+
+        final String pickt_from,pickt_to,valid_date,valid_time;
+        if(timePick==1){
+            pickt_from="9am";
+            pickt_to="9pm";
+        }
+        else{
+            pickt_from=timepicker_from.getText().toString();
+            pickt_to=timepicker_to.getText().toString();
+        }
+        valid_date=simpleDatePicker_et.getText().toString();
+        valid_time=timepicker_upto.getText().toString();
 
         String REGISTER_URL="http://vipul.hol.es/fooditems.php";
 
@@ -355,11 +448,11 @@ private LinearLayout layout,layout2;
                 //params.put("mnumber",bnumber);
                 params.put("fuser",user);
                 params.put("fDetails", String.valueOf(sb));
-//                params.put("fRequestDate", valid_month+"/"+valid_day);//valid date
-                params.put("fRequestTime",validt_h+":"+validt_m);//valid time
-                params.put("fPickupTime",pickt1_h+":"+pickt1_m+"\nto\n"+pickt2_h+":"+pickt2_m);
+                params.put("fRequestDate", valid_date);//valid date
+                params.put("fRequestTime",valid_time);//valid time
+                params.put("fPickupTime",pickt_from+"\nto\n"+pickt2_h+":"+pickt_to);
                 params.put("fPickupAddress",address);
-                params.put("address_check",Integer.toString(address_check));
+                //params.put("address_check",Integer.toString(address_check));
                /* params.put("bAddress",address);
                 params.put("bHead",head_name);
                 params.put("bPassword",password);

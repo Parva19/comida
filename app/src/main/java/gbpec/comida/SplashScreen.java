@@ -38,12 +38,12 @@ public class SplashScreen extends Activity {
                 // Start your app main activity
             if(session.isLoggedIn()) {
                     HashMap<String, String> user = session.getUserDetails();
-                    String type = user.get(SessionManager.KEY_NAME);
+                    String username = user.get(SessionManager.KEY_NAME);
 
-                    String Id = user.get(SessionManager.KEY_ID);
-                    if (Id.equals("business")) {
+                    String type = user.get(SessionManager.KEY_ID);
+                    if (type.equals("business")) {
                         Intent myIntent = new Intent(SplashScreen.this, Donor_NavigationMainActivity.class);
-                        myIntent.putExtra("user", Id);
+                        myIntent.putExtra("user", username);
                         startActivity(myIntent);
                        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 

@@ -25,7 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import gbpec.comida.R;
+import gbpec.comida.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,9 +83,13 @@ public class Donor_Profile extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        username=getArguments().getString("username");
-        Toast.makeText(getActivity().getApplicationContext(),"profile- "+username,Toast.LENGTH_LONG).show();
-
+//        username=getArguments().getString("username");
+  //      Toast.makeText(getActivity().getApplicationContext(),"profile- "+username,Toast.LENGTH_LONG).show();
+        SessionManager session;
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user1 = session.getUserDetails();
+        username = user1.get(SessionManager.KEY_NAME);
+        Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
 
     }

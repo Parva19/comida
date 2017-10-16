@@ -19,6 +19,7 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/tab_share_food"
             android:layout_width="match_parent"
+            app:navigationIcon="@drawable/ic_arrow_back_black_18dp"
             android:layout_height="56dp"
             android:background="#ffffff"
             app:popupTheme="@style/AppTheme.PopupOverlay"
@@ -60,7 +61,7 @@
                   android:orientation="horizontal">
 
                   <TextView
-                      android:layout_width="25dp"
+                      android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="1) "
                       android:textSize="18dp"
@@ -68,7 +69,7 @@
 
                   <EditText
                       android:id="@+id/itemname"
-                      android:layout_width="200dp"
+                      android:layout_width="170dp"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dp"
                       android:textSize="18dp"
@@ -76,7 +77,7 @@
                       android:maxLines="2"/>
                   <EditText
                       android:id="@+id/quantity"
-                      android:layout_width="100dp"
+                      android:layout_width="115dp"
                       android:layout_height="wrap_content"
                       android:layout_marginLeft="10dp"
                       android:textSize="18dp"
@@ -109,8 +110,10 @@
                 <Button
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:background="@drawable/ic_mode_edit_black_18dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:onClick="editAddress"
                     />
                 <TextView
                     android:layout_marginRight="36dp"
@@ -156,7 +159,7 @@
                         android:id="@+id/business_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Business Hours"
+                        android:text="Business Hours(9am-9pm)"
                         android:textSize="18dp"
                         android:onClick="onRadioButtonClicked"
                         android:textColor="#716d6d"
@@ -170,10 +173,12 @@
                         android:textColor="#716d6d"/>
                 </RadioGroup>
                 <LinearLayout
+                    android:id="@+id/picktime"
                     android:layout_below="@+id/radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     >
                     <LinearLayout
                         android:layout_width="match_parent"
