@@ -52,7 +52,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
     private EditText ngoaddress;
     private Button register;
     private TextInputLayout other;
-
+    int itemType=1;
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
 
@@ -165,24 +165,51 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         head_name=ngo_head.getText().toString();
         address=ngoaddress.getText().toString();
         additional=ngo_additional.getText().toString();
-        if(!password.equals(confirm_password)){
-            cngo.setError("Password doesn't match");
-         //   Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
-            awesomeValidation.validate();
-
+        if(itemType==2){
+            type=others.getText().toString();
         }
-        else{
-            if ( awesomeValidation.validate()){
-           //     Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
-                UserRegistration();
-            }
-            //awesomeValidation.validate();
+        int emv=emailValid(email);
+        if(emv==0){
+            ngo_email.setError("invalid email");
+        }
+        else {
+            if (!password.equals(confirm_password)) {
+                cngo.setError("Password doesn't match");
+                //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
+                awesomeValidation.validate();
 
+            } else {
+                if (awesomeValidation.validate()) {
+                    //Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
+                    UserRegistration();
+                }
+                //awesomeValidation.validate();
+
+            }
         }
         if(ngolattitude.isEmpty()||ngolongitude.isEmpty()){
             startLocationUpdates();
         }
     }
+    private int emailValid(String email) {
+        // EditText usiness_email= (EditText) findViewById(R.id.business_email);
+        String mail=email;
+        int le=email.length();
+        if(le==0){
+            return 0;
+        }
+        else{
+            String sub1=mail.substring(email.length()-3);
+            Toast.makeText(getApplicationContext(), sub1, Toast.LENGTH_LONG).show();
+
+            String sub2=mail.substring(email.length()-2);
+            if(sub1.equals("com") || sub2.equals("in")) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
 
     public void UserRegistration(){
 
@@ -253,10 +280,12 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         String item = adapterView.getItemAtPosition(i).toString();
         if(item.equals("Others")){
             other.setVisibility(View.VISIBLE);
-            type=others.getText().toString();
+            itemType=2;
+            //type=others.getText().toString();
         }
         else{
             other.setVisibility(View.GONE);
+            itemType=1;
             type=item;
         }
         // Showing selected spinner item

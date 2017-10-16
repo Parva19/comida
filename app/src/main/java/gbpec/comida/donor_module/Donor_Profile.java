@@ -2,12 +2,15 @@ package gbpec.comida.donor_module;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +25,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import gbpec.comida.R;
+import gbpec.comida.SessionManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,13 +44,14 @@ public class Donor_Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    String Contact,Email,Address,Info;
+    String Contact,Email,Address,Info,business_name;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    TextView contact,address,email,info;
+    TextView contact,address,email,info,changePassword,profile_name;
+    ImageButton edit;
 
     public Donor_Profile() {
         // Required empty public constructor
@@ -76,9 +83,13 @@ public class Donor_Profile extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        username=getArguments().getString("username");
-        Toast.makeText(getActivity().getApplicationContext(),"profile- "+username,Toast.LENGTH_LONG).show();
-
+//        username=getArguments().getString("username");
+  //      Toast.makeText(getActivity().getApplicationContext(),"profile- "+username,Toast.LENGTH_LONG).show();
+        SessionManager session;
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user1 = session.getUserDetails();
+        username = user1.get(SessionManager.KEY_NAME);
+        Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
 
     }
@@ -146,11 +157,13 @@ public class Donor_Profile extends Fragment {
                      Address = businessData.getString("address");
                     Email = businessData.getString("email");
                     Info=businessData.getString("info");
+                    business_name=businessData.getString("bName");
                     //setting values
                     contact.setText(Contact);
                     address.setText(Address);
                     email.setText(Email);
                     info.setText(Info);
+                    profile_name.setText(business_name);
                     //
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -178,7 +191,59 @@ public class Donor_Profile extends Fragment {
        address=(TextView)v.findViewById(R.id.address);
        email=(TextView)v.findViewById(R.id.email);
        info=(TextView)v.findViewById(R.id.info);
+        profile_name=(TextView)v.findViewById(R.id.profile_name);
+        edit=(ImageButton)v.findViewById(R.id.edit);
+       edit.setOnClickListener(new View.OnClickListener(){
 
+
+            @Override
+            public void onClick(View view) {
+               Bundle bundle=new Bundle();
+                Class fragmentClass=Edit_Profilr.class;
+                bundle.putString("username",username);
+                bundle.putString("Contact",Contact);
+                bundle.putString("Address",Address);
+                bundle.putString("Email",Email);
+                bundle.putString("Info",Info);
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+
+            }
+        });
+        changePassword=(TextView)v.findViewById(R.id.change_password);
+        changePassword.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View view) {
+               // Bundle bundle=new Bundle();
+                Class fragmentClass=Change_Password.class;
+               /* bundle.putString("username",username);
+                bundle.putString("Contact",Contact);
+                bundle.putString("Address",Address);
+                bundle.putString("Email",Email);
+                bundle.putString("Info",Info);*/
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                  //  fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+
+            }
+        });
 
 
 
@@ -223,4 +288,6 @@ public class Donor_Profile extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

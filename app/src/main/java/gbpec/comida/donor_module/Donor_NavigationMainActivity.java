@@ -1,6 +1,7 @@
 package gbpec.comida.donor_module;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,7 @@ import gbpec.comida.SessionManager;
 import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener{
     DrawerLayout drawer;
     Fragment fragment = null;
     Class fragmentClass = null;
@@ -122,7 +123,10 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  startActivity(logout);
                  Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
                  break;
-
+             case R.id.nav_home:
+                 Intent home= new Intent(this, SplashScreen.class);
+                 startActivity(home);
+                 break;
          }
           //if(item.equals("Profile")){
 
@@ -132,6 +136,11 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 

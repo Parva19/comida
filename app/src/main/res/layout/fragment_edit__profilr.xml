@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="gbpec.comida.donor_module.Edit_Profilr">
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Contact"
+           android:textSize="20dp"/>
+       <EditText
+           android:id="@+id/edit_contact"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Address"
+           android:textSize="20dp"/>
+       <EditText
+           android:id="@+id/edit_address"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Email"
+           android:textSize="20dp"/>
+       <EditText
+           android:id="@+id/edit_email"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Additional Info"
+           android:textSize="20dp"/>
+       <EditText
+           android:id="@+id/edit_info"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           />
+       <Button
+           android:id="@+id/update"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="UPDATE "
+           android:layout_gravity="center"
+           android:layout_marginTop="20dp"/>
+
+   </LinearLayout>
+
+</RelativeLayout>
