@@ -16,7 +16,7 @@ public class SessionManager {
     SharedPreferences pref;
 
     // Editor for Shared preferences
-    Editor editor;
+    static Editor editor;
 
     // Context
     Context _context;
@@ -46,7 +46,7 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String email){
+    public void createLoginSession(String name, String type){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -54,7 +54,7 @@ public class SessionManager {
         editor.putString(KEY_NAME, name);
 
         // Storing email in pref
-        editor.putString(KEY_ID, email);
+        editor.putString(KEY_ID,type);
 
         // commit changes
         editor.commit();

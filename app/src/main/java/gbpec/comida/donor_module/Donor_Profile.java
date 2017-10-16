@@ -2,12 +2,15 @@ package gbpec.comida.donor_module;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,7 @@ public class Donor_Profile extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     TextView contact,address,email,info;
+    ImageButton edit;
 
     public Donor_Profile() {
         // Required empty public constructor
@@ -178,7 +182,32 @@ public class Donor_Profile extends Fragment {
        address=(TextView)v.findViewById(R.id.address);
        email=(TextView)v.findViewById(R.id.email);
        info=(TextView)v.findViewById(R.id.info);
+       edit=(ImageButton)v.findViewById(R.id.edit);
+       edit.setOnClickListener(new View.OnClickListener(){
 
+
+            @Override
+            public void onClick(View view) {
+               Bundle bundle=new Bundle();
+                Class fragmentClass=Edit_Profilr.class;
+                bundle.putString("username",username);
+                bundle.putString("Contact",Contact);
+                bundle.putString("Address",Address);
+                bundle.putString("Email",Email);
+                bundle.putString("Info",Info);
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+
+            }
+        });
 
 
 
@@ -223,4 +252,6 @@ public class Donor_Profile extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
