@@ -44,13 +44,13 @@ public class Donor_Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    String Contact,Email,Address,Info;
+    String Contact,Email,Address,Info,business_name;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    TextView contact,address,email,info;
+    TextView contact,address,email,info,changePassword,profile_name;
     ImageButton edit;
 
     public Donor_Profile() {
@@ -157,11 +157,13 @@ public class Donor_Profile extends Fragment {
                      Address = businessData.getString("address");
                     Email = businessData.getString("email");
                     Info=businessData.getString("info");
+                    business_name=businessData.getString("bName");
                     //setting values
                     contact.setText(Contact);
                     address.setText(Address);
                     email.setText(Email);
                     info.setText(Info);
+                    profile_name.setText(business_name);
                     //
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -189,7 +191,8 @@ public class Donor_Profile extends Fragment {
        address=(TextView)v.findViewById(R.id.address);
        email=(TextView)v.findViewById(R.id.email);
        info=(TextView)v.findViewById(R.id.info);
-       edit=(ImageButton)v.findViewById(R.id.edit);
+        profile_name=(TextView)v.findViewById(R.id.profile_name);
+        edit=(ImageButton)v.findViewById(R.id.edit);
        edit.setOnClickListener(new View.OnClickListener(){
 
 
@@ -206,6 +209,32 @@ public class Donor_Profile extends Fragment {
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+
+            }
+        });
+        changePassword=(TextView)v.findViewById(R.id.change_password);
+        changePassword.setOnClickListener(new View.OnClickListener(){
+
+
+            @Override
+            public void onClick(View view) {
+               // Bundle bundle=new Bundle();
+                Class fragmentClass=Change_Password.class;
+               /* bundle.putString("username",username);
+                bundle.putString("Contact",Contact);
+                bundle.putString("Address",Address);
+                bundle.putString("Email",Email);
+                bundle.putString("Info",Info);*/
+                Fragment fragment = null;
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                  //  fragment.setArguments(bundle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

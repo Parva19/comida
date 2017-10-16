@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
@@ -34,6 +35,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import gbpec.comida.donor_module.Donor_NavigationMainActivity;
+
 import static java.security.AccessController.getContext;
 
 public class FoodItems extends AppCompatActivity {
@@ -58,6 +61,10 @@ private LinearLayout layout,layout2;
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         toolbar.setTitle("Share Surplus Food");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
         user = user1.get(SessionManager.KEY_NAME);
@@ -287,6 +294,22 @@ private LinearLayout layout,layout2;
 //        newaddress = (EditText) findViewById(R.id.address_new);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+
+                Intent intent = new Intent(this, Donor_NavigationMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                //finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public void editAddress(View v){
         pickup_address_tv.setVisibility(View.GONE);
         pickup_address_et.setVisibility(View.VISIBLE);

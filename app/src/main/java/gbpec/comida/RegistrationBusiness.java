@@ -1,11 +1,13 @@
 package gbpec.comida;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +38,7 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
     private Spinner spinner;
     private EditText bpassword,cbusiness;
     private EditText baddress;
-
+int itemType=1;
     private Button register,validate;
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
@@ -55,8 +58,23 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         final Toolbar toolbar = (Toolbar) findViewById(R.id.tab_register_business);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        toolbar.setTitle("Create an account");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-//        toolbar.setTitle("Create an account");
+        /*View logoView = getToolbarLogoView(toolbar);
+        logoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                change();
+                //logo clicked
+            }
+
+            private void change() {
+               // Intent i=new Intent(this,Registration_options.class);
+            }
+        });*/
 
         business_name=(EditText) findViewById(R.id.business_name);
         business_num=(EditText) findViewById(R.id.business_num1);
@@ -83,9 +101,9 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
 
         //adding validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-        awesomeValidation.addValidation(this, R.id.business_num1, "^.{10,}$", R.string.contact1);
+        awesomeValidation.addValidation(this, R.id.business_num1, "^.{10,13}$", R.string.contact1);
         awesomeValidation.addValidation(this, R.id.business_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
-        awesomeValidation.addValidation(this, R.id.business_password, "^.{8,}$", R.string.passworderror);
+        awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
         // awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
 
 
@@ -99,6 +117,25 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+
+                Intent intent = new Intent(this, Registration_options.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                //finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
     public void registerBusiness(View v){
 
         bnumber=business_num.getText().toString();
@@ -110,11 +147,13 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         head_name=business_head.getText().toString();
         address=baddress.getText().toString();
         additional=business_additional.getText().toString();
-        if(!password.equals(confirm_password)){
+        if(itemType==2){
+            type=others.getText().toString();
+        }
+       /* if(!password.equals(confirm_password)){
             cbusiness.setError("Password doesn't match");
           //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
             awesomeValidation.validate();
-
         }
         else{
             if ( awesomeValidation.validate()){
@@ -123,9 +162,55 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
             }
             //awesomeValidation.validate();
 
+        }*/
+         /*int length=email.length();
+       sub1=email.substring(email.length()-3);
+       sub2=email.substring(email.length()-2);
+        if(sub1.equals(".com") || sub2.equals(".in")) {*/
+
+        int emv=emailValid(email);
+        if(emv==0){
+            business_email.setError("invalid email");
         }
+        else {
+            if (!password.equals(confirm_password)) {
+                cbusiness.setError("Password doesn't match");
+                //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
+                awesomeValidation.validate();
+
+            } else {
+                if (awesomeValidation.validate()) {
+                    //Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
+                    UserRegistration();
+                }
+                //awesomeValidation.validate();
+
+            }
+        }
+        //  }
+        /*else{
+            business_email.setError("invalid email");
+        }*/
 
 
+    }
+    private int emailValid(String email) {
+        // EditText usiness_email= (EditText) findViewById(R.id.business_email);
+        String mail=email;
+        int le=email.length();
+        if(le==0){
+            return 0;
+        }
+        else{
+            String sub1=mail.substring(email.length()-3);
+            Toast.makeText(getApplicationContext(), sub1, Toast.LENGTH_LONG).show();
+
+           String sub2=mail.substring(email.length()-2);
+            if(sub1.equals("com") || sub2.equals("in")) {
+                return 1;
+            }
+            return 0;
+        }
     }
 
     public void UserRegistration(){
@@ -198,10 +283,12 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
         String item = adapterView.getItemAtPosition(i).toString();
         if(item.equals("Others")){
             other.setVisibility(View.VISIBLE);
-            type=others.getText().toString();
+            itemType=2;
+           // type=others.getText().toString();
         }
         else{
             other.setVisibility(View.GONE);
+            itemType=1;
             type=item;
         }
 
