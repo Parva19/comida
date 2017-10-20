@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name="android.support.multidex.MultiDexApplication"
@@ -13,29 +15,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FoodItems">
-
-        </activity>
-        
+        <activity android:name=".FoodItems" />
         <activity android:name=".RegistrationBusiness" />
-        <activity android:name=".SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SplashScreen" />
+        <activity android:name=".LoginActivity" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        
         <activity android:name=".RegistrationNGO"></activity>
-        <activity android:name=".MainActivity"></activity>
-
-        <activity android:name=".Registration_options"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Registration_options" />
         <activity android:name=".donor_module.Donor_NavigationMainActivity">
 
         </activity>
+        <activity android:name=".LocationTrial" />
+        <activity android:name=".reciever_module.Reciever_Navigation"> <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
     </application>
 
 </manifest>

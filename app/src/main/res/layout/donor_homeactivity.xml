@@ -64,7 +64,6 @@
             android:layout_centerHorizontal="true"
             android:textSize="15dp"
             android:gravity="center"
-            android:layout_marginTop="5dp"
             android:textStyle="bold"
             android:text="Amount of food donated till now."/>
 
@@ -86,7 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25"
+            android:text="5"
             android:textSize="80dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/NGO_no"

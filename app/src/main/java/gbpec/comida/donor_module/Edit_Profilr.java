@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,12 +78,13 @@ private String Contact,Email,Address,Info,username;
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
          username=getArguments().getString("username");
         Contact=getArguments().getString("Contact");
         Address=getArguments().getString("Address");
         Email=getArguments().getString("Email");
         Info=getArguments().getString("Info");
-        Toast.makeText(getActivity().getApplicationContext(),"ttt--"+username,Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(),"Data- "+username,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -90,9 +93,13 @@ private String Contact,Email,Address,Info,username;
         // Inflate the layout for this fragment
 
        View v= inflater.inflate(R.layout.fragment_edit__profilr, container, false);
+        final Toolbar toolbar = (Toolbar) v.findViewById(R.id.tab_edit_profile);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        toolbar.setTitle("Edit Profile");
         contact=(EditText)v.findViewById(R.id.edit_contact);
         address=(EditText)v.findViewById(R.id.edit_address);
-       email=(EditText)v.findViewById(R.id.edit_email);
+        email=(EditText)v.findViewById(R.id.edit_email);
         info=(EditText)v.findViewById(R.id.edit_info);
         Button update=(Button)v.findViewById(R.id.update);
 

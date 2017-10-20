@@ -230,6 +230,8 @@ int itemType=1;
 
                         // Showing Echo Response Message Coming From Server.
                         Toast.makeText(RegistrationBusiness.this, ServerResponse, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

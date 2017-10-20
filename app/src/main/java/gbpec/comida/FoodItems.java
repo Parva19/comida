@@ -473,7 +473,7 @@ private LinearLayout layout,layout2;
                 params.put("fDetails", String.valueOf(sb));
                 params.put("fRequestDate", valid_date);//valid date
                 params.put("fRequestTime",valid_time);//valid time
-                params.put("fPickupTime",pickt_from+"\nto\n"+pickt2_h+":"+pickt_to);
+                params.put("fPickupTime",pickt_from+"to"+pickt_to);
                 params.put("fPickupAddress",address);
                 //params.put("address_check",Integer.toString(address_check));
                /* params.put("bAddress",address);
