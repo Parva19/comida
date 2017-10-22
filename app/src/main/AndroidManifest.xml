@@ -17,7 +17,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FoodItems" />
         <activity android:name=".RegistrationBusiness" />
-        <activity android:name=".SplashScreen" />
+        <activity android:name=".SplashScreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".LoginActivity" >
 
         </activity>
@@ -28,11 +34,8 @@
 
         </activity>
         <activity android:name=".LocationTrial" />
-        <activity android:name=".reciever_module.Reciever_Navigation"> <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        <activity android:name=".reciever_module.Reciever_Navigation">
+            </activity>
     </application>
 
 </manifest>

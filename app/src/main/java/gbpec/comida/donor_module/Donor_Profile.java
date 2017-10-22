@@ -3,10 +3,14 @@ package gbpec.comida.donor_module;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +29,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,9 +57,15 @@ public class Donor_Profile extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Bitmap bitmap;
+    private int PICK_IMAGE_REQUEST = 1;
+    private String KEY_IMAGE = "image";
+    private String KEY_NAME = "name";
+
     private OnFragmentInteractionListener mListener;
     TextView contact,address,email,info,changePassword,profile_name;
     ImageButton edit;
+
 
     public Donor_Profile() {
         // Required empty public constructor
@@ -136,7 +150,10 @@ public class Donor_Profile extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_donor__profile, container, false);
 
-
+       /* final Toolbar toolbar = (Toolbar)v.findViewById(R.id.tab_share_food);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        toolbar.setTitle("Your Profile");*/
        // final ProgressDialog loading;
        // loading = ProgressDialog.show(getContext(),"Please wait...","Fetching...",false,false);
         String URL="http://vipul.hol.es/getProfile.php?contactno="+username;
@@ -178,7 +195,7 @@ public class Donor_Profile extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity().getApplicationContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity().getApplicationContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
                     }
                 });
       //  Toast.makeText(getContext(),"execute",Toast.LENGTH_LONG).show();
@@ -218,6 +235,7 @@ public class Donor_Profile extends Fragment {
 
             }
         });
+
         changePassword=(TextView)v.findViewById(R.id.change_password);
         changePassword.setOnClickListener(new View.OnClickListener(){
 
@@ -249,6 +267,8 @@ public class Donor_Profile extends Fragment {
 
         return  v;
     }
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

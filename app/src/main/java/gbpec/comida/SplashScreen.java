@@ -12,6 +12,7 @@ import android.os.Handler;
 import java.util.HashMap;
 
 import gbpec.comida.donor_module.Donor_NavigationMainActivity;
+import gbpec.comida.reciever_module.Reciever_Navigation;
 
 public class SplashScreen extends Activity {
 
@@ -48,6 +49,12 @@ public class SplashScreen extends Activity {
                        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
 
+                    }
+                    else{
+                        Intent myIntent = new Intent(SplashScreen.this, Reciever_Navigation.class);
+                        myIntent.putExtra("user", username);
+                        startActivity(myIntent);
+                        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
                     }
                 }
                 else {
