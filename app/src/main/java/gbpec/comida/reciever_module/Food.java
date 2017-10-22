@@ -5,17 +5,50 @@ package gbpec.comida.reciever_module;
  */
 
 public class Food {
-    private String donor,contact,details;
+    private String donor;
+    private String contact;
+    private String details;
+    private String pickupTime;
+    private String validDate;
+    private String validTime;
 
-    public Food() {
-    }
-
-    public Food(String donor, String contact, String details) {
+    public Food(String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
         this.donor = donor;
         this.contact = contact;
         this.details = details;
+        this.pickupTime = pickupTime;
+        this.validDate = validDate;
+        this.validTime = validTime;
     }
 
+    public String getPickupTime() {
+        return pickupTime;
+    }
+
+    public void setPickupTime(String pickupTime) {
+        this.pickupTime = pickupTime;
+    }
+
+    public String getValidDate() {
+        return validDate;
+    }
+
+    public void setValidDate(String validDate) {
+        this.validDate = validDate;
+    }
+
+    public String getValidTime() {
+        return validTime;
+    }
+
+    public void setValidTime(String validTime) {
+        this.validTime = validTime;
+    }
+
+
+
+    public Food() {
+    }
 
     public String getContact() {
         return contact;

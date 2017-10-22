@@ -41,7 +41,7 @@ public class Reciever_Home extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String contact,details,donor,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
+    String contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
     private static Double lat1=0.0,lon1=0.0;
     private OnFragmentInteractionListener mListener;
     //for recycler view
@@ -193,7 +193,7 @@ public class Reciever_Home extends Fragment {
                 * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
+        dist = dist * 60 * 1.1515* 1.609344;
         return (dist);
     }
 
@@ -209,18 +209,22 @@ public class Reciever_Home extends Fragment {
 
         contact =business.getString("contact");
         details = business.getString("details");
+        details="Food Items- "+details.replaceAll("-.*?&","");
         donor = business.getString("donor");
+        pickupTime="Pickup Time- "+business.getString("pickupTime");
+        validDate="Food valid upto- "+business.getString("validDate");
+        validTime="     "+business.getString("validTime");
         fLatitude=business.getString("fLatitude");
         fLongitude=business.getString("fLongitude");
         Double lat2,lon2;
         lat2=Double.parseDouble(fLatitude);
         lon2=Double.parseDouble(fLongitude);
-        Toast.makeText(getContext(), "lat-"+Double.toString(lat1),Toast.LENGTH_LONG).show();
+     //   Toast.makeText(getContext(), "lat-"+Double.toString(lat1),Toast.LENGTH_LONG).show();
         double i=distance(lat1,lon1,lat2,lon2);
-      Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
+     // Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
 
         if(i<50.00) {
-            Food food = new Food(donor, contact,details);
+            Food food = new Food(donor, contact,details,pickupTime,validDate,validTime);
             foodList.add(food);
         }
 

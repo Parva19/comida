@@ -16,13 +16,16 @@ import gbpec.comida.R;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
     private List<Food> foodList;
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView donor,contact, details;
+        public TextView donor,contact, details,pickupTime,validDate,validTime;
 
         public MyViewHolder(View view) {
             super(view);
             donor = (TextView) view.findViewById(R.id.donor);
             contact = (TextView) view.findViewById(R.id.contact);
             details = (TextView) view.findViewById(R.id.details);
+            pickupTime = (TextView) view.findViewById(R.id.pickupTime);
+            validDate = (TextView) view.findViewById(R.id.validDate);
+            validTime = (TextView) view.findViewById(R.id.validTime);
         }
     }
 
@@ -45,7 +48,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
         holder.donor.setText(food.getDonor());
         holder.contact.setText(food.getContact());
         holder.details.setText(food.getDetails());
-
+        holder.pickupTime.setText(food.getPickupTime());
+        holder.validDate.setText(food.getValidDate());
+        holder.validTime.setText(food.getValidTime());
     }
 
     @Override
