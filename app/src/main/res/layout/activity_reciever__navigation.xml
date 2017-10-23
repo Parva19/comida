@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    tools:context="gbpec.comida.reciever_module.Reciever_Navigation">
 
     <include
         layout="@layout/app_bar_donor__navigation_main"
@@ -22,5 +23,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_donor__navigation_main"
         app:menu="@menu/activity_donor__navigation_main_drawer" />
+
 
 </android.support.v4.widget.DrawerLayout>

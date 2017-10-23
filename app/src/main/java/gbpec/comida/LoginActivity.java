@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import gbpec.comida.donor_module.Donor_NavigationMainActivity;
+import gbpec.comida.reciever_module.Reciever_Navigation;
 
 /**
  * A login screen that offers login via email/password.
@@ -48,8 +49,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
     private void checkLogin(String username, String password) {
-
-
 
 
 
@@ -97,6 +96,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(myIntent);
                   overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
                 }
+                else{
+                  Intent myIntent = new Intent(LoginActivity.this,
+                         Reciever_Navigation.class);
+                  myIntent.putExtra("user", username);
+                  startActivity(myIntent);
+                  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+              }
             }
 
         } catch (JSONException e) {

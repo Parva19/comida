@@ -165,6 +165,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
         head_name=ngo_head.getText().toString();
         address=ngoaddress.getText().toString();
         additional=ngo_additional.getText().toString();
+        startLocationUpdates();
         if(itemType==2){
             type=others.getText().toString();
         }
@@ -188,7 +189,7 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
             }
         }
         if(ngolattitude.isEmpty()||ngolongitude.isEmpty()){
-            startLocationUpdates();
+        startLocationUpdates();
         }
     }
     private int emailValid(String email) {
@@ -228,6 +229,8 @@ public class RegistrationNGO extends AppCompatActivity implements AdapterView.On
 
                         // Showing Echo Response Message Coming From Server.
                         Toast.makeText(RegistrationNGO.this, ServerResponse, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

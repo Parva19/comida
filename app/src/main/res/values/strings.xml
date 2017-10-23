@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Comida</string>
     <string name="emailerror">Enter Valid Email</string>
-    <string name="passworderror">Enter 8-16 char pass</string>
+    <string name="passworderror">Enter correct password</string>
     <string name="passwordconfirm">Password doesnot match</string>
     <string name="contact1">Invali Contact Number</string>
 
