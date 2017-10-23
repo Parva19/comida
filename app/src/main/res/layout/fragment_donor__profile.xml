@@ -1,80 +1,171 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="gbpec.comida.donor_module.Donor_Profile">
-
-
+    tools:context="gbpec.comida.donor_module.Donor_Profile"
+    android:background="#e7e4e4">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <LinearLayout
+                android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#32CD32">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_pic"
-                    android:layout_width="150dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/restaurant"
-                    android:layout_marginTop="50dp"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"/>
+                android:background="#ffffff"
+                android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/profile_pic"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/default_profile_img">
+                <Button
+                    android:id="@+id/profile_pic_edit"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/camera_edit"/>
 
+            </RelativeLayout>
+                <View
+                    android:layout_below="@id/profile_pic"
+                    android:id="@+id/partition"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#e7e4e4"
+                />
+                <LinearLayout
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/buttons_pic_block"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="4dp">
+                    <RelativeLayout
+                        android:id="@+id/cancel_pic"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        >
+                        <RelativeLayout
+                            android:id="@+id/Remove_button_address_block"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            >
+                            <ImageView
+                                android:id="@+id/remove_icon"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/no_icon"
+                                android:layout_centerVertical="true"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/remove_icon"
+                                android:text="Cancel"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color_grey"
+                                android:textSize="16sp"
+                                android:layout_centerVertical="true"/>
+                        </RelativeLayout>
 
+                    </RelativeLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="30dp"
+                        android:background="@color/text_color_grey"
+                        android:layout_gravity="center_vertical"/>
+                    <RelativeLayout
+                        android:id="@+id/done_pic"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        >
+                        <RelativeLayout
+                            android:id="@+id/edit_button_address_block"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            >
+                            <ImageView
+                                android:id="@+id/edit_icon"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:src="@drawable/done"
+                                android:layout_centerVertical="true"
+                                />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/edit_icon"
+                                android:text="Done"
+                                android:textAllCaps="true"
+                                android:textColor="@color/text_color_grey"
+                                android:textSize="16sp"
+                                android:layout_centerVertical="true"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+                <View
+                    android:layout_below="@id/profile_pic"
+                    android:id="@+id/partition"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#e7e4e4"
+                    />
+                <RelativeLayout
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
                 <TextView
                     android:id="@+id/profile_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Business Name"
-                    android:layout_marginTop="10dp"
-                    android:textColor="#000000"/>
-                <ImageButton
-                    android:id="@+id/edit_image"
-                    android:layout_width="wrap_content"
+                    android:textSize="30sp"
+                    android:layout_marginRight="50dp"
+                    android:text="Vipul Chauhan"
+                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/business_type"
+                    android:layout_below="@+id/profile_name"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_camera_alt_white_18dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@android:color/transparent"/>
-                <ImageButton
+                    android:text="TYPE"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="50dp"
+                    />
+                <Button
                     android:id="@+id/edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_mode_edit_black_18dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="-45dp"
-                    android:layout_marginRight="30dp"
-                    android:background="@android:color/transparent"/>
-
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/edit_grey_icon"
+                    />
+            </RelativeLayout>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Profile"
-                android:textSize="25dp"
-                android:layout_marginLeft="10dp"/>
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                card_view:cardCornerRadius="8dp"
+                card_view:cardCornerRadius="2dp"
                 android:elevation="100dp"
                 android:layout_marginTop="10dp"
 
@@ -96,7 +187,7 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                card_view:cardCornerRadius="8dp"
+                card_view:cardCornerRadius="2dp"
                 android:elevation="100dp"
                 android:layout_marginTop="10dp"
 
@@ -117,7 +208,7 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                card_view:cardCornerRadius="8dp"
+                card_view:cardCornerRadius="2dp"
                 android:elevation="100dp"
                 android:layout_marginTop="10dp"
 
@@ -139,7 +230,7 @@
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                card_view:cardCornerRadius="8dp"
+                card_view:cardCornerRadius="2dp"
                 android:elevation="100dp"
                 android:layout_marginTop="10dp"
 

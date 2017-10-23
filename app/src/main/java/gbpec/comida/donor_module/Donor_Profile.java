@@ -1,23 +1,33 @@
 package gbpec.comida.donor_module;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,14 +39,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import gbpec.comida.MainActivity;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
-
-import static android.app.Activity.RESULT_OK;
+import gbpec.comida.Utility;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,20 +68,20 @@ public class Donor_Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    String Contact,Email,Address,Info,business_name;
+    String Contact,Email,Address,Info,business_name,picUrl,type;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private Bitmap bitmap;
-    private int PICK_IMAGE_REQUEST = 1;
-    private String KEY_IMAGE = "image";
-    private String KEY_NAME = "name";
+    int REQUEST_CAMERA=1,SELECT_FILE=2;
+    String userChoosenTask;
 
     private OnFragmentInteractionListener mListener;
     TextView contact,address,email,info,changePassword,profile_name;
-    ImageButton edit;
-
+    Button edit,profilePicEdit;
+    RelativeLayout profilePic;
+    Bitmap image,bm;
+    RelativeLayout cancelPic,donePic;
+    LinearLayout buttonPicBlock;
 
     public Donor_Profile() {
         // Required empty public constructor
@@ -150,15 +166,13 @@ public class Donor_Profile extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_donor__profile, container, false);
 
-       /* final Toolbar toolbar = (Toolbar)v.findViewById(R.id.tab_share_food);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
-        toolbar.setTitle("Your Profile");*/
+
        // final ProgressDialog loading;
        // loading = ProgressDialog.show(getContext(),"Please wait...","Fetching...",false,false);
-        String URL="http://vipul.hol.es/getProfile.php?contactno="+username;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
+        String URL1="http://vipul.hol.es/getProfile.php?contactno="+username;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,URL1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
              //   loading.dismiss();
@@ -175,12 +189,24 @@ public class Donor_Profile extends Fragment {
                     Email = businessData.getString("email");
                     Info=businessData.getString("info");
                     business_name=businessData.getString("bName");
+                    picUrl=businessData.getString("picUrl");
                     //setting values
                     contact.setText(Contact);
                     address.setText(Address);
                     email.setText(Email);
                     info.setText(Info);
                     profile_name.setText(business_name);
+                    if(picUrl!=null){
+                        try {
+                            URL url = new URL(picUrl);
+                            image = BitmapFactory.decodeStream(url.openStream());
+                            Drawable dr = new BitmapDrawable(getResources(), image);
+                            profilePic.setBackground(dr);
+                        } catch(IOException e) {
+                            System.out.println(e);
+                        }
+                    }
+
                     //
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -195,7 +221,7 @@ public class Donor_Profile extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(getActivity().getApplicationContext(),error.getMessage().toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity().getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 });
       //  Toast.makeText(getContext(),"execute",Toast.LENGTH_LONG).show();
@@ -209,7 +235,84 @@ public class Donor_Profile extends Fragment {
        email=(TextView)v.findViewById(R.id.email);
        info=(TextView)v.findViewById(R.id.info);
         profile_name=(TextView)v.findViewById(R.id.profile_name);
-        edit=(ImageButton)v.findViewById(R.id.edit);
+        profilePicEdit=(Button)v.findViewById(R.id.profile_pic_edit);
+        profilePic=(RelativeLayout)v.findViewById(R.id.profile_pic);
+        buttonPicBlock=(LinearLayout)v.findViewById(R.id.buttons_pic_block);
+        buttonPicBlock.setVisibility(View.GONE);
+        cancelPic=(RelativeLayout)v.findViewById(R.id.cancel_pic);
+        donePic=(RelativeLayout)v.findViewById(R.id.done_pic);
+
+        cancelPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(image!=null){
+                    Drawable dr = new BitmapDrawable(getResources(), image);
+                    profilePic.setBackground(dr);
+                    buttonPicBlock.setVisibility(View.GONE);
+                }
+            }
+        });
+        donePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url2="http://vipul.hol.es/comida/uploads/picUpload.php";
+                final ProgressDialog loading = ProgressDialog.show(getActivity(),"Uploading...","Please wait...",false,false);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String s) {
+                                //Disimissing the progress dialog
+                                loading.dismiss();
+                                buttonPicBlock.setVisibility(View.GONE);
+                                //Showing toast message of the response
+                                Toast.makeText(getActivity(), s , Toast.LENGTH_LONG).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                //Dismissing the progress dialog
+                                loading.dismiss();
+
+                                //Showing toast
+                                Toast.makeText(getActivity(), volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                            }
+                        }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        //Converting Bitmap to String
+                        String image = getStringImage(bm);
+
+                        //Creating parameters
+                        Map<String,String> params = new Hashtable<String, String>();
+
+                        //Adding parameters
+                        params.put("image", image);
+                        params.put("contact", username);
+
+                        //returning parameters
+                        return params;
+                    }
+                };
+
+                //Creating a Request Queue
+                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+                //Adding request to the queue
+                requestQueue.add(stringRequest);
+
+            }
+        });
+
+
+
+        profilePicEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+        edit=(Button)v.findViewById(R.id.edit);
        edit.setOnClickListener(new View.OnClickListener(){
 
 
@@ -265,10 +368,12 @@ public class Donor_Profile extends Fragment {
 
 
 
+
         return  v;
     }
 
-
+    private void getStringImage() {
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -307,6 +412,98 @@ public class Donor_Profile extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void selectImage() {
+        final CharSequence[] items = { "Take Photo", "Choose from Library",
+                "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result= Utility.checkPermission(getActivity());
+                if (items[item].equals("Take Photo")) {
+                    userChoosenTask="Take Photo";
+                    if(result)
+                        cameraIntent();
+                } else if (items[item].equals("Choose from Library")) {
+                    userChoosenTask="Choose from Library";
+                    if(result)
+                        galleryIntent();
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    private void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+        bm=null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+//        ivImage.setImageBitmap(bm);
+        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setBackground(dr);
+        buttonPicBlock.setVisibility(View.VISIBLE);
+
+    }
+    private void onCaptureImageResult(Intent data) {
+        bm = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        profilePic.setImageBitmap(thumbnail);
+        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setBackground(dr);
+        buttonPicBlock.setVisibility(View.VISIBLE);
+    }
+
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
     }
 
 
