@@ -275,7 +275,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="20dp"
-                        android:hint="DD/MM/YY"
+                        android:hint="MM/DD/YY"
                         android:clickable="true"
                         android:editable="false"
                         android:focusable="false"

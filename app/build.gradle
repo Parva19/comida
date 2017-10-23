@@ -10,7 +10,11 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled = true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
     }
     buildTypes {
         release {
@@ -36,4 +40,5 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:multidex:1.0.1'
 }

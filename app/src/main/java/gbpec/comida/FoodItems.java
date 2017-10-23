@@ -3,10 +3,21 @@ package gbpec.comida;
 import android.app.DatePickerDialog;
 //import android.content.Intent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +35,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +54,7 @@ import gbpec.comida.donor_module.Donor_NavigationMainActivity;
 
 import static java.security.AccessController.getContext;
 
-public class FoodItems extends AppCompatActivity {
+public class FoodItems extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 private LinearLayout layout,layout2;
     private EditText item,quantity,newaddress,pickup_address_et;
     public static EditText items[] = new EditText[100];
@@ -49,8 +64,16 @@ private LinearLayout layout,layout2;
     SessionManager session;
 //DatePicker simpleDatePicker;
     EditText simpleDatePicker_et,timepicker_from,timepicker_to,timepicker_upto;
-    private int pickt1_h,pickt1_m,pickt2_h,pickt2_m,validt_h,validt_m,address_check;
-    private String address,user,Address;
+    private int pickt1_h,pickt2_h;
+    private String address,user,Address,foodlattitude,foodlongitude;
+    private long UPDATE_INTERVAL = 60 * 1000;  /* 60 secs */
+    private long FASTEST_INTERVAL = 10000; /* 10 sec */
+
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLocation;
+    private LocationRequest mLocationRequest;
+
+    private LocationManager locationManager,mLocationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,6 +277,15 @@ private LinearLayout layout,layout2;
             }
         });
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        checkLocation();
+
 //pick up time values
 //        TimePicker simpleTimePicker1=(TimePicker) findViewById(R.id.simpleTimePicker1);
 ////        simpleTimePicker1.setIs24HourView(true);
@@ -433,6 +465,9 @@ private LinearLayout layout,layout2;
         }
         valid_date=simpleDatePicker_et.getText().toString();
         valid_time=timepicker_upto.getText().toString();
+        if(foodlattitude.isEmpty()||foodlongitude.isEmpty()){
+            startLocationUpdates();
+        }
 
         String REGISTER_URL="http://vipul.hol.es/fooditems.php";
 
@@ -475,6 +510,8 @@ private LinearLayout layout,layout2;
                 params.put("fRequestTime",valid_time);//valid time
                 params.put("fPickupTime",pickt_from+"\nto\n"+pickt2_h+":"+pickt_to);
                 params.put("fPickupAddress",address);
+                params.put("fFoodLatitude",foodlattitude);
+                params.put("fFoodLongitude",foodlongitude);
                 //params.put("address_check",Integer.toString(address_check));
                /* params.put("bAddress",address);
                 params.put("bHead",head_name);
@@ -500,5 +537,119 @@ private LinearLayout layout,layout2;
         Toast.makeText(getApplicationContext(), "Valid upto::"+valid_month+"/"+valid_day+"--"+validt_h+":"+validt_m, Toast.LENGTH_LONG).show();
 
 */
+    }
+    private boolean checkLocation() {
+        if(!isLocationEnabled())
+            showAlert();
+        return isLocationEnabled();
+    }
+
+    private void showAlert() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    }
+                });
+        dialog.show();
+    }
+    private void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startLocationUpdates();
+
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if(mLocation == null){
+            startLocationUpdates();
+        }
+        if (mLocation != null) {
+
+            foodlattitude=String.valueOf(mLocation.getLatitude());
+            foodlongitude=String.valueOf(mLocation.getLongitude());
+//            String location=ngolattitude+ngolongitude;
+//            testing.setText(location);
+        } else {
+            Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("LOCATION:", "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public boolean isLocationEnabled() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||//make it or later
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 }
