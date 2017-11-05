@@ -436,7 +436,7 @@ private LinearLayout layout,layout2;
             sb.append(items[i].getText().toString()+"-");
             sb.append(quantities[i].getText().toString()+"&");
         }
-
+        Toast.makeText(FoodItems.this, foodlongitude+"/n"+foodlongitude, Toast.LENGTH_LONG).show();
         //end string builder
         //valid dya and vaid_month will be the upto  date for collection of food
 //        final int valid_day=simpleDatePicker.getDayOfMonth();

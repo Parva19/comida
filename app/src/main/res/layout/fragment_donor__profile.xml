@@ -78,7 +78,7 @@
                                 android:layout_toRightOf="@id/remove_icon"
                                 android:text="Cancel"
                                 android:textAllCaps="true"
-                                android:textColor="@color/text_color_grey"
+                                android:textColor="#e7e4e4"
                                 android:textSize="16sp"
                                 android:layout_centerVertical="true"/>
                         </RelativeLayout>
@@ -87,7 +87,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="30dp"
-                        android:background="@color/text_color_grey"
+                        android:background="#e7e4e4"
                         android:layout_gravity="center_vertical"/>
                     <RelativeLayout
                         android:id="@+id/done_pic"
@@ -114,7 +114,7 @@
                                 android:layout_toRightOf="@id/edit_icon"
                                 android:text="Done"
                                 android:textAllCaps="true"
-                                android:textColor="@color/text_color_grey"
+                                android:textColor="#e7e4e4"
                                 android:textSize="16sp"
                                 android:layout_centerVertical="true"/>
                         </RelativeLayout>

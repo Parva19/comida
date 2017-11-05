@@ -69,7 +69,7 @@
                     android:id="@+id/username2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username"
+                    android:hint="Contact Number"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
