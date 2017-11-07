@@ -20,7 +20,7 @@ import gbpec.comida.SessionManager;
 import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener,History_Module.OnFragmentInteractionListener{
     DrawerLayout drawer;
     Fragment fragment = null;
     Class fragmentClass = null;
@@ -126,6 +126,20 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
              case R.id.nav_home:
                  Intent home= new Intent(this, SplashScreen.class);
                  startActivity(home);
+                 break;
+             case R.id.nav_Donation_history:
+                 fragmentClass = History_Module.class;
+
+
+                 try {
+                     fragment = (Fragment) fragmentClass.newInstance();
+                     fragment.setArguments(bundle);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+                 // fragment.setArguments(bundle);
+                 fragmentManager = getSupportFragmentManager();
+                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
                  break;
          }
           //if(item.equals("Profile")){
