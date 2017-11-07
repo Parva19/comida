@@ -35,6 +35,7 @@
         </activity>
         <activity android:name=".LocationTrial" />
         <activity android:name=".reciever_module.Reciever_Navigation">
+
             </activity>
     </application>
 

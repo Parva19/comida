@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -42,7 +44,7 @@ public class Reciever_Home extends Fragment {
     private String mParam1;
     private String mParam2;
     String contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
-    private static Double lat1=0.0,lon1=0.0;
+    private static  Double lat1=0.0,lon1=0.0;
     private OnFragmentInteractionListener mListener;
     //for recycler view
     private List<Food> foodList = new ArrayList<>();
@@ -79,12 +81,14 @@ public class Reciever_Home extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
         username = user1.get(SessionManager.KEY_NAME);
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
-
+        lat1=28.646006800000000000000000000000;
+        lon1=77.064195200000000000000000000000;
 
 
     }
@@ -95,11 +99,10 @@ public class Reciever_Home extends Fragment {
 
 
 
-
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_reciever__home, container, false);
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-
+/*
         String URL1="http://vipul.hol.es/getNgoLocation.php?contactno="+username;
 
         StringRequest stringRequest1 = new StringRequest(Request.Method.GET,URL1, new Response.Listener<String>() {
@@ -110,9 +113,9 @@ public class Reciever_Home extends Fragment {
                 //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject  jsonObject1 = new JSONObject(response);
-                    Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
                     JSONArray result = jsonObject1.getJSONArray("result");
-                     Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
+                   //  Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
 
                     JSONObject businessData = result.getJSONObject(0);
                     ngo_latiude=businessData.getString("Latitude");
@@ -124,7 +127,7 @@ public class Reciever_Home extends Fragment {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(getContext(),ngo_latiude+"lo-"+ngo_longitude,Toast.LENGTH_LONG).show();
+            //    Toast.makeText(getContext(),ngo_latiude+"lo-"+ngo_longitude,Toast.LENGTH_LONG).show();
                 // showJSON(response);
             }
         },
@@ -138,25 +141,34 @@ public class Reciever_Home extends Fragment {
         RequestQueue requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
         //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
         requestQueue1.add(stringRequest1);
-
+*/
         mAdapter = new FoodAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+     /*   recyclerView.addOnItemTouchListener(
+                new Reciever_Home(getContext(), new Reciever_Home.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // TODO Handle item click
+                        Toast.makeText(getContext(),"thhis--",Toast.LENGTH_LONG).show();
+
+                    }
+                })
+        );*/
        String URL="http://vipul.hol.es/foodDetails.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //   loading.dismiss();
-                Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
                 //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject  jsonObject1 = new JSONObject(response);
                     // Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
                     JSONArray result = jsonObject1.getJSONArray("result");
-                    //  Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
+//                      Toast.makeText(getContext(),result.length(),Toast.LENGTH_LONG).show();
                     for(int i=0;i<result.length();i++){
                         JSONObject businessData = result.getJSONObject(i);
                         prepareMovieData(businessData);
@@ -193,7 +205,7 @@ public class Reciever_Home extends Fragment {
                 * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
         dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515* 1.609344;
+        dist = dist * 60 * 1.1515*1.609344;
         return (dist);
     }
 
@@ -221,9 +233,11 @@ public class Reciever_Home extends Fragment {
         lon2=Double.parseDouble(fLongitude);
      //   Toast.makeText(getContext(), "lat-"+Double.toString(lat1),Toast.LENGTH_LONG).show();
         double i=distance(lat1,lon1,lat2,lon2);
-     // Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
+      Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
 
-        if(i<50.00) {
+        if(i<20.00) {
+            Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
+
             Food food = new Food(donor, contact,details,pickupTime,validDate,validTime);
             foodList.add(food);
         }
@@ -250,11 +264,8 @@ public class Reciever_Home extends Fragment {
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
