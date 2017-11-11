@@ -55,7 +55,6 @@
                   android:id="@+id/view2"
                   android:orientation="vertical">
               <LinearLayout
-                  android:id="@+id/itemview"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal">
@@ -64,8 +63,7 @@
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="1) "
-                      android:textSize="18dp"
-                      android:id="@+id/sno"/>
+                      android:textSize="18dp" />
 
                   <EditText
                       android:id="@+id/itemname"
@@ -86,7 +84,6 @@
               </LinearLayout>
                   </LinearLayout>
               <Button
-                  android:id="@+id/button"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
@@ -315,7 +312,6 @@
             </LinearLayout>
             <Button
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/share"
                 style="?android:textAppearanceSmall"
                 android:layout_width="300dp"
                 android:layout_height="40dp"

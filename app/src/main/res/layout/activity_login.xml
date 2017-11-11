@@ -9,7 +9,6 @@
     android:background="#ffff"
     android:focusable="false">
     <RelativeLayout
-        android:id="@+id/linearLayout_focus"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="0px"
@@ -17,7 +16,6 @@
 </RelativeLayout>
     <!-- Login progress -->
     <ProgressBar
-        android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,14 +23,12 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:padding="25dp"
             android:background="#fff"
-            android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical">
@@ -152,7 +148,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/signup_bttn"
                 android:layout_marginTop="10dp"
-                android:id="@+id/t4"
                 android:text="By registering, you agree to Comida's Terms of Use and Privacy Policy"
                 android:textSize="10sp"
                 android:textColor="@android:color/background_dark"

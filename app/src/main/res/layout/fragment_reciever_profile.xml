@@ -24,43 +24,43 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/profile_pic"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/default_profile_img">
-                <ImageView
+                <RelativeLayout
+                    android:id="@+id/profile_pic_ngo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/default_profile_img">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
 
-                    android:id="@+id/profilepic_iv"/>
-                <Button
-                    android:id="@+id/profile_pic_edit"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/camera_edit"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginRight="30dp"/>
+                        android:id="@+id/profilepic_iv_ngo"/>
+                    <Button
+                        android:id="@+id/profile_pic_edit_ngo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/camera_edit"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginRight="30dp"/>
 
-            </RelativeLayout>
+                </RelativeLayout>
                 <View
-                    android:layout_below="@id/profile_pic"
+                    android:layout_below="@+id/profile_pic_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#e7e4e4"
-                />
+                    />
                 <LinearLayout
                     android:layout_alignParentBottom="true"
-                    android:id="@+id/buttons_pic_block"
+                    android:id="@+id/buttons_pic_block_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="2"
                     android:layout_marginTop="4dp">
                     <RelativeLayout
-                        android:id="@+id/cancel_pic"
+                        android:id="@+id/cancel_pic_ngo"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
@@ -71,7 +71,7 @@
                             android:layout_centerInParent="true"
                             >
                             <ImageView
-                                android:id="@+id/remove_icon"
+                                android:id="@+id/remove_icon_ngo"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:src="@drawable/no_icon"
@@ -80,7 +80,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/remove_icon"
+                                android:layout_toRightOf="@+id/remove_icon_ngo"
                                 android:text="Cancel"
                                 android:textAllCaps="true"
                                 android:textColor="#e7e4e4"
@@ -95,7 +95,7 @@
                         android:background="#e7e4e4"
                         android:layout_gravity="center_vertical"/>
                     <RelativeLayout
-                        android:id="@+id/done_pic"
+                        android:id="@+id/done_pic_ngo"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
@@ -106,7 +106,7 @@
                             android:layout_centerInParent="true"
                             >
                             <ImageView
-                                android:id="@+id/edit_icon"
+                                android:id="@+id/edit_icon_ngo"
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:src="@drawable/done"
@@ -115,7 +115,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/edit_icon"
+                                android:layout_toRightOf="@+id/edit_icon_ngo"
                                 android:text="Done"
                                 android:textAllCaps="true"
                                 android:textColor="#e7e4e4"
@@ -126,42 +126,42 @@
 
                 </LinearLayout>
                 <View
-                    android:layout_below="@id/profile_pic"
+                    android:layout_below="@+id/profile_pic_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#e7e4e4"
                     />
                 <RelativeLayout
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <TextView
-                    android:id="@+id/profile_name"
-                    android:layout_width="300dp"
+                    android:layout_margin="10dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:layout_marginRight="50dp"
-                    android:text="Vipul Chauhan"
-                    android:layout_marginLeft="10dp"/>
-                <TextView
-                    android:id="@+id/business_type1"
-                    android:layout_below="@+id/profile_name"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:text="TYPE"
-                    android:textSize="15sp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="50dp"
-                    />
-                <Button
-                    android:id="@+id/edit"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/edit_grey_icon"
-                    />
-            </RelativeLayout>
+                    >
+                    <TextView
+                        android:id="@+id/profile_name_ngo"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:layout_marginRight="50dp"
+                        android:text="Vipul Chauhan"
+                        android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:id="@+id/business_type_ngo1"
+                        android:layout_below="@+id/profile_name_ngo"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="TYPE"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="50dp"
+                        />
+                    <Button
+                        android:id="@+id/edit_ngo"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/edit_grey_icon"
+                        />
+                </RelativeLayout>
             </LinearLayout>
 
             <android.support.v7.widget.CardView
@@ -174,7 +174,7 @@
 
                 >
                 <TextView
-                    android:id="@+id/contact"
+                    android:id="@+id/contact_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:text="    Contact Number"
@@ -196,7 +196,7 @@
 
                 >
                 <TextView
-                    android:id="@+id/address"
+                    android:id="@+id/address_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="    Address"
@@ -217,7 +217,7 @@
 
                 >
                 <TextView
-                    android:id="@+id/email"
+                    android:id="@+id/email_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="    Email"
@@ -239,10 +239,10 @@
 
                 >
                 <TextView
-                    android:id="@+id/info"
+                    android:id="@+id/head_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="    Info"
+                    android:text="    Head"
                     android:textDirection="firstStrong"
                     android:textSize="20dp"
                     android:layout_marginLeft="10dp"
@@ -261,7 +261,7 @@
 
                 >
                 <TextView
-                    android:id="@+id/change_password"
+                    android:id="@+id/change_password_ngo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Change Password"
@@ -276,6 +276,6 @@
         </LinearLayout>
 
     </ScrollView>
-    
+
 
 </RelativeLayout>

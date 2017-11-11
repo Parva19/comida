@@ -12,6 +12,16 @@ public class Food {
     private String validDate;
     private String validTime;
 
+//    public String getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//
+//    private String address;
+
 
     public Food(String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
         this.donor = donor;

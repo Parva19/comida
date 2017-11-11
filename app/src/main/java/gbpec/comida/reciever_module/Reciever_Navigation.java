@@ -19,12 +19,16 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import gbpec.comida.SessionManager;
 import gbpec.comida.SplashScreen;
+import gbpec.comida.donor_module.Change_Password;
+import gbpec.comida.donor_module.Donor_Profile;
+import gbpec.comida.donor_module.Edit_Profilr;
 
 
-public class Reciever_Navigation extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, Reciever_Home.OnFragmentInteractionListener{
+public class Reciever_Navigation extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, Reciever_Home.OnFragmentInteractionListener, Receiver_Profile.OnFragmentInteractionListener,Edit_Profilr_Ngo.OnFragmentInteractionListener,Change_Password_Ngo.OnFragmentInteractionListener{
     Fragment fragment = null;
     Class fragmentClass = null;
     SessionManager sessionManager;
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,21 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
     @Override
     public boolean onNavigationItemSelected( MenuItem item) {
         switch (item.getItemId()){
+            case R.id.nav_donor_profile:
+                //Toast.makeText(getApplicationContext(), "Profile.", Toast.LENGTH_SHORT).show();
+                fragmentClass = Receiver_Profile.class;
+
+
+                try {
+                    fragment = (Fragment) fragmentClass.newInstance();
+                    fragment.setArguments(bundle);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                break;
             case R.id.nav_logout: sessionManager.logoutUser();
                 Intent logout= new Intent(this, SplashScreen.class);
                 startActivity(logout);

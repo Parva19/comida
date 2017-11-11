@@ -2,11 +2,9 @@
     <string name="app_name">Comida</string>
     <string name="emailerror">Enter Valid Email</string>
     <string name="passworderror">Enter correct password</string>
-    <string name="passwordconfirm">Password doesnot match</string>
     <string name="contact1">Invali Contact Number</string>
 
     <string-array name="business_type">
-        <item>Business Type</item>
         <item>Restaurant</item>
         <item>Hotel</item>
         <item>Cafe</item>
@@ -16,14 +14,12 @@
         <item>Others</item>
     </string-array>
     <string-array name="ngo_type">
-        <item>NGO Type</item>
         <item>Food</item>
         <item>Child</item>
         <item>Health</item>
         <item>Womens</item>
         <item>Others</item>
     </string-array>
-    <string name="title_activity_donor__navigation_main">Donor_NavigationMainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -31,5 +27,4 @@
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
