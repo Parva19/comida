@@ -13,14 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+
+import gbpec.comida.CustomVolleyRequest;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener,History_Module.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener{
     DrawerLayout drawer;
     Fragment fragment = null;
     Class fragmentClass = null;
@@ -60,8 +69,20 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+        HashMap<String, String> user = sessionManager.getUserDetails();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        NetworkImageView nav_img = (NetworkImageView) hView.findViewById(R.id.user_image);
+        TextView Name =(TextView)hView.findViewById(R.id.user_name);
+        Name.setText(user.get(sessionManager.USER_NAME));
+        String url1= user.get(sessionManager.USER_IMG);
+         ImageLoader imageLoader = CustomVolleyRequest.getInstance(getApplicationContext())
+                .getImageLoader();
+        imageLoader.get(url1, ImageLoader.getImageListener(nav_img,
+                R.drawable.logo, android.R.drawable
+                        .ic_dialog_alert));
+        nav_img.setImageUrl(url1, imageLoader);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -120,26 +141,22 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  break;
              case R.id.nav_logout: sessionManager.logoutUser();
                  Intent logout= new Intent(this, SplashScreen.class);
+                 FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
                  startActivity(logout);
                  Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
                  break;
              case R.id.nav_home:
-                 Intent home= new Intent(this, SplashScreen.class);
-                 startActivity(home);
-                 break;
-             case R.id.nav_Donation_history:
-                 fragmentClass = History_Module.class;
-
-
-                 try {
+                 fragmentClass = Donor_Home_Activity.class;
+                 try
+                 {
                      fragment = (Fragment) fragmentClass.newInstance();
-                     fragment.setArguments(bundle);
                  } catch (Exception e) {
                      e.printStackTrace();
                  }
-                 // fragment.setArguments(bundle);
-                 fragmentManager = getSupportFragmentManager();
-                 fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+
+                 FragmentManager fragmentManagerhome = getSupportFragmentManager();
+                 fragmentManagerhome.beginTransaction().replace(R.id.flContent, fragment).commit();
                  break;
          }
           //if(item.equals("Profile")){

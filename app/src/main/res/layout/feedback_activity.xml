@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/feedback_toolbar"
+        android:background="#1EA133">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/bck_btn"
+            android:layout_centerVertical="true"
+            android:src="@drawable/back_icon"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="50dp"
+            android:text="Feedback"
+            android:textStyle="bold"
+            android:textColor="#ffff"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:padding="10dp"
+            />
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/linearLayout_focus"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"></RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/feedback_toolbar"
+        android:gravity="center_vertical"        >
+    <EditText
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:textColorHint="#1EA133"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:hint="Name"
+        android:background="@drawable/backgroundborder"
+        android:id="@+id/fb_name"/>
+        <EditText
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/fb_name"
+            android:layout_marginTop="20dp"
+            android:textColorHint="#1EA133"
+            android:padding="10dp"
+            android:layout_centerHorizontal="true"
+
+            android:hint="Email"
+            android:id="@+id/fb_email"
+            android:background="@drawable/backgroundborder"/>
+
+        <EditText
+            android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:maxLines="10"
+            android:hint="Feedback"
+            android:textColorHint="#1EA133"
+            android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:scrollbars="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/backgroundborder"
+            android:id="@+id/fb__feedback"
+            android:layout_below="@+id/fb_email"/>
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="#1EA133"
+            android:text="Send Feedback"
+            android:textColor="#ffff"
+            android:textStyle="bold"
+            android:layout_below="@+id/fb__feedback"
+            android:layout_marginTop="20dp"
+            android:id="@+id/send_feedback"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -79,7 +79,7 @@ public class History_Module extends Fragment {
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
-        username = user1.get(SessionManager.KEY_NAME);
+        username = user1.get(SessionManager.USER_CONTACT);
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
     }

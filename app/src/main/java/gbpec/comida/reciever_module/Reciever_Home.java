@@ -82,8 +82,7 @@ public class Reciever_Home extends Fragment {
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
-//        username = user1.get(SessionManager.KEY_NAME);
-        username = "0000000002";
+        username = user1.get(SessionManager.USER_CONTACT);
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
 
 
@@ -103,8 +102,6 @@ public class Reciever_Home extends Fragment {
 
         String URL1="http://vipul.hol.es/getNgoLocation.php?contactno="+username;
 
-
-
         StringRequest stringRequest1 = new StringRequest(Request.Method.GET,URL1, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -123,8 +120,6 @@ public class Reciever_Home extends Fragment {
                     lat1=Double.parseDouble(ngo_latiude);
                     lon1=Double.parseDouble(ngo_longitude);
 
-                    getdatafinal();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -132,10 +127,6 @@ public class Reciever_Home extends Fragment {
                 Toast.makeText(getContext(),ngo_latiude+"lo-"+ngo_longitude,Toast.LENGTH_LONG).show();
                 // showJSON(response);
             }
-
-
-
-
         },
                 new Response.ErrorListener() {
                     @Override
@@ -148,21 +139,13 @@ public class Reciever_Home extends Fragment {
         //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
         requestQueue1.add(stringRequest1);
 
-
-
         mAdapter = new FoodAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+       String URL="http://vipul.hol.es/foodDetails.php";
 
-
-
-
-
-        return v;
-    }
-
-    private void getdatafinal() {
-        String URL="http://vipul.hol.es/foodDetails.php";
         StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -178,8 +161,6 @@ public class Reciever_Home extends Fragment {
                         JSONObject businessData = result.getJSONObject(i);
                         prepareMovieData(businessData);
                     }
-                    recyclerView.setItemAnimator(new DefaultItemAnimator());
-                    recyclerView.setAdapter(mAdapter);
 
                     //
                 } catch (JSONException e) {
@@ -200,9 +181,9 @@ public class Reciever_Home extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
         requestQueue.add(stringRequest);
+
+        return v;
     }
-
-
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1))
@@ -228,11 +209,11 @@ public class Reciever_Home extends Fragment {
 
         contact =business.getString("contact");
         details = business.getString("details");
-        details=details.replaceAll("-.*?&","");
+        details="Food Items- "+details.replaceAll("-.*?&","");
         donor = business.getString("donor");
-        pickupTime=business.getString("pickupTime");
-        validDate=business.getString("validDate");
-        validTime=business.getString("validTime");
+        pickupTime="Pickup Time- "+business.getString("pickupTime");
+        validDate="Food valid upto- "+business.getString("validDate");
+        validTime="     "+business.getString("validTime");
         fLatitude=business.getString("fLatitude");
         fLongitude=business.getString("fLongitude");
         Double lat2,lon2;

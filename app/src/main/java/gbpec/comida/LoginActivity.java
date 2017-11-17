@@ -1,5 +1,6 @@
 package gbpec.comida;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,12 +55,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         String url = "http://vipul.hol.es/login_fetch.php?user_no="+username+"&password="+password;
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
 
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 showJSON(response);
+                progressDialog.dismiss();
             }
         },
                 new Response.ErrorListener() {
@@ -70,12 +75,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+
     }
     private void showJSON(String response){
 
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray result = jsonObject.getJSONArray("success");
+
             if(result.length()==0){
                 errorText.setText("Invalid Login Credentials !");
                 errorText.setVisibility(View.VISIBLE);
@@ -88,21 +95,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
 
                 session.createLoginSession(username,type);
-            }
+
               if (type.equals("business")) {
-                    Intent myIntent = new Intent(LoginActivity.this,
-                            Donor_NavigationMainActivity.class);
-                    myIntent.putExtra("user", username);
-                    startActivity(myIntent);
-                  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                  FirebaseMessaging.getInstance().subscribeToTopic("donor");
+                 // myIntent.putExtra("user", username);
+                  saveDataDonor(username);
+
                 }
-                else{
-                  Intent myIntent = new Intent(LoginActivity.this,
-                         Reciever_Navigation.class);
-                  myIntent.putExtra("user", username);
-                  startActivity(myIntent);
-                  overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
-              }
+               else if (type.equals("ngo")) {
+                  FirebaseMessaging.getInstance().subscribeToTopic("reciever");
+                  saveDataNGO(username);
+                    Intent myIntent = new Intent(LoginActivity.this,
+                            Reciever_Navigation.class);
+
+                    //myIntent.putExtra("user", username);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+                  finish();
+                }
+            }
             }
 
         } catch (JSONException e) {
@@ -110,6 +121,104 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+    private void saveDataNGO(String username) {
+
+
+
+        String url = "http://vipul.hol.es/sharedpref_ngo.php?user_no="+username;
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                showDataNGO(response);
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this,"cannot login",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+    private void showDataNGO(String response){
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray("success");
+
+
+                JSONObject collegedata = result.getJSONObject(0);
+                String name = collegedata.getString("name");
+                String image = collegedata.getString("image");
+                String latitude = collegedata.getString("latitude");
+                 String longitude = collegedata.getString("longitude");
+                 String email = collegedata.getString("email");
+              String address = collegedata.getString("address");
+            Toast.makeText(LoginActivity.this,latitude+"  "+longitude,Toast.LENGTH_LONG).show();
+
+              session.createDataSessionNGO(name,latitude,longitude,address,email,image);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void showDataBUSINESS(String response){
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray result = jsonObject.getJSONArray("success");
+
+
+            JSONObject collegedata = result.getJSONObject(0);
+            String name = collegedata.getString("name");
+            String image = collegedata.getString("image");
+            String email = collegedata.getString("email");
+            String address = collegedata.getString("address");
+
+
+            session.createDataSessionBUSINESS(name,address,email,image);
+            Intent myIntent = new Intent(LoginActivity.this,
+                    Donor_NavigationMainActivity.class);
+            startActivity(myIntent);
+            overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
+            finish();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void saveDataDonor(String username)
+    {
+
+        String url = "http://vipul.hol.es/sharedpref_business.php?user_no="+username;
+
+        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                showDataBUSINESS(response);
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(LoginActivity.this,"cannot login",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
 
     @Override
     public void onClick(View v) {

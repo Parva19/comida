@@ -1,7 +1,6 @@
 package gbpec.comida;
 
 import android.app.DatePickerDialog;
-//import android.content.Intent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,13 +8,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -52,7 +51,7 @@ import java.util.Map;
 
 import gbpec.comida.donor_module.Donor_NavigationMainActivity;
 
-import static java.security.AccessController.getContext;
+//import android.content.Intent;
 
 public class FoodItems extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 private LinearLayout layout,layout2;
@@ -90,7 +89,7 @@ private LinearLayout layout,layout2;
 
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
-        user = user1.get(SessionManager.KEY_NAME);
+        user = user1.get(SessionManager.USER_CONTACT);
         Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
 
         // Intent i=getIntent();

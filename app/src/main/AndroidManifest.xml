@@ -24,6 +24,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
         <activity android:name=".LoginActivity" >
 
         </activity>
@@ -33,9 +43,7 @@
         <activity android:name=".donor_module.Donor_NavigationMainActivity">
 
         </activity>
-        <activity android:name=".LocationTrial" />
         <activity android:name=".reciever_module.Reciever_Navigation">
-
             </activity>
     </application>
 

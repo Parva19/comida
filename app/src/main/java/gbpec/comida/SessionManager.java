@@ -29,9 +29,25 @@ public class SessionManager {
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
-
+    private static final String NOTIFICATION_OFF = "ISNOTIFICATION";
     // User name (make variable public to access from outside)
-    public static final String KEY_NAME = "User_Name";
+    public static final String USER_CONTACT = "User_Contact";
+    public static final String USER_LATITUDE = "User_Latitude";
+    public static final String USER_LONGITUDE= "User_Longitude";
+    public static final String USER_NAME= "User_Name";
+    public static final String USER_TYPE= "User_Type";
+    public static final String USER_ADDRESS= "User_Address";
+    public static final String USER_EMAIL= "User_Email";
+    public static final String USER_IMG= "User_Image";
+
+
+
+
+
+
+
+
+
 
     // Email address (make variable public to access from outside)
     public static final String KEY_ID = "User_ID";
@@ -51,10 +67,51 @@ public class SessionManager {
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
-        editor.putString(KEY_NAME, name);
+        editor.putString(USER_CONTACT, name);
 
         // Storing email in pref
-        editor.putString(KEY_ID,type);
+        editor.putString(USER_TYPE,type);
+
+
+
+
+        // commit changes
+        editor.commit();
+    }
+    public void createDataSessionNGO(String name, String latitude, String longitude, String address, String email, String image){
+        // Storing login value as TRUE
+        editor.putBoolean(IS_LOGIN, true);
+
+        // Storing name in pref
+        editor.putString(USER_NAME, name);
+        editor.putString(USER_LATITUDE,latitude );
+        editor.putString(USER_LONGITUDE, longitude);
+        editor.putString(USER_ADDRESS, address);
+        editor.putString(USER_EMAIL, email);
+
+        // Storing email in pref
+        editor.putString(USER_IMG,image);
+
+
+
+
+        // commit changes
+        editor.commit();
+    }
+    public void createDataSessionBUSINESS(String name, String address, String email, String image){
+        // Storing login value as TRUE
+        editor.putBoolean(IS_LOGIN, true);
+
+        // Storing name in pref
+        editor.putString(USER_NAME, name);
+        editor.putString(USER_ADDRESS, address);
+        editor.putString(USER_EMAIL, email);
+
+        // Storing email in pref
+        editor.putString(USER_IMG,image);
+
+
+
 
         // commit changes
         editor.commit();
@@ -90,13 +147,43 @@ public class SessionManager {
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+        user.put(USER_CONTACT, pref.getString(USER_CONTACT, null));
+        user.put(USER_TYPE, pref.getString(USER_TYPE, null));
+        user.put(USER_ADDRESS, pref.getString(USER_ADDRESS, null));
+        user.put(USER_EMAIL, pref.getString(USER_EMAIL, null));
+        user.put(USER_LATITUDE, pref.getString(USER_LATITUDE, null));
+        user.put(USER_LONGITUDE, pref.getString(USER_LONGITUDE, null));
+        user.put(USER_IMG, pref.getString(USER_IMG, null));
+
 
         // user email id
-        user.put(KEY_ID, pref.getString(KEY_ID, null));
+        user.put(USER_NAME, pref.getString(USER_NAME, null));
 
         // return user
         return user;
+    }
+
+    public boolean isNotification(){
+        return pref.getBoolean(NOTIFICATION_OFF, false);
+    }
+
+    public void notificationOn(){
+        // Storing login value as TRUE
+        editor.putBoolean(NOTIFICATION_OFF, true);
+
+        // Storing name in pref
+
+        // commit changes
+        editor.commit();
+    }
+    public void notificationOff(){
+        // Storing login value as TRUE
+        editor.putBoolean(NOTIFICATION_OFF, false);
+
+        // Storing name in pref
+
+        // commit changes
+        editor.commit();
     }
 
     /**

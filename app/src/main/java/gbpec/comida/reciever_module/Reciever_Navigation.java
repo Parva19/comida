@@ -1,27 +1,25 @@
 package gbpec.comida.reciever_module;
 
-import gbpec.comida.R;
-
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 import gbpec.comida.SplashScreen;
-import gbpec.comida.donor_module.Change_Password;
-import gbpec.comida.donor_module.Donor_Profile;
-import gbpec.comida.donor_module.Edit_Profilr;
 
 
 public class Reciever_Navigation extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, Reciever_Home.OnFragmentInteractionListener, Receiver_Profile.OnFragmentInteractionListener,Edit_Profilr_Ngo.OnFragmentInteractionListener,Change_Password_Ngo.OnFragmentInteractionListener{
@@ -38,7 +36,7 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fragmentClass = Reciever_Home.class;
+     /*   fragmentClass = Reciever_Home.class;
         try
         {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -47,7 +45,7 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit(); */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,6 +96,7 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
                 break;
             case R.id.nav_logout: sessionManager.logoutUser();
                 Intent logout= new Intent(this, SplashScreen.class);
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("reciever");
                 startActivity(logout);
                 Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
                 break;
@@ -105,6 +104,10 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
                 Intent home= new Intent(this, SplashScreen.class);
                 startActivity(home);
                 break;
+         /*   case R.id.nav_setting:
+                Intent setting= new Intent(this, Settings_activity.class);
+                startActivity(setting);
+                break; */
         }
         return true;
     }

@@ -39,12 +39,11 @@ public class SplashScreen extends Activity {
                 // Start your app main activity
             if(session.isLoggedIn()) {
                     HashMap<String, String> user = session.getUserDetails();
-                    String username = user.get(SessionManager.KEY_NAME);
+                    String username = user.get(SessionManager.USER_CONTACT);
 
-                    String type = user.get(SessionManager.KEY_ID);
+                    String type = user.get(SessionManager.USER_TYPE);
                     if (type.equals("business")) {
                         Intent myIntent = new Intent(SplashScreen.this, Donor_NavigationMainActivity.class);
-                        myIntent.putExtra("user", username);
                         startActivity(myIntent);
                        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
@@ -52,7 +51,6 @@ public class SplashScreen extends Activity {
                     }
                     else{
                         Intent myIntent = new Intent(SplashScreen.this, Reciever_Navigation.class);
-                        myIntent.putExtra("user", username);
                         startActivity(myIntent);
                         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
                     }

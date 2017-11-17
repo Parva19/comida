@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,7 +44,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -78,13 +76,12 @@ public class Donor_Profile extends Fragment {
     String userChoosenTask;
 
     private OnFragmentInteractionListener mListener;
-    TextView contact,address,email,info,changePassword,profile_name,Type;
+    TextView contact,address,email,info,changePassword,profile_name;
     Button edit,profilePicEdit;
-    ImageView profilePic;
+    RelativeLayout profilePic;
     Bitmap image,bm;
     RelativeLayout cancelPic,donePic;
     LinearLayout buttonPicBlock;
-
 
     public Donor_Profile() {
         // Required empty public constructor
@@ -121,7 +118,7 @@ public class Donor_Profile extends Fragment {
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
-        username = user1.get(SessionManager.KEY_NAME);
+        username = user1.get(SessionManager.USER_CONTACT);
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
 
@@ -130,10 +127,42 @@ public class Donor_Profile extends Fragment {
     public void getProfileData(){
 
     }
+
+    public void showJSON(String response) {
+
+        String contact = "";
+        String address = "";
+        String email = "";
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            Toast.makeText(getContext(),"chlaa",Toast.LENGTH_LONG).show();
+
+            JSONArray result = jsonObject.getJSONArray("result");
+            Toast.makeText(getContext(),"chl",Toast.LENGTH_LONG).show();
+
+            JSONObject businessData = result.getJSONObject(0);
+            contact =businessData.getString("contact");
+            address = businessData.getString("address");
+            email = businessData.getString("email");
+            if(result.length()!=0)
+            {
+                Toast.makeText(getActivity().getApplicationContext(),"aagya",Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(getActivity().getApplicationContext(),"nhi aaya ",Toast.LENGTH_LONG).show();
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getContext(),"data-",Toast.LENGTH_LONG).show();
+
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        image=null;
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_donor__profile, container, false);
 
@@ -161,15 +190,22 @@ public class Donor_Profile extends Fragment {
                     Info=businessData.getString("info");
                     business_name=businessData.getString("bName");
                     picUrl=businessData.getString("picUrl");
-                    type=businessData.getString("type");
                     //setting values
                     contact.setText(Contact);
                     address.setText(Address);
                     email.setText(Email);
                     info.setText(Info);
-                    Type.setText(type);
                     profile_name.setText(business_name);
-                    loadimage(picUrl);
+                    if(picUrl!=null){
+                        try {
+                            URL url = new URL(picUrl);
+                            image = BitmapFactory.decodeStream(url.openStream());
+                            Drawable dr = new BitmapDrawable(getResources(), image);
+                            profilePic.setBackground(dr);
+                        } catch(IOException e) {
+                            System.out.println(e);
+                        }
+                    }
 
                     //
                 } catch (JSONException e) {
@@ -181,8 +217,6 @@ public class Donor_Profile extends Fragment {
                 Toast.makeText(getContext(),"data-"+Contact+Address+Email,Toast.LENGTH_LONG).show();
                // showJSON(response);
             }
-
-
         },
                 new Response.ErrorListener() {
                     @Override
@@ -202,18 +236,18 @@ public class Donor_Profile extends Fragment {
        info=(TextView)v.findViewById(R.id.info);
         profile_name=(TextView)v.findViewById(R.id.profile_name);
         profilePicEdit=(Button)v.findViewById(R.id.profile_pic_edit);
-        profilePic=(ImageView) v.findViewById(R.id.profilepic_iv);
+        profilePic=(RelativeLayout)v.findViewById(R.id.profile_pic);
         buttonPicBlock=(LinearLayout)v.findViewById(R.id.buttons_pic_block);
         buttonPicBlock.setVisibility(View.GONE);
         cancelPic=(RelativeLayout)v.findViewById(R.id.cancel_pic);
         donePic=(RelativeLayout)v.findViewById(R.id.done_pic);
-        Type=(TextView)v.findViewById(R.id.business_type1);
 
         cancelPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(image!=null){
-                    profilePic.setImageBitmap(image);
+                    Drawable dr = new BitmapDrawable(getResources(), image);
+                    profilePic.setBackground(dr);
                     buttonPicBlock.setVisibility(View.GONE);
                 }
             }
@@ -221,7 +255,7 @@ public class Donor_Profile extends Fragment {
         donePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url2="http://vipul.hol.es/comida/picUpload.php";
+                String url2="http://vipul.hol.es/comida/uploads/picUpload.php";
                 final ProgressDialog loading = ProgressDialog.show(getActivity(),"Uploading...","Please wait...",false,false);
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
                         new Response.Listener<String>() {
@@ -248,7 +282,7 @@ public class Donor_Profile extends Fragment {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         //Converting Bitmap to String
                         String image = getStringImage(bm);
-//
+
                         //Creating parameters
                         Map<String,String> params = new Hashtable<String, String>();
 
@@ -338,32 +372,6 @@ public class Donor_Profile extends Fragment {
         return  v;
     }
 
-    private void loadimage(final String picUrl) {
-        new Thread(new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-                    image = BitmapFactory.decodeStream((InputStream) new URL(picUrl).getContent());
-                    profilePic.post(new Runnable()
-                    {
-                        public void run()
-                        {
-                            if(image !=null)
-                            {
-                                profilePic.setImageBitmap(image);
-                            }
-                        }
-                    });
-                } catch (Exception e)
-                {
-                    // TODO: handle exception
-                }
-            }
-        }).start();
-    }
-
     private void getStringImage() {
     }
 
@@ -434,9 +442,7 @@ public class Donor_Profile extends Fragment {
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
         return encodedImage;
-
     }
 
     private void galleryIntent() {
@@ -466,9 +472,9 @@ public class Donor_Profile extends Fragment {
                 e.printStackTrace();
             }
         }
-        profilePic.setImageBitmap(bm);
-//        Drawable dr = new BitmapDrawable(getResources(), bm);
-//        profilePic.setBackground(dr);
+//        ivImage.setImageBitmap(bm);
+        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setBackground(dr);
         buttonPicBlock.setVisibility(View.VISIBLE);
 
     }
@@ -489,9 +495,9 @@ public class Donor_Profile extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        profilePic.setImageBitmap(bm);
-//        Drawable dr = new BitmapDrawable(getResources(), bm);
-//        profilePic.setBackground(dr);
+//        profilePic.setImageBitmap(thumbnail);
+        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setBackground(dr);
         buttonPicBlock.setVisibility(View.VISIBLE);
     }
 
