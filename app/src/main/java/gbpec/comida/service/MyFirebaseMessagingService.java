@@ -82,7 +82,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //message will contain the Push Messageif
 
-
+       if (user.get(sessionManager.USER_TYPE).equals("ngo") ) {
             String message = remoteMessage.getData().get("message");
             //imageUri will contain URL of the image to be displayed with Notification
             //If the key AnotherActivity has  value as True then when the user taps on notification, in the app AnotherActivity will be opened.
@@ -104,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
                 sendNotification(message, Double.toString(dist));
-
+        }
 
 
 
