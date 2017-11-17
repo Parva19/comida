@@ -138,11 +138,12 @@ public class History_Module extends Fragment {
         return v;
     }
 public void prepareMovieData(JSONObject business) throws JSONException {
-    foodDetails =business.getString("food_details");
-    status=business.getString("status");
+    foodDetails ="Food Details: "+business.getString("food_details");
+    status="Status"+business.getString("status");
     valid_date=business.getString("validDate");
     valid_time=business.getString("validTime");
-    reciever=business.getString("reciever");
+    valid_date="Valid Upto: "+valid_date+"\n"+valid_time;
+    reciever="Reciever: "+business.getString("reciever");
 
     HistoryFields history = new HistoryFields(foodDetails,status,valid_date,valid_time,reciever);
     historyList.add(history);

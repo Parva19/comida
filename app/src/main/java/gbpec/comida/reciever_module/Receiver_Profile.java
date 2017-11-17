@@ -119,9 +119,9 @@ public class Receiver_Profile  extends Fragment {
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
-//        username = user1.get(SessionManager.KEY_NAME);
-        username = "0000000002";
+        username = user1.get(SessionManager.USER_CONTACT);
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
 
     }

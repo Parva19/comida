@@ -13,12 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
 
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
+import gbpec.comida.Settings_activity;
 import gbpec.comida.SplashScreen;
 
 
@@ -27,16 +33,19 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
     Class fragmentClass = null;
     SessionManager sessionManager;
     Bundle bundle;
+    String ngo_name="NGO";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reciever__navigation);
         sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> user1 = sessionManager.getUserDetails();
+        ngo_name = user1.get(SessionManager.USER_NAME);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-     /*   fragmentClass = Reciever_Home.class;
+       fragmentClass = Reciever_Home.class;
         try
         {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -45,7 +54,7 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit(); */
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -54,6 +63,11 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView.getHeaderView(0);
+        NetworkImageView nav_img = (NetworkImageView) hView.findViewById(R.id.user_image);
+        TextView Name =(TextView)hView.findViewById(R.id.user_name);
+        Name.setText(ngo_name);
+
         navigationView.setNavigationItemSelectedListener(this);
 
     }
@@ -104,6 +118,10 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
                 Intent home= new Intent(this, SplashScreen.class);
                 startActivity(home);
                 break;
+            case R.id.nav_setting:
+                Intent setting= new Intent(this, Settings_activity.class);
+                //  FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
+                startActivity(setting);
          /*   case R.id.nav_setting:
                 Intent setting= new Intent(this, Settings_activity.class);
                 startActivity(setting);

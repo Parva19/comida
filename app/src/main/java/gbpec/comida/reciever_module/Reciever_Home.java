@@ -4,12 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +34,9 @@ import java.util.List;
 
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
+import gbpec.comida.donor_module.Donor_Home_Activity;
+
+import static gbpec.comida.donor_module.Donor_Home_Activity.IMAGE_NAME;
 
 
 public class Reciever_Home extends Fragment {
@@ -49,6 +56,10 @@ public class Reciever_Home extends Fragment {
     private RecyclerView recyclerView;
     private FoodAdapter mAdapter;
     //
+   ImageFragmentPagerAdapter imageFragmentPagerAdapter;
+    ViewPager viewPager;
+    public static final int[] IMAGE_NAME = {R.drawable.ngo1,R.drawable.ngo2,R.drawable.ngo3,R.drawable.ngo4};
+    static final int NUM_ITEMS = 4;
     public Reciever_Home() {
         // Required empty public constructor
     }
@@ -79,6 +90,12 @@ public class Reciever_Home extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
         SessionManager session;
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
@@ -86,18 +103,14 @@ public class Reciever_Home extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
 
 
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
-
-
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_reciever__home, container, false);
+
+        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+        viewPager = (ViewPager) v.findViewById(R.id.pager);
+        viewPager.setAdapter(imageFragmentPagerAdapter);
+
+
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
 
         String URL1="http://vipul.hol.es/getNgoLocation.php?contactno="+username;
@@ -106,25 +119,26 @@ public class Reciever_Home extends Fragment {
             @Override
             public void onResponse(String response) {
                 //   loading.dismiss();
-                Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
                 //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject  jsonObject1 = new JSONObject(response);
-                    Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(getContext(),"1",Toast.LENGTH_LONG).show();
                     JSONArray result = jsonObject1.getJSONArray("result");
-                     Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
+                  //   Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
 
                     JSONObject businessData = result.getJSONObject(0);
                     ngo_latiude=businessData.getString("Latitude");
                     ngo_longitude=businessData.getString("Longitude");
                     lat1=Double.parseDouble(ngo_latiude);
                     lon1=Double.parseDouble(ngo_longitude);
+                    foodItems();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Toast.makeText(getContext(),ngo_latiude+"lo-"+ngo_longitude,Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(),ngo_latiude+"lo-"+ngo_longitude,Toast.LENGTH_LONG).show();
                 // showJSON(response);
             }
         },
@@ -138,19 +152,67 @@ public class Reciever_Home extends Fragment {
         RequestQueue requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
         //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
         requestQueue1.add(stringRequest1);
-
         mAdapter = new FoodAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-       String URL="http://vipul.hol.es/foodDetails.php";
+
+
+        return v;
+    }
+
+    // Image slider Code--
+    public static class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
+        public ImageFragmentPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            SwipeFragment fragment = new SwipeFragment();
+            return SwipeFragment.newInstance(position);
+        }
+    }
+
+    public static class SwipeFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View swipeView = inflater.inflate(R.layout.swipe_fragment, container, false);
+            ImageView imageView = (ImageView) swipeView.findViewById(R.id.imageView);
+            Bundle bundle = getArguments();
+            int position = bundle.getInt("position");
+            // String imageFileName = IMAGE_NAME[position];
+            // int imgResId = getResources().getIdentifier(imageFileName, "drawable", "com.gbpec.comida.donor_module");
+            imageView.setImageResource(IMAGE_NAME[position]);
+            return swipeView;
+        }
+
+        static SwipeFragment newInstance(int position) {
+            SwipeFragment swipeFragment = new SwipeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", position);
+            swipeFragment.setArguments(bundle);
+            return swipeFragment;
+        }
+    }
+    //Image slider code end
+
+    public void foodItems(){
+
+        String URL="http://vipul.hol.es/foodDetails.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //   loading.dismiss();
-                Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+             //   Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
                 //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject  jsonObject1 = new JSONObject(response);
@@ -181,8 +243,6 @@ public class Reciever_Home extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         //  Toast.makeText(getContext(),"exe",Toast.LENGTH_LONG).show();
         requestQueue.add(stringRequest);
-
-        return v;
     }
     private double distance(double lat1, double lon1, double lat2, double lon2) {
         double theta = lon1 - lon2;
@@ -223,7 +283,7 @@ public class Reciever_Home extends Fragment {
         double i=distance(lat1,lon1,lat2,lon2);
      // Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
 
-        if(i<50.00) {
+        if(i<25.00) {
             Food food = new Food(donor, contact,details,pickupTime,validDate,validTime);
             foodList.add(food);
         }

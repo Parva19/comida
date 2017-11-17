@@ -40,6 +40,7 @@
         <activity android:name=".RegistrationNGO"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".Registration_options" />
+        <activity android:name=".Settings_activity"/>
         <activity android:name=".donor_module.Donor_NavigationMainActivity">
 
         </activity>

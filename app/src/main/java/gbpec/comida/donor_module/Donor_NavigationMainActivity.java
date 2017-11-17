@@ -30,7 +30,7 @@ import gbpec.comida.Settings_activity;
 import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener,History_Module.OnFragmentInteractionListener,Settings.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener,History_Module.OnFragmentInteractionListener{
     DrawerLayout drawer;
     Fragment fragment = null;
     Class fragmentClass = null;
@@ -78,12 +78,14 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
         TextView Name =(TextView)hView.findViewById(R.id.user_name);
         Name.setText(user.get(sessionManager.USER_NAME));
         String url1= user.get(sessionManager.USER_IMG);
-         ImageLoader imageLoader = CustomVolleyRequest.getInstance(getApplicationContext())
-                .getImageLoader();
-        imageLoader.get(url1, ImageLoader.getImageListener(nav_img,
-                R.drawable.logo, android.R.drawable
-                        .ic_dialog_alert));
-        nav_img.setImageUrl(url1, imageLoader);
+        /*if(url1.equals(null)) {
+            ImageLoader imageLoader = CustomVolleyRequest.getInstance(getApplicationContext())
+                    .getImageLoader();
+            imageLoader.get(url1, ImageLoader.getImageListener(nav_img,
+                    R.drawable.logo, android.R.drawable
+                            .ic_dialog_alert));
+            nav_img.setImageUrl(url1, imageLoader);
+        }*/
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -139,14 +141,19 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  // fragment.setArguments(bundle);
                  FragmentManager fragmentManager = getSupportFragmentManager();
                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
-                 getSupportActionBar().setTitle("Profile");
                  break;
-             case R.id.nav_logout: sessionManager.logoutUser();
+             case R.id.nav_logout:
+                 sessionManager.logoutUser();
                  Intent logout= new Intent(this, SplashScreen.class);
                  FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
                  startActivity(logout);
                  Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
                  break;
+             case R.id.nav_setting:
+                 Intent setting= new Intent(this, Settings_activity.class);
+               //  FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
+                 startActivity(setting);
+
              case R.id.nav_home:
                  fragmentClass = Donor_Home_Activity.class;
                  try
@@ -159,41 +166,21 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
 
                  FragmentManager fragmentManagerhome = getSupportFragmentManager();
                  fragmentManagerhome.beginTransaction().replace(R.id.flContent, fragment).commit();
-                 getSupportActionBar().setTitle("Profile");
-                 break;
-             case R.id.nav_donor_setting:
-//                 fragmentClass = Settings.class;
-//                 try
-//                 {
-//                     fragment = (Fragment) fragmentClass.newInstance();
-//                 } catch (Exception e) {
-//                     e.printStackTrace();
-//                 }
-//
-//
-//                 FragmentManager fragmentManagerSetting = getSupportFragmentManager();
-//                 fragmentManagerSetting.beginTransaction().replace(R.id.flContent, fragment).commit();
-//                 getSupportActionBar().setTitle("Setting");
-//                 break;
-                 Intent i=new Intent(Donor_NavigationMainActivity.this, Settings_activity.class);
-                 startActivity(i);
                  break;
              case R.id.nav_Donation_history:
-                 //Toast.makeText(getApplicationContext(), "Profile.", Toast.LENGTH_SHORT).show();
-                 fragmentClass = History_Module.class;
+                                  fragmentClass = History_Module.class;
 
 
-                 try {
-                     fragment = (Fragment) fragmentClass.newInstance();
-                     fragment.setArguments(bundle);
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                 }
-                 // fragment.setArguments(bundle);
-                 FragmentManager fragmentManagerhistory = getSupportFragmentManager();
-                 fragmentManagerhistory.beginTransaction().replace(R.id.flContent, fragment).commit();
-                 getSupportActionBar().setTitle("Profile");
-                 break;
+                                 try {
+                                      fragment = (Fragment) fragmentClass.newInstance();
+                                      fragment.setArguments(bundle);
+                                  } catch (Exception e) {
+                                      e.printStackTrace();
+                                  }
+                                  // fragment.setArguments(bundle);
+                                         fragmentManager = getSupportFragmentManager();
+                                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                                  break;
          }
           //if(item.equals("Profile")){
 

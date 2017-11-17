@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
@@ -48,17 +50,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         errorText.setVisibility(View.GONE);
         signUp.setOnClickListener(this);
         login.setOnClickListener(this);
-
+        FirebaseApp.initializeApp(this);
     }
     private void checkLogin(String username, String password) {
 
 
 
         String url = "http://vipul.hol.es/login_fetch.php?user_no="+username+"&password="+password;
+        Toast.makeText(this,"thhis--"+username+" "+password,Toast.LENGTH_SHORT).show();
+
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -89,22 +93,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             else {
                 JSONObject collegedata = result.getJSONObject(0);
-                String username = collegedata.getString("User_mobile");
+                String username1 = collegedata.getString("User_mobile");
                 String type = collegedata.getString("User_type");
             if(result.length()!=0)
             {
 
-                session.createLoginSession(username,type);
+                session.createLoginSession(username1,type);
 
               if (type.equals("business")) {
+
                   FirebaseMessaging.getInstance().subscribeToTopic("donor");
                  // myIntent.putExtra("user", username);
-                  saveDataDonor(username);
+                  saveDataDonor(username1);
 
                 }
-               else if (type.equals("ngo")) {
+                if (type.equals("ngo")) {
+
                   FirebaseMessaging.getInstance().subscribeToTopic("reciever");
-                  saveDataNGO(username);
+                  saveDataNGO(username1);
                     Intent myIntent = new Intent(LoginActivity.this,
                             Reciever_Navigation.class);
 
