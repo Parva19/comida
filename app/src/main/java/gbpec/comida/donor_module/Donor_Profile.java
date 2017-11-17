@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -78,7 +80,7 @@ public class Donor_Profile extends Fragment {
     private OnFragmentInteractionListener mListener;
     TextView contact,address,email,info,changePassword,profile_name;
     Button edit,profilePicEdit;
-    RelativeLayout profilePic;
+    ImageView profilePic;
     Bitmap image,bm;
     RelativeLayout cancelPic,donePic;
     LinearLayout buttonPicBlock;
@@ -196,16 +198,17 @@ public class Donor_Profile extends Fragment {
                     email.setText(Email);
                     info.setText(Info);
                     profile_name.setText(business_name);
-                    if(picUrl!=null){
-                        try {
-                            URL url = new URL(picUrl);
-                            image = BitmapFactory.decodeStream(url.openStream());
-                            Drawable dr = new BitmapDrawable(getResources(), image);
-                            profilePic.setBackground(dr);
-                        } catch(IOException e) {
-                            System.out.println(e);
-                        }
-                    }
+                    loadimage(picUrl);
+//                    if(picUrl!=null){
+//                        try {
+//                            URL url = new URL(picUrl);
+//                            image = BitmapFactory.decodeStream(url.openStream());
+//                            Drawable dr = new BitmapDrawable(getResources(), image);
+//                            profilePic.setBackground(dr);
+//                        } catch(IOException e) {
+//                            System.out.println(e);
+//                        }
+//                    }
 
                     //
                 } catch (JSONException e) {
@@ -236,7 +239,7 @@ public class Donor_Profile extends Fragment {
        info=(TextView)v.findViewById(R.id.info);
         profile_name=(TextView)v.findViewById(R.id.profile_name);
         profilePicEdit=(Button)v.findViewById(R.id.profile_pic_edit);
-        profilePic=(RelativeLayout)v.findViewById(R.id.profile_pic);
+        profilePic=(ImageView) v.findViewById(R.id.profilepic_iv);
         buttonPicBlock=(LinearLayout)v.findViewById(R.id.buttons_pic_block);
         buttonPicBlock.setVisibility(View.GONE);
         cancelPic=(RelativeLayout)v.findViewById(R.id.cancel_pic);
@@ -372,6 +375,32 @@ public class Donor_Profile extends Fragment {
         return  v;
     }
 
+    private void loadimage(final String picUrl) {
+        new Thread(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    bm = BitmapFactory.decodeStream((InputStream) new URL(picUrl).getContent());
+                    profilePic.post(new Runnable()
+                    {
+                        public void run()
+                        {
+                            if(bm !=null)
+                            {
+                                profilePic.setImageBitmap(bm);
+                            }
+                        }
+                    });
+                } catch (Exception e)
+                {
+                    // TODO: handle exception
+                }
+            }
+        }).start();
+    }
+
     private void getStringImage() {
     }
 
@@ -473,8 +502,8 @@ public class Donor_Profile extends Fragment {
             }
         }
 //        ivImage.setImageBitmap(bm);
-        Drawable dr = new BitmapDrawable(getResources(), bm);
-        profilePic.setBackground(dr);
+//        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setImageBitmap(bm);
         buttonPicBlock.setVisibility(View.VISIBLE);
 
     }
@@ -496,8 +525,8 @@ public class Donor_Profile extends Fragment {
             e.printStackTrace();
         }
 //        profilePic.setImageBitmap(thumbnail);
-        Drawable dr = new BitmapDrawable(getResources(), bm);
-        profilePic.setBackground(dr);
+//        Drawable dr = new BitmapDrawable(getResources(), bm);
+        profilePic.setImageBitmap(bm);
         buttonPicBlock.setVisibility(View.VISIBLE);
     }
 

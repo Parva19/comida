@@ -35,10 +35,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="10dp"
+    android:weightSum="2">
 
     <RelativeLayout
-        android:layout_width="175dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="150dp"
         android:id="@+id/donate_food"
         android:background="#1EA133"
@@ -64,10 +66,9 @@
             android:text="Donate Food"/>
     </RelativeLayout>
     <RelativeLayout
-
-        android:layout_width="175dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="150dp"
-        android:layout_marginRight="10dp"
         android:padding="5dp"
         android:layout_toRightOf="@+id/donate_food"
         android:id="@+id/total_food"
@@ -75,23 +76,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="25"
-            android:textSize="80dp"
+            android:text="3"
+            android:textSize="60dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/amount_food"
             android:textColor="#ffffff"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
 
-
-            android:layout_toRightOf="@+id/amount_food"
-            android:layout_marginTop="60dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="#ffff"
-
-            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,13 +90,9 @@
             android:layout_centerHorizontal="true"
             android:paddingRight="10dp"
             android:textSize="15dp"
-
+            android:layout_marginLeft="20dp"
             android:textStyle="bold"
-            android:text="Number of time food donated till now."/>
-
-
-
-
+            android:text="Number of time food donated"/>
     </RelativeLayout>
 </LinearLayout>
 

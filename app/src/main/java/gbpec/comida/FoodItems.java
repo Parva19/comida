@@ -64,7 +64,7 @@ private LinearLayout layout,layout2;
 //DatePicker simpleDatePicker;
     EditText simpleDatePicker_et,timepicker_from,timepicker_to,timepicker_upto;
     private int pickt1_h,pickt2_h;
-    private String address,user,Address,foodlattitude,foodlongitude;
+    private String address,user,user_name,Address,foodlattitude,foodlongitude;
     private long UPDATE_INTERVAL = 60 * 1000;  /* 60 secs */
     private long FASTEST_INTERVAL = 10000; /* 10 sec */
 
@@ -90,6 +90,7 @@ private LinearLayout layout,layout2;
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
         user = user1.get(SessionManager.USER_CONTACT);
+        user_name=user1.get(SessionManager.USER_NAME);
         Toast.makeText(getApplicationContext(), user, Toast.LENGTH_LONG).show();
 
         // Intent i=getIntent();
@@ -504,6 +505,7 @@ private LinearLayout layout,layout2;
                 // The firs argument should be same sa your MySQL database table columns.
                 //params.put("mnumber",bnumber);
                 params.put("fuser",user);
+                params.put("fname",user_name);
                 params.put("fDetails", String.valueOf(sb));
                 params.put("fRequestDate", valid_date);//valid date
                 params.put("fRequestTime",valid_time);//valid time

@@ -26,10 +26,11 @@ import java.util.HashMap;
 import gbpec.comida.CustomVolleyRequest;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
+import gbpec.comida.Settings_activity;
 import gbpec.comida.SplashScreen;
 
 public class Donor_NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Donor_Profile.OnFragmentInteractionListener,Edit_Profilr.OnFragmentInteractionListener,Change_Password.OnFragmentInteractionListener,History_Module.OnFragmentInteractionListener,Settings.OnFragmentInteractionListener{
     DrawerLayout drawer;
     Fragment fragment = null;
     Class fragmentClass = null;
@@ -138,6 +139,7 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  // fragment.setArguments(bundle);
                  FragmentManager fragmentManager = getSupportFragmentManager();
                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                 getSupportActionBar().setTitle("Profile");
                  break;
              case R.id.nav_logout: sessionManager.logoutUser();
                  Intent logout= new Intent(this, SplashScreen.class);
@@ -157,6 +159,40 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
 
                  FragmentManager fragmentManagerhome = getSupportFragmentManager();
                  fragmentManagerhome.beginTransaction().replace(R.id.flContent, fragment).commit();
+                 getSupportActionBar().setTitle("Profile");
+                 break;
+             case R.id.nav_donor_setting:
+//                 fragmentClass = Settings.class;
+//                 try
+//                 {
+//                     fragment = (Fragment) fragmentClass.newInstance();
+//                 } catch (Exception e) {
+//                     e.printStackTrace();
+//                 }
+//
+//
+//                 FragmentManager fragmentManagerSetting = getSupportFragmentManager();
+//                 fragmentManagerSetting.beginTransaction().replace(R.id.flContent, fragment).commit();
+//                 getSupportActionBar().setTitle("Setting");
+//                 break;
+                 Intent i=new Intent(Donor_NavigationMainActivity.this, Settings_activity.class);
+                 startActivity(i);
+                 break;
+             case R.id.nav_Donation_history:
+                 //Toast.makeText(getApplicationContext(), "Profile.", Toast.LENGTH_SHORT).show();
+                 fragmentClass = History_Module.class;
+
+
+                 try {
+                     fragment = (Fragment) fragmentClass.newInstance();
+                     fragment.setArguments(bundle);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+                 // fragment.setArguments(bundle);
+                 FragmentManager fragmentManagerhistory = getSupportFragmentManager();
+                 fragmentManagerhistory.beginTransaction().replace(R.id.flContent, fragment).commit();
+                 getSupportActionBar().setTitle("Profile");
                  break;
          }
           //if(item.equals("Profile")){
