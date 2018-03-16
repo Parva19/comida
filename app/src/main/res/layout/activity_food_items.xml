@@ -200,14 +200,6 @@
                             android:editable="false"
                             android:focusable="false"
                             android:longClickable="false"/>
-                        <!--<TimePicker-->
-
-                            <!--android:id="@+id/simpleTimePicker1"-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:timePickerMode="clock"-->
-                            <!--android:layout_weight="1"-->
-                            <!--/>-->
 
                     </LinearLayout>
                     <LinearLayout

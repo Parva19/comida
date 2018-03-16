@@ -121,7 +121,7 @@ public class Donor_Profile extends Fragment {
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user1 = session.getUserDetails();
         username = user1.get(SessionManager.USER_CONTACT);
-        Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
+  //      Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
         //getProfileData();
 
     }
@@ -148,10 +148,10 @@ public class Donor_Profile extends Fragment {
             email = businessData.getString("email");
             if(result.length()!=0)
             {
-                Toast.makeText(getActivity().getApplicationContext(),"aagya",Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity().getApplicationContext(),"aagya",Toast.LENGTH_LONG).show();
             }
             else{
-                Toast.makeText(getActivity().getApplicationContext(),"nhi aaya ",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity().getApplicationContext(),"nhi aaya ",Toast.LENGTH_LONG).show();
 
             }
         } catch (JSONException e) {
@@ -178,7 +178,7 @@ public class Donor_Profile extends Fragment {
             @Override
             public void onResponse(String response) {
              //   loading.dismiss();
-                Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+               // Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
              //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject  jsonObject1 = new JSONObject(response);
@@ -217,7 +217,7 @@ public class Donor_Profile extends Fragment {
 
 
 
-                Toast.makeText(getContext(),"data-"+Contact+Address+Email,Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getContext(),"data-"+Contact+Address+Email,Toast.LENGTH_LONG).show();
                // showJSON(response);
             }
         },
@@ -268,7 +268,7 @@ public class Donor_Profile extends Fragment {
                                 loading.dismiss();
                                 buttonPicBlock.setVisibility(View.GONE);
                                 //Showing toast message of the response
-                                Toast.makeText(getActivity(), s , Toast.LENGTH_LONG).show();
+                        //        Toast.makeText(getActivity(), s , Toast.LENGTH_LONG).show();
                             }
                         },
                         new Response.ErrorListener() {

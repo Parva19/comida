@@ -84,7 +84,7 @@ private String Contact,Email,Address,Info,username;
         Address=getArguments().getString("Address");
         Email=getArguments().getString("Email");
         Info=getArguments().getString("Info");
-        Toast.makeText(getActivity().getApplicationContext(),"Data- "+username,Toast.LENGTH_LONG).show();
+       // Toast.makeText(getActivity().getApplicationContext(),"Data- "+username,Toast.LENGTH_LONG).show();
     }
 
     @Override

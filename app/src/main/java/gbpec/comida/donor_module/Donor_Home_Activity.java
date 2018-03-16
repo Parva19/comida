@@ -91,7 +91,7 @@ RelativeLayout donate;
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("MM/dd/yy");
         check_date = "Current Date : " + mdformat.format(calendar.getTime());
-        Toast.makeText(getContext(),check_date,Toast.LENGTH_LONG).show();
+       // Toast.makeText(getContext(),check_date,Toast.LENGTH_LONG).show();
 
         amount_food=(TextView)v.findViewById(R.id.amount_food);
         ngos_total=(TextView)v.findViewById(R.id.ngo_total);
@@ -109,7 +109,7 @@ RelativeLayout donate;
             @Override
             public void onResponse(String response) {
                 //   loading.dismiss();
-                Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
+            //    Toast.makeText(getContext(),"thhis--"+response,Toast.LENGTH_LONG).show();
                 //WORKING CORRECTLY NAD GETTING DATA
                 try {
                     JSONObject jsonObject1 = new JSONObject(response);

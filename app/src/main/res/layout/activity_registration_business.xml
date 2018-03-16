@@ -91,8 +91,6 @@
                     />
             </android.support.design.widget.TextInputLayout>
 
-
-
                 <EditText
                     android:layout_width="300dp"
                     android:layout_height="45dp"
@@ -101,7 +99,6 @@
                     android:hint="Type"
                     android:inputType="text"
                     />
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
@@ -118,6 +115,23 @@
                     android:inputType="phone"
                     />
             </android.support.design.widget.TextInputLayout>
+            <Button
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/sendotp"
+                style="?android:textAppearanceSmall"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:text="Verify Number"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:background="#08981f"
+                android:textColor="#ffff"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="2dp"
+                android:onClick="sendotp"
+                />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -125,15 +139,40 @@
                 android:layout_marginTop="12dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
                 <EditText
-                    android:id="@+id/business_num2"
+                    android:id="@+id/otpnum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:hint="Alternate No. (optonal)"
+                    android:hint="Verify OTP"
                     android:inputType="phone"
-
+                    android:visibility="gone"
                     />
             </android.support.design.widget.TextInputLayout>
+            <Button
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/verifyotp"
+                style="?android:textAppearanceSmall"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:text="Verify OTP"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:background="#08981f"
+                android:textColor="#ffff"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="2dp"
+                android:onClick="verifyotp"
+                android:visibility="gone"
+                />
+           <!--After otp -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/afterotp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -149,20 +188,7 @@
                     android:inputType="text"
                     />
             </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-                <EditText
-                    android:id="@+id/business_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:hint="Email Id"
-                    android:inputType="textEmailAddress"
-                    />
-            </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -175,6 +201,20 @@
                     android:textSize="20sp"
                     android:hint="Head Name (optional)"
                     />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="12dp"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                    <EditText
+                        android:id="@+id/business_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:hint="Email Id"
+                        android:inputType="textEmailAddress"
+                        />
+                </android.support.design.widget.TextInputLayout>
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout
                 android:layout_marginTop="12dp"
@@ -214,6 +254,24 @@
                     android:inputType="textPassword"
                     />
             </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/verifymail"
+                style="?android:textAppearanceSmall"
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:text="Verify your mail"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:background="#08981f"
+                android:textColor="#ffff"
+                android:layout_marginTop="25dp"
+                android:layout_centerHorizontal="true"
+                android:elevation="2dp"
+                android:onClick="verifymail"
+                />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -245,6 +303,8 @@
                 android:elevation="2dp"
                 android:onClick="registerBusiness"
                 />
+
+            </LinearLayout>
         </LinearLayout>
 
 

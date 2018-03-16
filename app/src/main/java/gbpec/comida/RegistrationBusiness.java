@@ -3,6 +3,7 @@ package gbpec.comida;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,22 +30,37 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
+import java.util.concurrent.TimeUnit;
 
 public class RegistrationBusiness extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional;
+    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional, mVerificationId;
     private EditText business_name,business_email,business_head,business_additional,others;
     private TextInputLayout other;
-    private EditText business_num,business_num2;
+    private EditText business_num,otpnum;
     private Spinner spinner;
     private EditText bpassword,cbusiness;
     private EditText baddress;
+    LinearLayout afterotp;
 int itemType=1;
-    private Button register,validate;
+    private Button register,validate,verifymail,sendotp,verifyotp;
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
     static int d=1;
+    int otpcomplete=1;
 
+    FirebaseAuth mAuth,auth,mauth;
+    PhoneAuthProvider.ForceResendingToken mResendToken;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     //defining AwesomeValidation object
     private AwesomeValidation awesomeValidation;
     //String password=null;
@@ -63,22 +80,14 @@ int itemType=1;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /*View logoView = getToolbarLogoView(toolbar);
-        logoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                change();
-                //logo clicked
-            }
+        auth=FirebaseAuth.getInstance();
+        mauth=FirebaseAuth.getInstance();
+        mAuth=FirebaseAuth.getInstance();
 
-            private void change() {
-               // Intent i=new Intent(this,Registration_options.class);
-            }
-        });*/
-
+        afterotp=(LinearLayout)findViewById(R.id.afterotp);
         business_name=(EditText) findViewById(R.id.business_name);
         business_num=(EditText) findViewById(R.id.business_num1);
-        business_num2=(EditText) findViewById(R.id.business_num2);
+        otpnum=(EditText) findViewById(R.id.otpnum);
         baddress=(EditText) findViewById(R.id.business_address1);
         spinner= (Spinner) findViewById(R.id.business_type);
         business_email= (EditText) findViewById(R.id.business_email);
@@ -90,6 +99,10 @@ int itemType=1;
         other=(TextInputLayout) findViewById(R.id.business_other) ;
 
         register=(Button)findViewById(R.id.register);
+        verifymail=(Button)findViewById(R.id.verifymail);
+        sendotp=(Button)findViewById(R.id.sendotp);
+        verifyotp=(Button)findViewById(R.id.verifyotp);
+
         other.setVisibility(View.GONE);
 
         // Creating Volley newRequestQueue .
@@ -102,9 +115,9 @@ int itemType=1;
         //adding validation
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         awesomeValidation.addValidation(this, R.id.business_num1, "^.{10,13}$", R.string.contact1);
-        awesomeValidation.addValidation(this, R.id.business_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
-        awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
-        // awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
+       // awesomeValidation.addValidation(this, R.id.business_email, Patterns.EMAIL_ADDRESS, R.string.emailerror);
+       // awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
+        //awesomeValidation.addValidation(this, R.id.business_confirm, password,R.string.passwordconfirm);
 
 
 
@@ -115,8 +128,88 @@ int itemType=1;
         spinner.setAdapter(adapter);
         //SPINNER CODE END
 
+//for otp
+        mCallbacks= new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+               // Toast.makeText(RegistrationBusiness.this,"111",Toast.LENGTH_SHORT).show();
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Toast.makeText(RegistrationBusiness.this,"phone number is incorrect or some network issue is there",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCodeSent(String verificationId,
+                                   PhoneAuthProvider.ForceResendingToken token) {
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID.
+                //  Log.d(TAG, "onCodeSent:" + verificationId);
+                // Save verification ID and resending token so we can use them later
+                mVerificationId = verificationId;
+                mResendToken = token;
+                // ...
+            }
+        };
+
     }
 
+
+    public void sendotp(View v){
+        bnumber=business_num.getText().toString();
+
+        if (awesomeValidation.validate()) {
+            startPhoneNumberVerification(bnumber);
+            otpnum.setVisibility(View.VISIBLE);
+            verifyotp.setVisibility(View.VISIBLE);
+            awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);
+
+        }
+    }
+    private void startPhoneNumberVerification(String phoneNumber) {
+        // [START start_phone_auth]
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks);        // OnVerificationStateChangedCallbacks
+        // [END start_phone_auth]
+
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success
+                            FirebaseUser user = task.getResult().getUser();
+                            Toast.makeText(RegistrationBusiness.this,"You are verified, congragts",Toast.LENGTH_LONG).show();
+                            afterotp.setVisibility(View.VISIBLE);
+                            business_num.setEnabled(false);
+                            otpnum.setEnabled(false);
+                            sendotp.setEnabled(false);
+                            verifyotp.setEnabled(false);
+
+                        } else {
+                            Toast.makeText(RegistrationBusiness.this,"wrong otp",Toast.LENGTH_LONG).show();
+                            // Sign in failed
+                        }
+                    }
+                });
+    }
+
+    public void verifyotp(View v){
+        String verificationCode=otpnum.getText().toString();
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
+        signInWithPhoneAuthCredential(credential);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -134,12 +227,76 @@ int itemType=1;
         }
     }
 
+    public void verifymail(View v){
+        password=bpassword.getText().toString();
+        confirm_password=cbusiness.getText().toString();
+        email=business_email.getText().toString();
+        //first check wether email have in or com, then check passwords after that email is sent for verification
+        int emv=emailValid(email);
+        if(emv==0){
+            business_email.setError("invalid email");
+        }
+        else {
+            if (!password.equals(confirm_password)) {
+                cbusiness.setError("Password doesn't match");
+                //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
+                awesomeValidation.validate();
+
+            } else {
+                if (awesomeValidation.validate()) {
+                  //  Toast.makeText(getApplicationContext(), "First ", Toast.LENGTH_LONG).show();
+
+//sending email verification
+                    auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                    // If sign in fails, display a message to the user. If sign in succeeds the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (!task.isSuccessful()) {
+                                        Toast.makeText(RegistrationBusiness.this, "Authentication failed." + task.getException(),
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(RegistrationBusiness.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
+
+                                        FirebaseUser user = auth.getCurrentUser();
+
+                                        final String email2 = user.getEmail();
+                                        String uid = user.getUid();
+
+                                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(RegistrationBusiness.this, "email sent to registered email\n PLEASE VERIFY FROM THERE" + task.getException(),
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                                else{
+                                                    Toast.makeText(RegistrationBusiness.this, "failed to send email verification due to invalid email or network problem" + task.getException(),
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                        //emailv.setText(email2+"::"+ user.isEmailVerified());
+
+                                    }
+                                }
+                            });
+
+
+                }
+
+            }
+        }
+
+    }
 
 
     public void registerBusiness(View v){
 
         bnumber=business_num.getText().toString();
-        bnumber2=business_num2.getText().toString();
+        bnumber2=otpnum.getText().toString();
         bname=business_name.getText().toString();
         password=bpassword.getText().toString();
         confirm_password=cbusiness.getText().toString();
@@ -150,6 +307,30 @@ int itemType=1;
         if(itemType==2){
             type=others.getText().toString();
         }
+
+        mauth.signInWithEmailAndPassword(email,password).
+                addOnCompleteListener(RegistrationBusiness.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()){
+                            Toast.makeText(RegistrationBusiness.this,"failed to login",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+
+                            FirebaseUser user = auth.getCurrentUser();
+                            final String email2 = user.getEmail();
+                            boolean emailv=user.isEmailVerified();
+                           // verifyemail.setText(email2+"::"+ user.isEmailVerified());
+                            if(emailv==true) {
+                                Toast.makeText(RegistrationBusiness.this, "login complete " + emailv, Toast.LENGTH_LONG).show();
+                                UserRegistration();
+                            }
+                            else{
+                                Toast.makeText(RegistrationBusiness.this, "login incomplete please verify your email account" , Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
        /* if(!password.equals(confirm_password)){
             cbusiness.setError("Password doesn't match");
           //  Toast.makeText(getApplicationContext(), " Confirm Password and password should be same", Toast.LENGTH_LONG).show();
@@ -168,7 +349,7 @@ int itemType=1;
        sub2=email.substring(email.length()-2);
         if(sub1.equals(".com") || sub2.equals(".in")) {*/
 
-        int emv=emailValid(email);
+        /*int emv=emailValid(email);
         if(emv==0){
             business_email.setError("invalid email");
         }
@@ -186,7 +367,7 @@ int itemType=1;
                 //awesomeValidation.validate();
 
             }
-        }
+        }*/
         //  }
         /*else{
             business_email.setError("invalid email");
