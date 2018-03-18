@@ -21,12 +21,20 @@
         <item>Others</item>
     </string-array>
     <string-array name="book_type">
-        <item>Book Types</item>
-        <item>Education</item>
-        <item>Novel</item>
-        <item>General Knowlwdge</item>
-        <item>Stationary Items</item>
-        <item>Other Item</item>
+    <item>Book Types</item>
+    <item>Education</item>
+    <item>Novel</item>
+    <item>General Knowlwdge</item>
+    <item>Stationary Items</item>
+    <item>Other Item</item>
+</string-array>
+    <string-array name="cloth_type">
+        <item>Cloth Types</item>
+        <item>Winter</item>
+        <item>Summer</item>
+        <item>Sheets &amp; Blankets</item>
+        <item>Shoes/ Slippers</item>
+        <item>Other Items</item>
     </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
