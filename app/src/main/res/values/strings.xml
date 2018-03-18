@@ -20,6 +20,14 @@
         <item>Womens</item>
         <item>Others</item>
     </string-array>
+    <string-array name="book_type">
+        <item>Book Types</item>
+        <item>Education</item>
+        <item>Novel</item>
+        <item>General Knowlwdge</item>
+        <item>Stationary Items</item>
+        <item>Other Item</item>
+    </string-array>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
