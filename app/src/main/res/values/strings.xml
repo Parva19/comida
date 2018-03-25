@@ -4,6 +4,47 @@
     <string name="passworderror">Enter correct password</string>
     <string name="contact1">Invali Contact Number</string>
 
+
+    <string-array name="state_arrays">
+        <item>State</item>
+        <item>Andhra Pradesh</item>
+        <item>Andaman and Nicobar Islands</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chandigarh</item>
+        <item>Chhattisgarh</item>
+        <item>Dadra and Nagar Haveli</item>
+        <item>Daman and Diu</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu and Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Lakshadweep</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Delhi NCR</item>
+        <item>Orissa</item>
+        <item>Puducherry</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
     <string-array name="business_type">
         <item>Restaurant</item>
         <item>Hotel</item>
@@ -13,6 +54,12 @@
         <item>Kitchen</item>
         <item>Others</item>
     </string-array>
+
+    <string-array name="donor_type">
+        <item>Business</item>
+        <item>One Time Donor</item>
+    </string-array>
+
     <string-array name="ngo_type">
         <item>Food</item>
         <item>Child</item>
@@ -21,13 +68,13 @@
         <item>Others</item>
     </string-array>
     <string-array name="book_type">
-    <item>Book Types</item>
-    <item>Education</item>
-    <item>Novel</item>
-    <item>General Knowlwdge</item>
-    <item>Stationary Items</item>
-    <item>Other Item</item>
-</string-array>
+        <item>Book Types</item>
+        <item>Education</item>
+        <item>Novel</item>
+        <item>General Knowlwdge</item>
+        <item>Stationary Items</item>
+        <item>Other Item</item>
+    </string-array>
     <string-array name="cloth_type">
         <item>Cloth Types</item>
         <item>Winter</item>
@@ -41,6 +88,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

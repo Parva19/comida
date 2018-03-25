@@ -3,6 +3,7 @@ package gbpec.comida.reciever_module;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -110,7 +111,6 @@ public class Reciever_Home extends Fragment {
         viewPager = (ViewPager) v.findViewById(R.id.pager);
         viewPager.setAdapter(imageFragmentPagerAdapter);
 
-
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
 
         String URL1="http://vipul.hol.es/getNgoLocation.php?contactno="+username;
@@ -130,8 +130,10 @@ public class Reciever_Home extends Fragment {
                     JSONObject businessData = result.getJSONObject(0);
                     ngo_latiude=businessData.getString("Latitude");
                     ngo_longitude=businessData.getString("Longitude");
-                    lat1=Double.parseDouble(ngo_latiude);
-                    lon1=Double.parseDouble(ngo_longitude);
+                    lat1=28.4;
+                    lon1=77.5;
+                   // lat1=Double.parseDouble(ngo_latiude);
+                   // lon1=Double.parseDouble(ngo_longitude);
                     foodItems();
 
                 } catch (JSONException e) {
@@ -158,9 +160,9 @@ public class Reciever_Home extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-
         return v;
     }
+
 
     // Image slider Code--
     public static class ImageFragmentPagerAdapter extends FragmentPagerAdapter {

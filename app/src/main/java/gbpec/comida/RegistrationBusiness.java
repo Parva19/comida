@@ -43,20 +43,22 @@ import java.util.concurrent.TimeUnit;
 
 public class RegistrationBusiness extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional, mVerificationId;
+    String bnumber,bname,type,password,confirm_password,email,head_name="One time",bnumber2,address,additional, mVerificationId;
     private EditText business_name,business_email,business_head,business_additional,others;
     private TextInputLayout other;
     private EditText business_num,otpnum;
-    private Spinner spinner;
+    private Spinner spinner,spinner_donorType;
     private EditText bpassword,cbusiness;
     private EditText baddress;
     LinearLayout afterotp;
+    LinearLayout business_type_layout;
 int itemType=1;
     private Button register,validate,verifymail,sendotp,verifyotp;
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
     static int d=1;
     int otpcomplete=1;
+    String donor_type_selected;
 
     FirebaseAuth mAuth,auth,mauth;
     PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -90,12 +92,16 @@ int itemType=1;
         otpnum=(EditText) findViewById(R.id.otpnum);
         baddress=(EditText) findViewById(R.id.business_address1);
         spinner= (Spinner) findViewById(R.id.business_type);
+        spinner_donorType= (Spinner) findViewById(R.id.donor_type);
         business_email= (EditText) findViewById(R.id.business_email);
         business_head= (EditText) findViewById(R.id.business_head);
         bpassword=(EditText)findViewById(R.id.business_password);
         cbusiness=(EditText)findViewById(R.id. business_confirm);
         business_additional=(EditText)findViewById(R.id. business_additional);
         others=(EditText)findViewById(R.id.business_others);
+        business_type_layout=(LinearLayout)findViewById(R.id.business_type_layout);
+        business_type_layout.setVisibility(View.GONE);
+     //   business_head.setVisibility(View.GONE);
         other=(TextInputLayout) findViewById(R.id.business_other) ;
 
         register=(Button)findViewById(R.id.register);
@@ -127,6 +133,11 @@ int itemType=1;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         //SPINNER CODE END
+
+        spinner_donorType.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.donor_type, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_donorType.setAdapter(adapter2);
 
 //for otp
         mCallbacks= new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -438,7 +449,7 @@ int itemType=1;
                 params.put("bName", bname);
                 params.put("bType", type);
                 params.put("bContact",bnumber);
-                params.put("bContact2",bnumber2);
+             //   params.put("bContact2",bnumber2);
                 params.put("bEmail",email);
                 params.put("bAddress",address);
                 params.put("bHead",head_name);
@@ -463,17 +474,38 @@ int itemType=1;
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String item = adapterView.getItemAtPosition(i).toString();
-        if(item.equals("Others")){
-            other.setVisibility(View.VISIBLE);
-            itemType=2;
-           // type=others.getText().toString();
+        Spinner spinnerView = (Spinner) adapterView;
+        if(spinnerView.getId()==R.id.business_type) {
+
+
+            String item = adapterView.getItemAtPosition(i).toString();
+            if (item.equals("Others")) {
+                other.setVisibility(View.VISIBLE);
+                itemType = 2;
+                type = others.getText().toString();
+            }
+            else {
+                other.setVisibility(View.GONE);
+                itemType = 1;
+                type = item;
+            }
         }
-        else{
-            other.setVisibility(View.GONE);
-            itemType=1;
-            type=item;
+        else if(spinnerView.getId()==R.id.donor_type){
+           String  item= adapterView.getItemAtPosition(i).toString();
+            if(item.equals("Business")){
+                business_type_layout.setVisibility(View.VISIBLE);
+                business_head.setVisibility(View.VISIBLE);
+                business_name.setHint("Business Name");
+
+            }
+            else{
+                business_type_layout.setVisibility(View.GONE);
+                business_head.setVisibility(View.GONE);
+                business_name.setHint("Name");
+                type=item;
+            }
         }
+
 
 
         // Showing selected spinner item
