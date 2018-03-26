@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +23,20 @@ import android.widget.Toast;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 import gbpec.comida.Settings_activity;
 import gbpec.comida.SplashScreen;
 
+public class Reciever_Navigation extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, Reciever_Home.OnFragmentInteractionListener, Receiver_Profile.OnFragmentInteractionListener,Edit_Profilr_Ngo.OnFragmentInteractionListener,Change_Password_Ngo.OnFragmentInteractionListener,Books.OnFragmentInteractionListener,Clothes.OnFragmentInteractionListener,Home.OnFragmentInteractionListener{
 
-public class Reciever_Navigation extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, Reciever_Home.OnFragmentInteractionListener, Receiver_Profile.OnFragmentInteractionListener,Edit_Profilr_Ngo.OnFragmentInteractionListener,Change_Password_Ngo.OnFragmentInteractionListener{
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
     Fragment fragment = null;
     Class fragmentClass = null;
     SessionManager sessionManager;
@@ -45,7 +53,7 @@ public class Reciever_Navigation extends AppCompatActivity  implements Navigatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       fragmentClass = Reciever_Home.class;
+       fragmentClass = Home.class;
         try
         {
             fragment = (Fragment) fragmentClass.newInstance();
