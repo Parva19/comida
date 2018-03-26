@@ -81,10 +81,13 @@ RelativeLayout donate;
 
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(getActivity(),
-                        FoodItems.class);
-             //   myIntent.putExtra("user",username);
-                startActivity(myIntent);
+                FragmentManager fm= getFragmentManager();
+                DonationOptionDialog dFragment = new DonationOptionDialog();
+
+                // Show DialogFragment
+                dFragment.show(fm, "Dialog Fragment");
+
+
             }
         });
 

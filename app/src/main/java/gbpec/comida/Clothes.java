@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -61,21 +62,34 @@ import java.util.Map;
 import static gbpec.comida.R.drawable.edittext_border;
 
 
-public class Clothes extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Clothes extends AppCompatActivity implements AdapterView.OnItemSelectedListener,View.OnClickListener {
 
     LinearLayout cloth_view,layout,layout1;
-    EditText quantity,cloth_desc,street,city,pincode,landmark,available_date,available_time,quantities[]=new EditText[100],desc[]=new EditText[100];
+    EditText quantity,cloth_desc,street,pincode,landmark,available_date,available_time,quantities[]=new EditText[100],desc[]=new EditText[100];
     Spinner cloth_type;
+    AutoCompleteTextView city;
     Spinner[] types=new Spinner[100];
     TextView clothnum;
     Button submit,more_items;
-    String type[]=new String[100],bstreet,bpin,blandmark,bcity,bdate,btime;
+    String type[]=new String[100],bstate,bdate,btime;
+    Spinner t_state;
     int k=0;
+    SessionManager session;
+    String user,user_name,latitude,longitude;
+    String requestDate,requestTime;
+    final StringBuilder sb = new StringBuilder(1000);
+    final StringBuilder add = new StringBuilder(1000);
+    String pincode_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
+
+        session = new SessionManager(getApplicationContext());
+        HashMap<String, String> user1 = session.getUserDetails();
+        user = user1.get(SessionManager.USER_CONTACT);
+        user_name=user1.get(SessionManager.USER_NAME);
 
         cloth_view=(LinearLayout)findViewById(R.id.cloth_view);
         cloth_view.setOrientation(LinearLayout.VERTICAL);
@@ -84,15 +98,22 @@ public class Clothes extends AppCompatActivity implements AdapterView.OnItemSele
         quantity=(EditText)findViewById(R.id.quantity);
         cloth_desc=(EditText)findViewById(R.id.cloth_desc);
         street=(EditText)findViewById(R.id.street);
-        city=(EditText)findViewById(R.id.city);
+        city=(AutoCompleteTextView) findViewById(R.id.city);
         pincode=(EditText)findViewById(R.id.pincode);
-        landmark=(EditText)findViewById(R.id.landmark);
         available_date=(EditText)findViewById(R.id.available_date);
         available_time=(EditText)findViewById(R.id.available_time);
+        t_state=(Spinner)findViewById(R.id.spin_state);
+
+        t_state.setOnItemSelectedListener(this);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.state_arrays, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        t_state.setAdapter(adapter2);
 
         clothnum=(TextView)findViewById(R.id.clothnum);
 
-        submit=(Button)findViewById(R.id.submit);
+        submit=(Button)findViewById(R.id.submit_clothes);
+        submit.setOnClickListener(this);
+
         more_items=(Button)findViewById(R.id.more_items);
 
         //SPINNER CODE
@@ -220,31 +241,75 @@ public class Clothes extends AppCompatActivity implements AdapterView.OnItemSele
         k++;
     }
 
-    public void submit(View v){
+    public void submit() {
+
        /* String typeo ="";
         for(int i=0;i<=k;i++){
             typeo=typeo + type[i]+" ";
         }
         Toast.makeText(Education.this,typeo,Toast.LENGTH_LONG).show();*/
 
-        final StringBuilder sb=new StringBuilder(1000);
+
         sb.append("1) ");
-        sb.append(type[0]+"-");
-        sb.append(quantity.getText().toString()+"::");
-        sb.append(cloth_desc.getText().toString()+"&");
-        for(int i=0;i<k;i++){
-            sb.append(i+2+") ");
-            sb.append(type[i+1]+"-");
-            sb.append(quantities[i].getText().toString()+"::");
-            sb.append(desc[i].getText().toString()+"&");
+        sb.append(type[0] + "-");
+        sb.append(quantity.getText().toString() + "::");
+        sb.append(cloth_desc.getText().toString() + "&");
+        for (int i = 0; i < k; i++) {
+            sb.append(i + 2 + ") ");
+            sb.append(type[i + 1] + "-");
+            sb.append(quantities[i].getText().toString() + "::");
+            sb.append(desc[i].getText().toString() + "&");
         }
 
-        bstreet=street.getText().toString();
-        bcity=city.getText().toString();
-        bpin=pincode.getText().toString();
-        blandmark=landmark.getText().toString();
-        bdate=available_date.getText().toString();
-        btime=available_time.getText().toString();
+
+        add.append(street.getText().toString());
+        add.append("#");
+        add.append(city.getText().toString());
+        add.append("#");
+        add.append(bstate);
+        add.append("#");
+        add.append(pincode.getText().toString());
+
+
+        bdate = available_date.getText().toString();
+        btime = available_time.getText().toString();
+
+        pincode_text=pincode.getText().toString();
+        Calendar calander = Calendar.getInstance();
+        int cDay = calander.get(Calendar.DAY_OF_MONTH);
+        int cMonth = calander.get(Calendar.MONTH) + 1;
+        int cYear = calander.get(Calendar.YEAR);
+        StringBuilder date = new StringBuilder();
+        date.append(cDay);
+        date.append("-");
+        date.append(cMonth);
+        date.append("-");
+        date.append(cYear);
+        requestDate = String.valueOf(date);
+        int cHour = calander.get(Calendar.HOUR);
+        int cMinute = calander.get(Calendar.MINUTE);
+        StringBuilder time = new StringBuilder();
+        if (cHour > 12) {
+            time.append(cHour - 12);
+            time.append(":");
+            time.append(cMinute);
+            time.append(" ");
+            time.append("PM");
+        } else {
+            time.append(cHour);
+            time.append(":");
+            time.append(cMinute);
+            time.append(" ");
+            time.append("AM");
+        }
+        requestTime = String.valueOf(time);
+        Toast.makeText(getApplicationContext(),"submit processed", Toast.LENGTH_SHORT).show();
+        getlocationAttributes();
+    }
+
+
+        void makeRequest(){
+
 
 
         String REGISTER_URL="http://vipul.hol.es/clothes.php";
@@ -281,16 +346,18 @@ public class Clothes extends AppCompatActivity implements AdapterView.OnItemSele
 
                 // Adding All values to Params.
                 // The firs argument should be same sa your MySQL database table columns.
-                //params.put("mnumber",bnumber);
-                // params.put("fuser",user);
-                // params.put("fname",user_name);
+                 params.put("bContact",user);
+                 params.put("bDonor",user_name);
                 params.put("bDetails", String.valueOf(sb));
-                params.put("bstreet", bstreet);//valid date
-                params.put("bcity",bcity);//valid time
-                params.put("blandmark",blandmark);
-                params.put("bpin",bpin);
+                params.put("bAddress",  String.valueOf(add));
+                params.put("blatitude",  latitude);
+                params.put("blongitude", longitude);
+                params.put("bRequestdate",  requestDate);
+                params.put("bRequestTime",  requestTime);
                 params.put("bdate",bdate);
                 params.put("btime",btime);
+                params.put("bstatus","waiting to be accepted");
+
                 //params.put("address_check",Integer.toString(address_check));
                /* params.put("bAddress",address);
                 params.put("bHead",head_name);
@@ -314,13 +381,71 @@ public class Clothes extends AppCompatActivity implements AdapterView.OnItemSele
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String item = adapterView.getItemAtPosition(i).toString();
-        type[k]=item;
+        if(adapterView.getId()==R.id.cloth_type) {
+            String item = adapterView.getItemAtPosition(i).toString();
+            type[k] = item;
+        }
+        else if(adapterView.getId()==R.id.spin_state){
+           bstate=adapterView.getItemAtPosition(i).toString();
+        }
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
 
+    public void getlocationAttributes() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://maps.googleapis.com/maps/api/geocode/json?address="+pincode_text,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //hiding the progressbar after completion
+
+
+                        try {
+                            //getting the whole json object from the response
+                            JSONObject obj = new JSONObject(response);
+
+                            //we have the array named hero inside the object
+                            //so here we are getting that json array
+                            JSONArray jsonArray = obj.getJSONArray("results");
+
+                            //now looping through all the elements of the json array
+
+                            latitude=jsonArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").get("lat").toString();
+                           longitude=jsonArray.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").get("lng").toString();
+
+                            Toast.makeText(getApplicationContext(),latitude+"and"+longitude, Toast.LENGTH_SHORT).show();
+
+                            makeRequest();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //displaying the error in toast if occurrs
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        //creating a request queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //adding the string request to request queue
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public void onClick(View v) {
+       if(v.getId()==R.id.submit_clothes){
+           Toast.makeText(getApplicationContext(),"submit clicked", Toast.LENGTH_SHORT).show();
+            submit();
+       }
     }
 }
+

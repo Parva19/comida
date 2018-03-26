@@ -44,7 +44,8 @@
         <activity android:name=".donor_module.Donor_NavigationMainActivity">
 
         </activity>
-        <activity android:name=".Settings_activity"></activity>
+        <activity android:name=".Clothes"></activity>
+        <activity android:name=".Education"></activity>
         <activity android:name=".Feedback_activity"></activity>
         <activity android:name=".reciever_module.Reciever_Navigation">
             </activity>

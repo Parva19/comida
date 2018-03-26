@@ -145,7 +145,7 @@ public  static EditText oldPassword,newPassword,confirmPassword;
                         // progressDialog.dismiss();
 
                         // Showing Echo Response Message Coming From Server.
-                        Toast.makeText(getActivity().getApplicationContext(), ServerResponse, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity().getApplicationContext(), ServerResponse, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {

@@ -104,32 +104,97 @@
                     android:text="Pick Up Address"
                     android:textSize="20dp"
                     android:textColor="#000000"/>
-                <Button
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:background="@drawable/ic_mode_edit_black_18dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:onClick="editAddress"
-                    />
-                <TextView
-                    android:layout_marginRight="36dp"
-                    android:id="@+id/pickup_address_tv"
-                    android:layout_below="@id/pick_text"
+                <!--<Button-->
+                    <!--android:layout_width="36dp"-->
+                    <!--android:layout_height="36dp"-->
+                    <!--android:background="@drawable/ic_mode_edit_black_18dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentTop="true"-->
+                    <!--android:onClick="editAddress"-->
+                    <!--/>-->
+                <!--<TextView-->
+                    <!--android:layout_marginRight="36dp"-->
+                    <!--android:id="@+id/pickup_address_tv"-->
+                    <!--android:layout_below="@id/pick_text"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="H.No-B 62 \n Daljeet Colony SehatpurFaridabad Haryana-121013"-->
+                    <!--android:textSize="18dp"-->
+                    <!--/>-->
+                <!--<EditText-->
+                    <!--android:layout_marginRight="36dp"-->
+                    <!--android:layout_below="@id/pickup_address_tv"-->
+                    <!--android:id="@+id/pickup_address_et"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="16dp"-->
+                    <!--/>-->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/t_adress"
+                    android:layout_below="@+id/pick_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="H.No-B 62,Daljeet Colony Sehatpur Faridabad Haryana-121013"
-                    android:textSize="18dp"
-                    />
-                <EditText
-                    android:layout_marginRight="36dp"
-                    android:layout_below="@id/pickup_address_tv"
-                    android:id="@+id/pickup_address_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16dp"
-                    android:visibility="gone"/>
+                    android:layout_marginTop="25dp"
+                    android:layout_centerHorizontal="true"
+                    >
 
+                    <AutoCompleteTextView
+                        android:id="@+id/tv_adress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address"
+                        android:inputType="textEmailAddress"
+                        android:textSize="15dp"
+
+                        android:singleLine="true"
+                        android:layout_centerHorizontal="true"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/t_city1"
+                    android:layout_below="@+id/t_adress"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/t_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="City"
+                        android:singleLine="true"
+                        android:textSize="15dp"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spin_state"
+                    android:layout_below="@+id/t_adress"
+                    android:layout_width="175dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_toRightOf="@+id/t_city1"
+                    android:entries="@array/state_arrays">
+
+                </Spinner>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/t_pin1"
+                    android:layout_below="@+id/t_city1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/t_pin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="Postal Code"
+                        android:textSize="15dp"
+                        android:singleLine="true"/>
+                </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_marginTop="2dp"
@@ -169,6 +234,7 @@
                         android:onClick="onRadioButtonClicked"
                         android:textColor="#716d6d"/>
                 </RadioGroup>
+
                 <LinearLayout
                     android:id="@+id/picktime"
                     android:layout_below="@+id/radio"
