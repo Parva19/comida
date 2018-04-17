@@ -3,6 +3,7 @@ package gbpec.comida.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -106,7 +107,49 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendNotification(message, Double.toString(dist));
         }
 
+        if(user.get(sessionManager.USER_TYPE).equals("business")){
+            String message = remoteMessage.getData().get("message");
+            //imageUri will contain URL of the image to be displayed with Notification
+            //If the key AnotherActivity has  value as True then when the user taps on notification, in the app AnotherActivity will be opened.
+            //If the key AnotherActivity has  value as False then when the user taps on notification, in the app MainActivity will be opened.
+            String TrueOrFlase = remoteMessage.getData().get("is_background");
+            String type = remoteMessage.getData().get("Validity");
+            String donorContact = remoteMessage.getData().get("DonorContact");
+            if(sessionManager.USER_CONTACT.equals(donorContact)){
+                sendNotificationAccept(message,type);
+            }
+        }
 
+
+
+    }
+    private void sendNotificationAccept(String message,String type){
+        Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.not_logo))/*Notification icon image*/
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle(message)
+                .setContentText(type)
+                .setStyle(inboxStyle)/*Notification with Image*/
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent);
+        SharedPreferences prefs = getSharedPreferences(MyFirebaseMessagingService.class.getSimpleName(), Context.MODE_PRIVATE);
+        int notificationNumber = prefs.getInt("notificationNumber", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        notificationNumber++;
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(notificationNumber /* ID of notification */, notificationBuilder.build());
+        editor.putInt("notificationNumber", notificationNumber);
+        editor.commit();
 
     }
     private void sendNotification(String messageBody,String type) {
@@ -121,7 +164,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.not_logo))/*Notification icon image*/
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle(messageBody)
-                .addAction(R.drawable.accept_icon, "Accept", pendingIntent) // #0
+//                .addAction(R.drawable.accept_icon, "Accept", pendingIntent) // #0
                 .addAction(R.drawable.open_icon, "Open", pendingIntent)  // #1
                 .setContentText(type)
                 .setStyle(inboxStyle)/*Notification with Image*/
@@ -143,6 +186,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     }
+
+
 
     /*
     *To get a Bitmap image from the URL received
@@ -300,4 +345,5 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
     }
+
 }

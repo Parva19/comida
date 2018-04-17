@@ -31,6 +31,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String NOTIFICATION_OFF = "ISNOTIFICATION";
     // User name (make variable public to access from outside)
+    public static final String USER_ID="User_Id";
     public static final String USER_CONTACT = "User_Contact";
     public static final String USER_LATITUDE = "User_Latitude";
     public static final String USER_LONGITUDE= "User_Longitude";
@@ -78,11 +79,12 @@ public class SessionManager {
         // commit changes
         editor.commit();
     }
-    public void createDataSessionNGO(String name, String latitude, String longitude, String address, String email, String image){
+    public void createDataSessionNGO(String id,String name, String latitude, String longitude, String address, String email, String image){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
+        editor.putString(USER_ID,id);
         editor.putString(USER_NAME, name);
         editor.putString(USER_LATITUDE,latitude );
         editor.putString(USER_LONGITUDE, longitude);
@@ -98,11 +100,12 @@ public class SessionManager {
         // commit changes
         editor.commit();
     }
-    public void createDataSessionBUSINESS(String name, String address, String email, String image){
+    public void createDataSessionBUSINESS(String id,String name, String address, String email, String image){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         // Storing name in pref
+        editor.putString(USER_ID,id);
         editor.putString(USER_NAME, name);
         editor.putString(USER_ADDRESS, address);
         editor.putString(USER_EMAIL, email);
@@ -147,6 +150,7 @@ public class SessionManager {
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
+        user.put(USER_ID,pref.getString(USER_ID, null));
         user.put(USER_CONTACT, pref.getString(USER_CONTACT, null));
         user.put(USER_TYPE, pref.getString(USER_TYPE, null));
         user.put(USER_ADDRESS, pref.getString(USER_ADDRESS, null));

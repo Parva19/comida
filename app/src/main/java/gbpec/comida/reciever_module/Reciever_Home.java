@@ -49,7 +49,7 @@ public class Reciever_Home extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
+    String food_id,contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
     private static Double lat1=0.0,lon1=0.0;
     private OnFragmentInteractionListener mListener;
     //for recycler view
@@ -269,6 +269,8 @@ public class Reciever_Home extends Fragment {
 
     private void prepareMovieData(JSONObject business) throws JSONException {
 
+
+        food_id=business.getString("id");
         contact =business.getString("contact");
         details = business.getString("details");
         details="Food Items- "+details.replaceAll("-.*?&","");
@@ -286,7 +288,7 @@ public class Reciever_Home extends Fragment {
      // Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
 
         if(i<25.00) {
-            Food food = new Food(donor, contact,details,pickupTime,validDate,validTime);
+            Food food = new Food(food_id,donor, contact,details,pickupTime,validDate,validTime);
             foodList.add(food);
         }
 

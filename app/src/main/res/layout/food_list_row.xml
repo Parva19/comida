@@ -188,7 +188,13 @@
             android:src="@drawable/done_icon"
             android:scaleType="centerCrop"
             />
-
+        <TextView
+            android:id="@+id/button_text"
+            android:layout_toRightOf="@id/accept_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="ACCEPT" />
     </RelativeLayout>
 
 

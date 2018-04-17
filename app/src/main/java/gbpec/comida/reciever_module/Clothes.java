@@ -168,7 +168,7 @@ public class Clothes extends Fragment {
         //lat2=Double.parseDouble(bLatitude);
         //lon2=Double.parseDouble(bLongitude);
 
-        Food food = new Food(donor, contact,details,pickupTime,validDate,validTime);
+        Food food = new Food("10",donor, contact,details,pickupTime,validDate,validTime);
         foodList.add(food);
 
         mAdapter.notifyDataSetChanged();

@@ -160,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                 JSONObject collegedata = result.getJSONObject(0);
+                String id=collegedata.getString("id");
                 String name = collegedata.getString("name");
                 String image = collegedata.getString("image");
                 String latitude = collegedata.getString("latitude");
@@ -168,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
               String address = collegedata.getString("address");
             Toast.makeText(LoginActivity.this,latitude+"  "+longitude,Toast.LENGTH_LONG).show();
 
-              session.createDataSessionNGO(name,latitude,longitude,address,email,image);
+              session.createDataSessionNGO(id,name,latitude,longitude,address,email,image);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -183,13 +184,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
             JSONObject collegedata = result.getJSONObject(0);
+            String id=collegedata.getString("id");
             String name = collegedata.getString("name");
             String image = collegedata.getString("image");
             String email = collegedata.getString("email");
             String address = collegedata.getString("address");
 
 
-            session.createDataSessionBUSINESS(name,address,email,image);
+            session.createDataSessionBUSINESS(id,name,address,email,image);
             Intent myIntent = new Intent(LoginActivity.this,
                     Donor_NavigationMainActivity.class);
             startActivity(myIntent);

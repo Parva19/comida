@@ -5,6 +5,15 @@ package gbpec.comida.reciever_module;
  */
 
 public class Food {
+    public String getFood_id() {
+        return food_id;
+    }
+
+    public void setFood_id(String food_id) {
+        this.food_id = food_id;
+    }
+
+    private String food_id;
     private String donor;
     private String contact;
     private String details;
@@ -23,7 +32,8 @@ public class Food {
 //    private String address;
 
 
-    public Food(String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
+    public Food(String food_id,String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
+        this.food_id= food_id;
         this.donor = donor;
         this.contact = contact;
         this.details = details;
