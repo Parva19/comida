@@ -55,7 +55,7 @@ public class Books extends Fragment {
 
     private List<Food> foodList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private FoodAdapter mAdapter;
+    private BooknClothesAdapter mAdapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -108,7 +108,7 @@ public class Books extends Fragment {
         booksItems();
 
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-        mAdapter = new FoodAdapter(foodList);
+        mAdapter = new BooknClothesAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -155,7 +155,7 @@ public class Books extends Fragment {
     public void prepareClothData(JSONObject business) throws JSONException{
         contact =business.getString("contact");
         details = business.getString("details");
-        details="Clothe Items- "+details.replaceAll("-.*?&","");
+        details="Book Items- "+details.replaceAll("-.*?&","");
         donor = business.getString("donor");
         pickupTime="Pickup Time- "+business.getString("pickupTime");
         validDate="Clothes valid upto- "+business.getString("validDate");

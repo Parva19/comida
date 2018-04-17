@@ -63,7 +63,7 @@
             android:textSize="20dp"
             android:layout_marginTop="10dp"
             android:textStyle="bold"
-            android:text="Donate Food"/>
+            android:text="Donate"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_weight="1"
@@ -99,15 +99,16 @@
     <RelativeLayout
         android:id="@+id/ngo_numbers"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_below="@+id/pager"
         android:background="#1EA133"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"
-            android:textSize="50dp"
+            android:textSize="25dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/ngo_total"
             android:textColor="#ffffff"/>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#59b362"
+        android:id="@+id/ngo_item"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/ngo_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="NGO Name"
+            android:textAllCaps="true"
+            android:layout_marginLeft="15dp"
+            android:textColor="#ffffff"/>
+        <ImageView
+            android:layout_marginTop="15dp"
+            android:id="@+id/icon_contact"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:src="@drawable/contact_icon"
+            android:scaleType="centerCrop"
+            />
+        <TextView
+            android:id="@+id/ngo_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="21dp"
+            android:text="9971179912"
+            android:textColor="#ffffff"
+            android:layout_below="@id/ngo_name"
+            android:layout_marginLeft="40dp"/>
+        <TextView
+            android:id="@+id/details"
+            android:textSize="20dp"
+            android:layout_below="@id/ngo_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Know More-->"
+            android:background="#59b362"
+            android:textColor="#000000"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout>

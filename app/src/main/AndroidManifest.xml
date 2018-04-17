@@ -17,13 +17,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".FoodItems" />
         <activity android:name=".RegistrationBusiness" />
-        <activity android:name=".SplashScreen" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SplashScreen" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <service android:name=".service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -34,21 +29,25 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".LoginActivity" >
 
-        </activity>
-        <activity android:name=".RegistrationNGO"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegistrationNGO" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Registration_options" />
-        <activity android:name=".Settings_activity"/>
+        <activity android:name=".Settings_activity" />
         <activity android:name=".donor_module.Donor_NavigationMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".Clothes"></activity>
-        <activity android:name=".Education"></activity>
-        <activity android:name=".Feedback_activity"></activity>
-        <activity android:name=".reciever_module.Reciever_Navigation">
-            </activity>
+        <activity android:name=".Feedback_activity" />
+        <activity android:name=".reciever_module.Reciever_Navigation" />
+        <activity android:name=".Education" />
+        <activity android:name=".Clothes" />
+        <activity android:name=".donor_module.Ngo_all" />
+        <activity android:name=".donor_module.NgoInfo"></activity>
     </application>
 
 </manifest>

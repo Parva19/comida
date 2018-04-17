@@ -15,8 +15,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
         android:fitsSystemWindows="true"
         android:layout_below="@+id/donate_food"/>
     <android.support.v7.widget.RecyclerView

@@ -39,6 +39,16 @@
             android:textColor="#ffffff"
             android:layout_below="@id/donor"
             android:layout_marginLeft="40dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/contact"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="100dp"
+            android:layout_toEndOf="@+id/contact"
+            android:text="ACCEPT"
+            android:textSize="20dp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -178,12 +188,7 @@
             android:src="@drawable/done_icon"
             android:scaleType="centerCrop"
             />
-        <TextView
-            android:layout_toRightOf="@id/accept_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="ACCEPT" />
+
     </RelativeLayout>
 
 

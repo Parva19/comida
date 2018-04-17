@@ -65,13 +65,13 @@
         <item>Others</item>
     </string-array>
     <string-array name="book_type">
-    <item>Book Types</item>
-    <item>Education</item>
-    <item>Novel</item>
-    <item>General Knowlwdge</item>
-    <item>Stationary Items</item>
-    <item>Other Item</item>
-</string-array>
+        <item>Book Types</item>
+        <item>Education</item>
+        <item>Novel</item>
+        <item>General Knowlwdge</item>
+        <item>Stationary Items</item>
+        <item>Other Item</item>
+    </string-array>
     <string-array name="cloth_type">
         <item>Cloth Types</item>
         <item>Winter</item>
@@ -85,6 +85,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

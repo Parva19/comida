@@ -61,7 +61,7 @@ public class Clothes extends Fragment {
     //for recycler view
     private List<Food> foodList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private FoodAdapter mAdapter;
+    private BooknClothesAdapter mAdapter;
 
     public Clothes() {
         // Required empty public constructor
@@ -109,7 +109,7 @@ public class Clothes extends Fragment {
         clothesItems();
 
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-        mAdapter = new FoodAdapter(foodList);
+        mAdapter = new BooknClothesAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -157,7 +157,7 @@ public class Clothes extends Fragment {
     public void prepareClothData(JSONObject business) throws JSONException{
         contact =business.getString("contact");
         details = business.getString("details");
-        details="Clothe Items- "+details.replaceAll("-.*?&","");
+        details="Cloth Items- "+details.replaceAll("-.*?&","");
         donor = business.getString("donor");
         pickupTime="Pickup Time- "+business.getString("pickupTime");
         validDate="Clothes valid upto- "+business.getString("validDate");

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,7 +50,7 @@ import android.view.ViewGroup;
  */
 
 public class Donor_Home_Activity extends Fragment implements View.OnClickListener {
-RelativeLayout donate;
+RelativeLayout donate,ngo_numbers;
 
     String username,food_details,status,valid_date, check_date, ngos,your_foods;
     private List<Food> foodList = new ArrayList<>();
@@ -70,7 +71,7 @@ RelativeLayout donate;
 
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
 
-        View v = inflater.inflate(R.layout.donor_homeactivity, container, false);
+        final View v = inflater.inflate(R.layout.donor_homeactivity, container, false);
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getActivity().getSupportFragmentManager());
               viewPager = (ViewPager) v.findViewById(R.id.pager);
                 viewPager.setAdapter(imageFragmentPagerAdapter);
@@ -98,7 +99,7 @@ RelativeLayout donate;
 
         amount_food=(TextView)v.findViewById(R.id.amount_food);
         ngos_total=(TextView)v.findViewById(R.id.ngo_total);
-
+        ngo_numbers=(RelativeLayout)v.findViewById(R.id.ngo_numbers);
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
         mAdapter = new FoodAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -106,6 +107,15 @@ RelativeLayout donate;
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+
+        ngo_numbers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(v.getContext(), Ngo_all.class);
+                startActivity(i);
+
+            }
+        });
         String URL="http://vipul.hol.es/sender_foods.php?contactno="+username;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {

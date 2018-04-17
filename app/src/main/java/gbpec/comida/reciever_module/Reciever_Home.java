@@ -107,9 +107,9 @@ public class Reciever_Home extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_reciever__home, container, false);
 
-        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getActivity().getSupportFragmentManager());
+       /* imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager = (ViewPager) v.findViewById(R.id.pager);
-        viewPager.setAdapter(imageFragmentPagerAdapter);
+        viewPager.setAdapter(imageFragmentPagerAdapter);*/
 
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
 
