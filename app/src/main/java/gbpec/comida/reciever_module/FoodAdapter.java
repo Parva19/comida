@@ -3,8 +3,6 @@ package gbpec.comida.reciever_module;
 /**
  * Created by Parva Singhal on 20-10-2017.
  */
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gbpec.comida.FoodItems;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 
@@ -44,7 +41,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
             validTime = (TextView) view.findViewById(R.id.validTime);
             accept_button=(RelativeLayout)view.findViewById(R.id.accept_button);
             address1=(TextView)view.findViewById(R.id.address);
-            buttontext=(TextView)view.findViewById(R.id.button_text);
+           // buttontext=(TextView)view.findViewById(R.id.button_text);
         }
     }
 

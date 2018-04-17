@@ -1,16 +1,18 @@
 package gbpec.comida.donor_module;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,27 +34,16 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import gbpec.comida.FoodItems;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
-import gbpec.comida.donor_module.Food;
-import gbpec.comida.donor_module.FoodAdapter;
-import android.view.ViewGroup;
- import android.widget.ImageView;
- import android.support.v4.app.Fragment;
- import android.support.v4.app.FragmentActivity;
- import android.support.v4.app.FragmentManager;
- import android.support.v4.app.FragmentPagerAdapter;
- import android.support.v4.view.ViewPager;
- import android.view.LayoutInflater;
 /**
  * Created by Mohit Chauhan on 10/6/2017.
  */
 
 public class Donor_Home_Activity extends Fragment implements View.OnClickListener {
-RelativeLayout donate,ngo_numbers;
+RelativeLayout donate;
 
-    String username,food_details,status,valid_date, check_date, ngos,your_foods;
+    String username,food_details,status,valid_date, check_date, ngos,your_foods,time,food_id;
     private List<Food> foodList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FoodAdapter mAdapter;
@@ -71,7 +62,7 @@ RelativeLayout donate,ngo_numbers;
 
         Toast.makeText(getActivity().getApplicationContext(), username, Toast.LENGTH_LONG).show();
 
-        final View v = inflater.inflate(R.layout.donor_homeactivity, container, false);
+        View v = inflater.inflate(R.layout.donor_homeactivity, container, false);
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getActivity().getSupportFragmentManager());
               viewPager = (ViewPager) v.findViewById(R.id.pager);
                 viewPager.setAdapter(imageFragmentPagerAdapter);
@@ -99,23 +90,14 @@ RelativeLayout donate,ngo_numbers;
 
         amount_food=(TextView)v.findViewById(R.id.amount_food);
         ngos_total=(TextView)v.findViewById(R.id.ngo_total);
-        ngo_numbers=(RelativeLayout)v.findViewById(R.id.ngo_numbers);
+
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-        mAdapter = new FoodAdapter(foodList);
+        mAdapter = new FoodAdapter(foodList,getContext());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-
-        ngo_numbers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(v.getContext(), Ngo_all.class);
-                startActivity(i);
-
-            }
-        });
         String URL="http://vipul.hol.es/sender_foods.php?contactno="+username;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET,URL, new Response.Listener<String>() {
@@ -239,9 +221,13 @@ public void prepareFoodStatus(JSONObject foodData) throws JSONException {
     food_details=foodData.getString("food_details");
     status=foodData.getString("status");
     valid_date=foodData.getString("valid_date");
-   // Toast.makeText(getContext(),valid_date,Toast.LENGTH_LONG).show();
+    time=foodData.getString("valid_time");
+    food_id=foodData.getString("food_id");
 
-    Food food = new Food(food_details,status);
+
+    // Toast.makeText(getContext(),valid_date,Toast.LENGTH_LONG).show();
+
+    Food food = new Food(food_details,status,valid_date,time,food_id);
     foodList.add(food);
 
 

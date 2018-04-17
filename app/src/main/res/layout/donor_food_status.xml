@@ -7,26 +7,159 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:elevation="5dp"
-        android:layout_marginTop="10dp">
+
+       >
         <LinearLayout
+            android:padding="10dp"
+            android:background="#1EA133"
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <ImageView
+                android:id="@+id/icon_info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/food_icon"
+                android:scaleType="centerCrop"
+                android:layout_marginLeft="5dp"
+                />
             <TextView
                 android:id="@+id/food_details"
                 android:textSize="16dp"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/icon_info"
+                android:layout_marginLeft="10dp"
+                android:text="Sambhal dhokla paneer 4kh kafu haui nafisfnsdjnvjdnvknjkdnvkjdnvknvjdnndvkn"
+
+                />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp"
+            android:padding="10dp">
 
             <TextView
+                android:id="@+id/valid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="VALID UPTO"
+                android:textColor="#fff"
+
+                android:layout_marginBottom="10dp"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/date_info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+
+                android:layout_below="@+id/valid"
+                android:scaleType="centerCrop"
+                android:src="@drawable/valid" />
+
+            <TextView
+                android:id="@+id/validDate"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/valid"
+                android:layout_toRightOf="@+id/date_info"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:text="hello"
+                android:textSize="14dp" />
+
+
+
+            <TextView
+                android:id="@+id/validTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/validDate"
+                android:layout_toRightOf="@+id/date_info"
+                android:textStyle="bold"
+                android:textColor="#fff"
+
+
+
+                android:text="5 se 12"
+                android:textSize="14dp" />
+            <TextView
                 android:id="@+id/status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="FOOD STATUS"
+                android:layout_alignParentRight="true"
+                android:textColor="#fff"
+
+                android:layout_marginBottom="10dp"
+                android:textSize="14dp" />
+            <TextView
+                android:id="@+id/food_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/status"
+                android:layout_alignParentRight="true"
+                android:textStyle="bold"
+                android:textColor="#fff"
 
 
-        </LinearLayout>
+
+                android:text="Accepted"
+                android:textSize="14dp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="CONFIRM DELIVERY"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:id="@+id/confirm_delivery"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                android:background="@drawable/background1"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="VIEW NGO"
+                android:padding="10dp"
+                android:textColor="#fff"
+                android:id="@+id/ngo_details"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                android:background="@drawable/background1"/>
+        </RelativeLayout>
+
+
+
+
+
+</LinearLayout>
+
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
