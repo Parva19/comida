@@ -33,7 +33,7 @@ public class Rating extends Activity {
         Bundle bundle = getIntent().getExtras();
         food_id = bundle.getString("food_id");
 
-        addListenerOnRatingBar();
+        addListenerOnRatingBar();//
         addListenerOnButton();
 
     }

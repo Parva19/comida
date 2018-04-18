@@ -71,7 +71,7 @@ public class Ngo_profile  extends AppCompatActivity implements View.OnClickListe
         requestQueue1.add(stringRequest1);
 
 
-
+//
 
 
 

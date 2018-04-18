@@ -54,6 +54,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
 
         return new MyViewHolder(itemView);
     }
+    //
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {

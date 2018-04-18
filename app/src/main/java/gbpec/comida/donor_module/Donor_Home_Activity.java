@@ -216,7 +216,7 @@ RelativeLayout donate;
                     }
      }
  //Image slider code end
-
+//
 public void prepareFoodStatus(JSONObject foodData) throws JSONException {
     food_details=foodData.getString("food_details");
     status=foodData.getString("status");

@@ -17,13 +17,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 
-import gbpec.comida.CustomVolleyRequest;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 import gbpec.comida.Settings_activity;
@@ -85,7 +83,7 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                     R.drawable.logo, android.R.drawable
                             .ic_dialog_alert));
             nav_img.setImageUrl(url1, imageLoader);
-        }*/
+        }*///
         navigationView.setNavigationItemSelectedListener(this);
     }
 
