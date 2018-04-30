@@ -681,7 +681,7 @@ public class FoodItems extends AppCompatActivity implements AdapterView.OnItemSe
 
             String item = parent.getItemAtPosition(position).toString();
             if(item.equals("State")){
-               t_state.setAutofillHints("enter state");
+            //   t_state.setAutofillHints("enter state");
             }
             else{
 
