@@ -21,6 +21,17 @@ public class Food {
     private String validDate;
     private String validTime;
 
+    public String getRecieverId() {
+        return RecieverId;
+    }
+
+    public void setRecieverId(String recieverId) {
+        RecieverId = recieverId;
+    }
+
+    private String RecieverId;
+
+
 //    public String getAddress() {
 //        return address;
 //    }
@@ -30,9 +41,18 @@ public class Food {
 //    }
 //
 //    private String address;
+public Food(String food_id,String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
+    this.food_id= food_id;
+    this.donor = donor;
+    this.contact = contact;
+    this.details = details;
+    this.pickupTime = pickupTime;
+    this.validDate = validDate;
+    this.validTime = validTime;
 
+}
 
-    public Food(String food_id,String donor, String contact, String details, String pickupTime, String validDate, String validTime) {
+    public Food(String food_id,String donor, String contact, String details, String pickupTime, String validDate, String validTime, String RecieverId) {
         this.food_id= food_id;
         this.donor = donor;
         this.contact = contact;
@@ -40,6 +60,7 @@ public class Food {
         this.pickupTime = pickupTime;
         this.validDate = validDate;
         this.validTime = validTime;
+        this.RecieverId=RecieverId;
     }
 
     public String getPickupTime() {

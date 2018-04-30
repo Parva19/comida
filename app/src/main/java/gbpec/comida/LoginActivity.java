@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                  // myIntent.putExtra("user", username);
                   saveDataDonor(username1);
 
+
                 }
                 if (type.equals("ngo")) {
 

@@ -3,19 +3,19 @@ package gbpec.comida.reciever_module;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,17 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
-import gbpec.comida.donor_module.Donor_Home_Activity;
-
-import static gbpec.comida.donor_module.Donor_Home_Activity.IMAGE_NAME;
 
 
 public class Reciever_Home extends Fragment {
@@ -49,7 +44,7 @@ public class Reciever_Home extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    String food_id,contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude;
+    String food_id,contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,fLatitude,fLongitude,fRecieverId;
     private static Double lat1=0.0,lon1=0.0;
     private OnFragmentInteractionListener mListener;
     //for recycler view
@@ -273,13 +268,15 @@ public class Reciever_Home extends Fragment {
         food_id=business.getString("id");
         contact =business.getString("contact");
         details = business.getString("details");
-        details="Food Items- "+details.replace("&","..");
+        details= details.replace("&"," \n");
         donor = business.getString("donor");
-        pickupTime="Pickup Time- "+business.getString("pickupTime");
-        validDate="Food valid upto- "+business.getString("validDate");
-        validTime="     "+business.getString("validTime");
+        pickupTime=business.getString("pickupTime");
+        validDate=business.getString("validDate");
+        validTime=business.getString("validTime");
         fLatitude=business.getString("fLatitude");
         fLongitude=business.getString("fLongitude");
+        fRecieverId=business.getString("fRecieverId");
+
         Double lat2,lon2;
         lat2=Double.parseDouble(fLatitude);
         lon2=Double.parseDouble(fLongitude);
@@ -288,7 +285,7 @@ public class Reciever_Home extends Fragment {
      // Toast.makeText(getContext(), "dis-"+Double.toString(i),Toast.LENGTH_LONG).show();
 
         if(i<25.00) {
-            Food food = new Food(food_id,donor, contact,details,pickupTime,validDate,validTime);
+            Food food = new Food(food_id,donor, contact,details,pickupTime,validDate,validTime,fRecieverId);
             foodList.add(food);
         }
 

@@ -7,22 +7,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#dfccdeae"
+    android:background="#1EA133"
     android:orientation="vertical"
     >
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#59b362">
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:background="#dfccdeae">
         <TextView
             android:id="@+id/donor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:text="SHONA SWEETS"
+            android:textStyle="bold"
             android:textAllCaps="true"
             android:layout_marginLeft="15dp"
-            android:textColor="#ffffff"/>
+        />
         <ImageView
             android:layout_marginTop="15dp"
             android:id="@+id/icon_contact"
@@ -36,8 +38,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
+            android:layout_marginTop="8dp"
             android:text="9971179912"
-            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:layout_below="@id/donor"
             android:layout_marginLeft="40dp"/>
     </RelativeLayout>
@@ -46,27 +49,143 @@
         android:layout_height="40dp">
         <ImageView
             android:id="@+id/icon_info"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/info_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/food_icon"
             android:scaleType="centerCrop"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             />
 
         <TextView
             android:id="@+id/details"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
             android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/icon_info"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ffff"
+            android:textStyle="bold"
             android:maxLines="3"
             android:text="Sambhal dhokla paneer "
             android:textSize="14dp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:padding="10dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="ACCEPT"
+            android:padding="10dp"
+            android:textColor="#fff"
+            android:id="@+id/accept_button"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="VIEW INFO"
+            android:padding="10dp"
+            android:textColor="#fff"
+            android:id="@+id/ngo_details"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/background1"/>
+
+    <TextView
+        android:id="@+id/valid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="VALID UPTO"
+        android:textColor="#fff"
+
+        android:layout_marginBottom="10dp"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:id="@+id/date_info"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+
+        android:layout_below="@+id/valid"
+        android:scaleType="centerCrop"
+        android:src="@drawable/valid" />
+
+    <TextView
+        android:id="@+id/validDate"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/valid"
+        android:layout_toRightOf="@+id/date_info"
+        android:textStyle="bold"
+        android:textColor="#fff"
+        android:text="hello"
+        android:textSize="14dp" />
+
+
+
+    <TextView
+        android:id="@+id/validTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/validDate"
+        android:layout_toRightOf="@+id/date_info"
+        android:textStyle="bold"
+        android:textColor="#fff"
+
+
+
+        android:text="5 se 12"
+        android:textSize="14dp" />
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="PICK UP TIME"
+        android:layout_alignParentRight="true"
+        android:textColor="#fff"
+
+        android:layout_marginBottom="10dp"
+        android:textSize="14dp" />
+        <ImageView
+            android:id="@+id/pick_info"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@+id/pickupTime"
+
+            android:layout_below="@+id/valid"
+            android:scaleType="centerCrop"
+            android:src="@drawable/clckwht" />
+    <TextView
+        android:id="@+id/pickupTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/status"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold"
+        android:textColor="#fff"
+
+
+
+        android:text="Accepted"
+        android:textSize="14dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:visibility="gone">
+       >
+
         <ImageView
             android:layout_centerVertical="true"
             android:id="@+id/icon_info"
@@ -86,100 +205,10 @@
             android:text="Bihar se hai"
             android:layout_marginLeft="10dp"/>
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp">
-        <TextView
-            android:textColor="#000000"
-            android:id="@+id/pick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pick Up :"
-            android:textSize="16dp"
-            android:layout_centerVertical="true"/>
-        <ImageView
-            android:layout_toRightOf="@+id/pick"
-            android:id="@+id/date_info"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/time_icon"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="56dp"
-            />
-        <TextView
-            android:id="@+id/pickupTime"
-            android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_toRightOf="@+id/date_info"
-            android:layout_marginLeft="10dp"
-            android:textSize="14dp"
-            android:text="5 se 12"/>
 
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
 
-        <TextView
-            android:id="@+id/valid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Valid upto :"
-            android:textColor="#000000"
-            android:textSize="20dp" />
 
-        <ImageView
-            android:id="@+id/date_info"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/valid"
-            android:scaleType="centerCrop"
-            android:src="@drawable/date_icon" />
-
-        <TextView
-            android:id="@+id/validDate"
-            android:layout_width="match_parent"
-            android:layout_height="18dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/date_info"
-            android:text="hello"
-            android:textSize="14dp" />
-
-        <ImageView
-            android:id="@+id/time_info"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_below="@+id/date_info"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/valid"
-            android:scaleType="centerCrop"
-            android:src="@drawable/time_icon" />
-
-        <TextView
-            android:id="@+id/validTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/date_info"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/time_info"
-            android:text="5 se 12"
-            android:textSize="14dp" />
-    </RelativeLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:text="ACCEPT"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:textColor="#ffff"
-        android:id="@+id/accept_button"
-        android:background="@drawable/background3"/>
 
 
 

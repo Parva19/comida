@@ -93,23 +93,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String Longitude = remoteMessage.getData().get("Longitude");
             Location loc1 = new Location("");
 
-            double lat1 = Double.parseDouble(Latitude);
-            double long1 = Double.parseDouble(Longitude);
-            double lat2 = Double.parseDouble(user.get(sessionManager.USER_LATITUDE));
-            double long2 = Double.parseDouble(user.get(sessionManager.USER_LONGITUDE));
-
-            double dist = distance(lat1, long1, lat2, long2);
 
 
 
 
-                sendNotification(message, Double.toString(dist));
+
+
+
+                sendNotification(message);
         }
 
 
 
     }
-    private void sendNotification(String messageBody,String type) {
+    private void sendNotification(String messageBody) {
         Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
@@ -123,7 +120,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(messageBody)
                 .addAction(R.drawable.accept_icon, "Accept", pendingIntent) // #0
                 .addAction(R.drawable.open_icon, "Open", pendingIntent)  // #1
-                .setContentText(type)
                 .setStyle(inboxStyle)/*Notification with Image*/
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

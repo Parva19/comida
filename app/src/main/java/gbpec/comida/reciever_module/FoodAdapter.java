@@ -3,11 +3,12 @@ package gbpec.comida.reciever_module;
 /**
  * Created by Parva Singhal on 20-10-2017.
  */
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
     private List<Food> foodList;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView donor,contact, details,pickupTime,validDate,validTime,address1,buttontext;
-        RelativeLayout accept_button;
+        Button accept_button;
 
         public MyViewHolder(View view) {
             super(view);
@@ -39,7 +40,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
             pickupTime = (TextView) view.findViewById(R.id.pickupTime);
             validDate = (TextView) view.findViewById(R.id.validDate);
             validTime = (TextView) view.findViewById(R.id.validTime);
-            accept_button=(RelativeLayout)view.findViewById(R.id.accept_button);
+            accept_button=(Button) view.findViewById(R.id.accept_button);
             address1=(TextView)view.findViewById(R.id.address);
            // buttontext=(TextView)view.findViewById(R.id.button_text);
         }
@@ -74,6 +75,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+        SessionManager session = new SessionManager(holder.accept_button.getContext());
+        HashMap<String, String> user1 = session.getUserDetails();
+        final String user_id = user1.get(SessionManager.USER_ID);
+        final String user_contact = user1.get(SessionManager.USER_CONTACT);
        final Food food = foodList.get(position);
         holder.donor.setText(food.getDonor());
         holder.contact.setText(food.getContact());
@@ -81,59 +86,117 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
         holder.pickupTime.setText(food.getPickupTime());
         holder.validDate.setText(food.getValidDate());
         holder.validTime.setText(food.getValidTime());
+        if(user_id.equals(food.getRecieverId()))
+        {
+            holder.accept_button.setText("REJECT");
+        }
+        else if(!food.getRecieverId().equals("0")){
+            holder.accept_button.setText("UNAVAILABLE");
+            }
         holder.accept_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String id=food.getFood_id();
+                final String id = food.getFood_id();
                 SessionManager session = new SessionManager(holder.accept_button.getContext());
                 HashMap<String, String> user1 = session.getUserDetails();
                 final String user_name = user1.get(SessionManager.USER_NAME);
-               final String user_contact = user1.get(SessionManager.USER_CONTACT);
+                final String user_contact = user1.get(SessionManager.USER_CONTACT);
+                if (user_id.equals(food.getRecieverId())) {
+                    //reject
+                    String REGISTER_URL = "http://vipul.hol.es/rejectfood.php";
 
-                String REGISTER_URL = "http://vipul.hol.es/acceptfood.php";
-
-                // Creating string request with post method.
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String ServerResponse) {
-
-
-                                Toast.makeText(holder.accept_button.getContext(), ServerResponse, Toast.LENGTH_LONG).show();
-                                holder.buttontext.setText("Done");
-                                holder.accept_button.setClickable(false);
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
+                    // Creating string request with post method.
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String ServerResponse) {
 
 
-                                Toast.makeText(holder.accept_button.getContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() {
+                                    Toast.makeText(holder.accept_button.getContext(), ServerResponse, Toast.LENGTH_LONG).show();
+                                    holder.accept_button.setText("ACCEPT");
 
-                        // Creating Map String Params.
-                        Map<String, String> params = new HashMap<String, String>();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
 
-                        params.put("DonorContact",food.getContact());
-                        params.put("fId",id);
-                        params.put("fRecieverId", user_contact);
-                        params.put("fDetails", food.getDetails());
-                        params.put("fReciever",user_name);
-                        params.put("fStatus","Accepted");
-                        return params;
-                    }
 
-                };
+                                    Toast.makeText(holder.accept_button.getContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() {
 
-                // Creating RequestQueue.
-                RequestQueue requestQueue = Volley.newRequestQueue(holder.accept_button.getContext());
+                            // Creating Map String Params.
+                            Map<String, String> params = new HashMap<String, String>();
 
-                // Adding the StringRequest object into requestQueue.
-                requestQueue.add(stringRequest);
+                            params.put("fName", food.getDonor());
+                            params.put("fRequestDate", food.getValidDate());
+                            params.put("fDetails", food.getDetails());
+                            params.put("fRequestTime", food.getValidTime());
+                            params.put("fId", id);
+
+                            return params;
+                        }
+
+                    };
+
+                    // Creating RequestQueue.
+                    RequestQueue requestQueue = Volley.newRequestQueue(holder.accept_button.getContext());
+
+                    // Adding the StringRequest object into requestQueue.
+                    requestQueue.add(stringRequest);
+
+                } else if (!food.getRecieverId().equals("0")) {
+                    //unavailable
+                } else {
+
+                    String REGISTER_URL = "http://vipul.hol.es/acceptfood.php";
+
+                    // Creating string request with post method.
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String ServerResponse) {
+
+
+                                    Toast.makeText(holder.accept_button.getContext(), ServerResponse, Toast.LENGTH_LONG).show();
+                                    holder.accept_button.setText("REJECT");
+
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError volleyError) {
+
+
+                                    Toast.makeText(holder.accept_button.getContext(), volleyError.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+
+                            // Creating Map String Params.
+                            Map<String, String> params = new HashMap<String, String>();
+
+                            params.put("DonorContact", food.getContact());
+                            params.put("fId", id);
+                            params.put("fRecieverId", user_contact);
+                            params.put("fDetails", food.getDetails());
+                            params.put("fReciever", user_name);
+                            params.put("fStatus", "Accepted");
+                            return params;
+                        }
+
+                    };
+
+                    // Creating RequestQueue.
+                    RequestQueue requestQueue = Volley.newRequestQueue(holder.accept_button.getContext());
+
+                    // Adding the StringRequest object into requestQueue.
+                    requestQueue.add(stringRequest);
+                }
             }
         });
 //        holder.address1.setText(food.getAddress());
