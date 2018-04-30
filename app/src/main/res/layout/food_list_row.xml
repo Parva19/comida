@@ -52,15 +52,16 @@
             android:scaleType="centerCrop"
             android:layout_marginLeft="5dp"
             />
+
         <TextView
             android:id="@+id/details"
-            android:textSize="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/icon_info"
-            android:maxLines="2"
-            android:layout_marginTop="5dp"
-            android:text="Sambhal dhokla paneer 4kh kafu haui nafisfnsdjnvjdnvknjkdnvkjdnvknvjdnndvkn"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:maxLines="3"
+            android:text="Sambhal dhokla paneer "
+            android:textSize="14dp" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

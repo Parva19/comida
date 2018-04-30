@@ -1,6 +1,8 @@
 package gbpec.comida.reciever_module;
 
-import android.support.design.widget.TabLayout;
+/**
+ * Created by Parva Singhal on 30-04-2018.
+ */
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -23,11 +25,7 @@ import java.util.Map;
 import gbpec.comida.R;
 import gbpec.comida.SessionManager;
 
-/**
- * Created by Parva Singhal on 26-03-2018.
- */
-
-public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapter.MyViewHolder>{
+public class ClothesAdapter extends RecyclerView.Adapter<ClothesAdapter.MyViewHolder> {
     private List<Food> foodList;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView donor, contact, details, pickupTime, validDate, validTime, address1,buttontext;
@@ -46,7 +44,7 @@ public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapte
         }
     }
 
-    public BooknClothesAdapter(List<Food> foodList) {
+    public ClothesAdapter(List<Food> foodList) {
         this.foodList = foodList;
     }
 
@@ -73,7 +71,7 @@ public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapte
     }
 
     @Override
-    public void onBindViewHolder(final BooknClothesAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final ClothesAdapter.MyViewHolder holder, int position) {
         final Food food = foodList.get(position);
         holder.donor.setText(food.getDonor());
         holder.contact.setText(food.getContact());
@@ -87,7 +85,7 @@ public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapte
                 HashMap<String, String> user1 = session.getUserDetails();
                 final String user_name = user1.get(SessionManager.USER_NAME);
                 final String user_contact = user1.get(SessionManager.USER_CONTACT);
-                String REGISTER_URL = "http://vipul.hol.es/acceptBooks.php";
+                String REGISTER_URL = "http://vipul.hol.es/acceptClothes.php";
 
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
                         new Response.Listener<String>() {
@@ -134,8 +132,8 @@ public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapte
 
             }
         });
-       // holder.validDate.setText(food.getValidDate());
-       // holder.validTime.setText(food.getValidTime());
+        // holder.validDate.setText(food.getValidDate());
+        // holder.validTime.setText(food.getValidTime());
     }
 
     @Override
@@ -143,3 +141,4 @@ public class BooknClothesAdapter extends RecyclerView.Adapter<BooknClothesAdapte
         return foodList.size();
     }
 }
+

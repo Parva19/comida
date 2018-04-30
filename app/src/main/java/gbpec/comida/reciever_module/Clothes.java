@@ -55,13 +55,13 @@ public class Clothes extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    String contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,cLatitude,cLongitude;
+    String contact,details,donor,pickupTime,validDate,validTime,username,ngo_latiude,ngo_longitude,cLatitude,cLongitude,food_id;
     private static Double lat1=0.0,lon1=0.0;
     private OnFragmentInteractionListener mListener;
     //for recycler view
     private List<Food> foodList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private BooknClothesAdapter mAdapter;
+    private ClothesAdapter mAdapter;
 
     public Clothes() {
         // Required empty public constructor
@@ -109,7 +109,7 @@ public class Clothes extends Fragment {
         clothesItems();
 
         recyclerView = (RecyclerView)v.findViewById(R.id.recycler_view);
-        mAdapter = new BooknClothesAdapter(foodList);
+        mAdapter = new ClothesAdapter(foodList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -155,9 +155,10 @@ public class Clothes extends Fragment {
     }
 
     public void prepareClothData(JSONObject business) throws JSONException{
+        food_id=business.getString("id");
         contact =business.getString("contact");
         details = business.getString("details");
-        details="Cloth Items- "+details.replaceAll("-.*?&","");
+        details="Cloth Items- "+details.replace("&","..");
         donor = business.getString("donor");
         pickupTime="Pickup Time- "+business.getString("pickupTime");
         validDate="Clothes valid upto- "+business.getString("validDate");
@@ -168,7 +169,7 @@ public class Clothes extends Fragment {
         //lat2=Double.parseDouble(bLatitude);
         //lon2=Double.parseDouble(bLongitude);
 
-        Food food = new Food("10",donor, contact,details,pickupTime,validDate,validTime);
+        Food food = new Food(food_id,donor, contact,details,pickupTime,validDate,validTime);
         foodList.add(food);
 
         mAdapter.notifyDataSetChanged();

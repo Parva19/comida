@@ -88,6 +88,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
                 SessionManager session = new SessionManager(holder.accept_button.getContext());
                 HashMap<String, String> user1 = session.getUserDetails();
                 final String user_name = user1.get(SessionManager.USER_NAME);
+               final String user_contact = user1.get(SessionManager.USER_CONTACT);
+
                 String REGISTER_URL = "http://vipul.hol.es/acceptfood.php";
 
                 // Creating string request with post method.
@@ -118,7 +120,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.MyViewHolder>{
 
                         params.put("DonorContact",food.getContact());
                         params.put("fId",id);
-                        params.put("fRecieverId", "10");
+                        params.put("fRecieverId", user_contact);
                         params.put("fDetails", food.getDetails());
                         params.put("fReciever",user_name);
                         params.put("fStatus","Accepted");

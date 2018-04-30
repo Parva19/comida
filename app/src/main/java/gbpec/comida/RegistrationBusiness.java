@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RegistrationBusiness extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional, mVerificationId;
+    String bnumber,bname,type,password,confirm_password,email,head_name,bnumber2,address,additional, mVerificationId,bnum;
     private EditText business_name,business_email,business_head,business_additional,others;
     private TextInputLayout other;
     private EditText business_num,otpnum;
@@ -172,9 +172,10 @@ public class RegistrationBusiness extends AppCompatActivity implements AdapterVi
 
     public void sendotp(View v){
         bnumber=business_num.getText().toString();
+        bnum="+91"+bnumber;
 
         if (awesomeValidation.validate()) {
-            startPhoneNumberVerification(bnumber);
+            startPhoneNumberVerification(bnum);
             otpnum.setVisibility(View.VISIBLE);
             verifyotp.setVisibility(View.VISIBLE);
             awesomeValidation.addValidation(this, R.id.business_password, "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=]).{8,16}$", R.string.passworderror);

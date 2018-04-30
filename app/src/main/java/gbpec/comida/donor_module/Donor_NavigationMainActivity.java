@@ -147,6 +147,8 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  startActivity(logout);
                  Toast.makeText(getApplicationContext(), "Loging Out..", Toast.LENGTH_SHORT).show();
                  break;
+
+
              case R.id.nav_setting:
                  Intent setting= new Intent(this, Settings_activity.class);
                //  FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
@@ -166,7 +168,10 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                  fragmentManagerhome.beginTransaction().replace(R.id.flContent, fragment).commit();
                  break;
              case R.id.nav_Donation_history:
-                                  fragmentClass = History_Module.class;
+                 Intent history= new Intent(this, DonorHistory.class);
+                 //  FirebaseMessaging.getInstance().unsubscribeFromTopic("donor");
+                 startActivity(history);
+                              /*    fragmentClass = History_Module.class;
 
 
                                  try {
@@ -177,7 +182,7 @@ public class Donor_NavigationMainActivity extends AppCompatActivity
                                   }
                                   // fragment.setArguments(bundle);
                                          fragmentManager = getSupportFragmentManager();
-                                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+                                  fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();*/
                                   break;
          }
           //if(item.equals("Profile")){
