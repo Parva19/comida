@@ -119,7 +119,6 @@ public class History_Module_NGO extends Fragment {
                         prepareMovieData(businessData);
                     }
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

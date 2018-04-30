@@ -131,7 +131,7 @@ RelativeLayout donate,ngo_numbers;
                     //  Toast.makeText(getContext(),"2",Toast.LENGTH_LONG).show();
                     for(int i=0;i<result.length();i++){
                         JSONObject foodData = result.getJSONObject(i);
-                        prepareFoodStatus(foodData);
+                      //  prepareFoodStatus(foodData);
                     }
 
                     //

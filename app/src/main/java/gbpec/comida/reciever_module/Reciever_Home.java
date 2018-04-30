@@ -273,7 +273,7 @@ public class Reciever_Home extends Fragment {
         food_id=business.getString("id");
         contact =business.getString("contact");
         details = business.getString("details");
-        details="Food Items- "+details.replaceAll("-.*?&","");
+        details="Food Items- "+details.replace("&","..");
         donor = business.getString("donor");
         pickupTime="Pickup Time- "+business.getString("pickupTime");
         validDate="Food valid upto- "+business.getString("validDate");
